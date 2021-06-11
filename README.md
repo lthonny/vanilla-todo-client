@@ -8,6 +8,7 @@ Description of the program interface:
 Formulation of the problem:
 
 
-design reference: https://www.figma.com/file/uYCbOuxdy7Pdi0wXXgG250/Untitled?node-id=0%3A1
+Link to design (Figma): 
+https://www.figma.com/file/uYCbOuxdy7Pdi0wXXgG250/Untitled?node-id=0%3A1
 Link to github pages: 
 
