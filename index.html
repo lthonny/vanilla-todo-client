@@ -1,14 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <!-- favicon -->
+  <link rel="shortcut icon" href="src/images/favicon.svg?" />
+  <!-- styles -->
   <link rel="stylesheet" href="./src/css/main.css">
   <title>To Do</title>
 </head>
+
 <body>
-  
+
+  <section class="to-do-list">
+    <div class="container">
+      <h1>TO DO LIST</h1>
+
+      <!-- adding tasks in the input -->
+      <div class="add-task">
+        <div class="input-task">
+          <input type="text" placeholder="Enter the task">
+        </div>
+        <div class="button-task">
+          <button>Add to</button>
+        </div>
+      </div>
+
+      <!-- tasks -->
+      <div class="tasks">
+        <h2>Daily tasks:</h2>
+        <div class="tasks-content">
+          <!-- added tasks will go here -->
+          <div class="task">
+            <div class="task-content">
+              <div class="execute">
+                <input type="checkbox">
+
+              </div>
+              <div class="task-text">
+                <div class="text">Learn Java script</div>
+              </div>
+              <div class="btn-delete">
+                <button><i class="fas fa-trash-alt"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- task management -->
+      <div class="task-filter">
+        <div class="btn task-all">
+          <button>All</button>
+        </div>
+        <div class="btn task-completed">
+          <button>Completed</button>
+        </div>
+        <div class="btn task-incompleted">
+          <button>In Completed</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- the type of task that will be added -->
+  <!-- <div class="container">
+    <div class="task">
+      <div class="task-content">
+        <div class="execute">
+          <input type="checkbox">
+
+        </div>
+        <div class="task-text">
+          <div class="text">Learn Java script</div>
+        </div>
+        <div class="btn-delete">
+          <button><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- icons -->
+  <script src="https://kit.fontawesome.com/50f730e0bb.js" crossorigin="anonymous"></script>
+  <!-- scripts js -->
   <script src="src/js/main.js"></script>
 </body>
+
 </html>

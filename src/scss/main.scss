@@ -1,1 +1,39 @@
+@import '_zeroing.scss';
+@import '_task-add.scss';
+@import '_tasks.scss';
+@import '_task-filter.scss';
+@import '_task.scss';
+@import '_checkbox.scss';
+
+
+.container {
+  width: 600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.to-do-list {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.to-do-list {
+  margin-top: 100px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+
+.btn button {
+  font-size: 16px;
+  font-weight: 500;
+  width: 130px;
+  height: 30px;
+  background-color: #FFDEDE; 
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid #fff;
+}
 

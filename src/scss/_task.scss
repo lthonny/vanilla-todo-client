@@ -1,0 +1,57 @@
+.task-content {
+  display: flex;
+
+  margin-top: 20px;
+  margin: 20px 35px 0px 35px;
+  border: 2px solid #fff;
+  border-radius: 5px
+}
+
+.execute {
+  width: 10%;
+  background-color: #E4E2E2;
+  border-radius: 5px 0px 0px 5px;
+  position: relative;
+
+  input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+      cursor: pointer;
+  }
+
+  input[type=checkbox] {
+      width: 20px;
+      height: 20px;
+    }
+}
+
+.task-text {
+  color: #000;
+  width: 75%;
+
+  .text {
+    display: flex;
+    padding-left: 10px;
+    align-items: center;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+    background-color: #E4E2E2;
+  }
+}
+
+.btn-delete {
+  width: 15%;
+  button {
+    width: 100%;
+    height: 30px;
+
+    color: #fff;
+    font-size: 20px;
+    
+    border-radius: 0px 5px 5px 0px;
+    background-color: #FB8F8F;
+  }
+}
