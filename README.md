@@ -9,8 +9,7 @@ To add a task of the day, you need to click on the input fields (Enter the task.
 
 ### Task changes 
 After clicking on the [ Add to ] button, the task gets into the Daily tasks: where we can continue to contact it, we have access to change the text in the task, if we need to delete the task, click on the trash can on the right, in order to mark the task as completed, we mark checkmark it on the left.
-![image](https://user-images.githubusercontent.com/58366884/121872703-44a78e80-cd0e-11eb-8ac9-1eb090d620b4.png)
-
+![image](https://user-images.githubusercontent.com/58366884/121872835-6a349800-cd0e-11eb-8573-feacfe205b48.png)
 
 ### Filtering tasks 
 To display specific records, we use the filter buttons [ all ], [ completed ], [ in completed]. Thanks to them, our Daily tasks will change according to the condition on which button we clicked the output of all records, completed and not completed.
