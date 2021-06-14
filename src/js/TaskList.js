@@ -5,6 +5,7 @@ class TaskList {
       new Task('Выучить Andular', true),
       new Task('Выучить Mongo.db', false)
     ];
+    this.filter =  'All'; // Completed, In completed
   }
 
 
@@ -25,27 +26,6 @@ class TaskList {
 
   // filterSelection args
   filterTasks() { 
-    // console.log(this.tasks[1].completed);
-    const inCompleted = [];
-    const completed = [];
-    const all = [];
-
-    const filterTasks = this.tasks.filter(item => {
-      // console.log(item.completed == false ? 'X' : '-')
-      if (item.completed == false && item.completed == true) {
-        all.push(`${`text: ${item.text}, completed: ${item.completed}`}`);
-        console.log(all);
-      } 
-      if (item.completed == true && item.completed != false) {
-        completed.push(`${`text: ${item.text}, completed: ${item.completed }`}`);
-        console.log(completed);
-      } 
-      if (item.completed == false && item.completed != true) {
-        inCompleted.push(`${`text: ${item.text}, completed: ${item.completed }`}`);
-        console.log(inCompleted);
-      }
-    })
-    // console.log(all);
     
   }
 
@@ -55,11 +35,29 @@ class TaskList {
     this.render();
   }
 
-  render() {
+  getFilter(arg) {
+    // console.log(this.filter)
+    if (this.filter == 'All') {
+      console.log()
+    } 
+    if (this.filter == 'Completed') {
+      this.render();
+    } else {
+      this.render();
+    }
+  }
+
+  // taskFilter() {
+
+  // }
+
+
+  render(arg) {
     this.tasks.forEach(item => {
       console.log(`[${item.completed}] ${item.text}`);
     });
-    
+
+    const result = this.tasks.filter(item == this.getFilter);
   }
 
 } 
