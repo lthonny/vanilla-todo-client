@@ -1,10 +1,10 @@
-// Перед тем как запускать код убедимся, что дом загрузился
-
+document.addEventListener("DOMContentLoaded", function(event) {
 
 const app = new App();
 
 app.render();
 
+});
 // app.init();
 
 

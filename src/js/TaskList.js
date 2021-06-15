@@ -20,6 +20,7 @@ class TaskList {
     this.render();
   }
 
+  
   createTask(text) {
     const task = new Task(text, false); // random boolean
     this.tasks.push(task);

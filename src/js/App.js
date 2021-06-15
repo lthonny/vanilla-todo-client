@@ -1,7 +1,7 @@
 // main class of the whole application
 
-const inputTask = document.querySelector('.text');
-const btnAddTask = document.querySelector('.btn-add');
+// const inputTask = document.querySelector('.text');
+// const btnAddTask = document.querySelector('.btn-add');
 
 
 // add a task by button
@@ -18,14 +18,13 @@ const btnAddTask = document.querySelector('.btn-add');
 //     console.log(todoList);
 //   })
 
+// console.log(todoList.completed)
 
 
 
-
-
-// ! btnAddTask.addEventListener('click', event => {
-  // console.log(inputTask.value);
-  // inputTask.value = '';
+// btnAddTask.addEventListener('click', event => {
+//   console.log(inputTask.value);
+//   inputTask.value = '';
 // })
 
 // ! add a task via a key Enter
@@ -38,12 +37,27 @@ const btnAddTask = document.querySelector('.btn-add');
 
 
 class App {
+  // text = '';
   constructor() {
     console.log('App init');
-      // new Task('Выучить js', true),
-      // new Task('Выучить Andular', false),
-      // new Task('Выучить Mongo.db', true)
+
+      // crate instalse tasklict
     this.taskList = new TaskList([]);
+
+    // console.log(this.taskList)
+    this.input = document.querySelector('.text');
+    const btn = document.querySelector('.btn-add');
+
+    btn.addEventListener('click', (event) => {
+      console.log(this.input.value);
+      this.taskList.createTask(this.input.value);
+    })
+
+    this.taskList.createTask('новая таска')
+    this.taskList.createTask('таска')
+  
+    this.contentList = document.querySelector('.tasks-content');
+
   }
 
   // init() {
@@ -53,10 +67,24 @@ class App {
   // }
 
   render() {
-    if (this.taskList !== undefined ) {
-      console.log(this.taskList);
-    }
+    // this.taskList
+    // const element = document.createElement('div');
 
+    console.log(this.taskList.tasks)
+
+    this.taskList.tasks.forEach((item,index) => {
+      console.log(item.text);
+      this.contentList.innerHTML = `
+        <div>${item.text}</div>
+      `
+    })
+
+    
+
+
+    // if (this.taskList !== undefined ) {
+    //   console.log(this.taskList);
+    // }
   }
 }
 
