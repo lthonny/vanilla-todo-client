@@ -20,7 +20,7 @@ To display specific records, we use the filter buttons [ all ], [ completed ], [
 
 
 The program is implemented in pure javascript programming language using:
-- Preprocessor SASS
+- 
 - 
 
 
