@@ -1,10 +1,6 @@
 class TaskList {
   constructor(tasks) {
-    this.tasks = [
-      new Task('Выучить js', false),
-      new Task('Выучить Andular', true),
-      new Task('Выучить Mongo.db', false)
-    ];
+    this.tasks = tasks;
     this.filter =  'All'; // Completed, In completed
   }
 
@@ -24,43 +20,38 @@ class TaskList {
     this.render();
   }
 
-  // filterSelection args
-  filterTasks() { 
-    
-  }
-
   createTask(text) {
-    const task = new Task(text, false);
+    const task = new Task(text, false); // random boolean
     this.tasks.push(task);
     this.render();
   }
 
-  getFilter(arg) {
-    // console.log(this.filter)
-    if (this.filter == 'All') {
-      console.log()
-    } 
-    if (this.filter == 'Completed') {
-      this.render();
-    } else {
-      this.render();
-    }
+  setFilter(filter) { // передаем All, Completed, In completed
+    this.filter = filter;
+    this.render()
   }
 
-  // taskFilter() {
 
-  // }
+  render() {
 
+    const taskFilter = this.tasks.filter(task => {
+      if (this.filter === 'All') {
+        return task;
+      } 
+      if (this.filter === 'Completed') {
+        return task.completed;
+      } 
+      if (this.filter === 'Incompleted') {
+        return !task.completed;
+      } 
+    })
 
-  render(arg) {
-    this.tasks.forEach(item => {
-      console.log(`[${item.completed}] ${item.text}`);
+    taskFilter.forEach((item, index=1) => {;
+      console.log(`Task: ${++index} ${item.completed === true ? '[ X ]' : '[   ]'} text: ${item.text} \n`)
     });
-
-    const result = this.tasks.filter(item == this.getFilter);
   }
 
-} 
+}
 
 
 
