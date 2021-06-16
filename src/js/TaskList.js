@@ -22,7 +22,7 @@ class TaskList {
 
   
   createTask(text) {
-    const task = new Task(text, false); // random boolean
+    const task = new Task(text, false); 
     this.tasks.push(task);
     this.render();
   }

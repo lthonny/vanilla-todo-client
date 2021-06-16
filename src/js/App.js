@@ -1,10 +1,5 @@
 // main class of the whole application
 
-// btnAddTask.addEventListener('click', event => {
-//   console.log(inputTask.value);
-//   inputTask.value = '';
-// })
-
 // ! add a task via a key Enter
 // inputTask.addEventListener('keydown', function(event) {
 //   if (event.keyCode === 13) {
@@ -22,21 +17,17 @@ class App {
       // crate instalse tasklict
     this.taskList = new TaskList([]);
 
-    // console.log(this.taskList)
     this.input = document.querySelector('.text');
     const btn = document.querySelector('.btn-add');
-    const btnRemove = document.createElement('div');
-    // btnRemove.className = 'btn-delete';
-    // console.log(btnRemove);
 
-    // console.log(this.input.value)
-
+    console.log(this.taskList)
     btn.addEventListener('click', (event) => {
-      console.log('1',this);
+      // console.log('1',this);
       this.taskList.createTask(this.input.value);
-      this.input.value = '';
+      // this.input.value = '';
       this.render()
     })
+    // console.log(this.input.value)
 
     // console.log(createTask);
     this.input.addEventListener('keydown', function (event) {
@@ -52,17 +43,18 @@ class App {
     // bind()
 
     // remove
-    // btnRemove.addEventListener('click', (event) => {
-    //   deleteTask(slice)
-    //   console.log('asda')
-    // })
+    // console.log(this.btnDelete);
 
 
+  // this.btnDelete.addEventListener('click', (event) => {
+    
+  //   })
 
-    this.contentList = document.querySelector('.tasks-content');
   }
 
-
+  creationStructure() {
+    
+  }
   
   displayMessages() {
     this.taskList((element, text) => {
@@ -79,50 +71,72 @@ class App {
 
   render() {
     // this.taskList
-    const element = document.createElement('div');
-    element.className = 'containerList';
-    element.innerHTML = '';
+    
+    console.log(this.taskList)
 
     // btn remove
 
+    // this.text = this.taskList.tasks
     for(let i = 0; i < this.taskList.tasks.length; i++) {
-      const container = document.createElement("div");
-      const task = document.createElement("div");
-      const taskContent = document.createElement("div");
-      const execute = document.createElement("div");
-      const checkbox = document.createElement("input");
-      const taskText = document.createElement("div");
-      const text = document.createElement("input");
-      const btnDelete = document.createElement("div");
-      const fas =  document.createElement("div");
+
+      this.contentList = document.querySelector('.tasks-content');
+
+      this.container = document.createElement("div");
+      this.container.className = 'container';
+      this.contentList.append(this.container);
+
+      this.task = document.createElement("div");
+      this.task.className = 'task';
+      this.container.append(this.task);
+
+      this.taskContent = document.createElement("div");
+      this.taskContent.className = 'task-content';
+      this.task.append(this.taskContent);
+
+      this.execute = document.createElement("div");
+      this.execute.className = 'execute';
+      this.taskContent.append(this.execute);
+
+      this.checkbox = document.createElement("input");
+      this.checkbox.type = 'checkbox';
+      this.execute.append(this.checkbox);
+
+      this.taskText = document.createElement("div");
+      this.taskText.className = 'task-text';
+      this.taskContent.append(this.taskText);
+      this.taskList.tasks;
+      this.text = document.createElement("div");
+      this.text.className = 'text';
+      this.taskText.append(this.text);
+
+      this.p = document.createTextNode(this.input.value);
+      this.text.append(this.p);
+
+      this.btnDelete = document.createElement("div");
+      this.btnDelete.className = 'btn-delete';
+      this.taskContent.append(this.btnDelete);
+
+      // this.btnDelete.addEventListener('click', (event) => {
+      //   console.log(this.taskList.deleteTask);
+      // })
+
+      this.button = document.createElement("button");
+      this.btnDelete.append(this.button);
+
+      this.i = document.createElement("i");
+      this.i.className = 'fas fa-trash-alt';
+      this.button.append(this.i);
 
       this.contentList.append(element);
-      element.insertAdjacentHTML('beforebegin', container)
-
-      // element.innerHTML = `
-      //   <div class="container">
-      //     <div class="task">
-      //       <div class="task-content">
-      //         <div class="execute">
-      //           <input type="checkbox">
-      //         </div>
-      //         <div class="task-text">
-      //           <div class="text">${this.taskList.tasks[i].text}</div>
-      //         </div>
-      //         <div class="btn-delete">
-      //           <button><i class="fas fa-trash-alt"></i></button>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   </div>
-      // `
-      // this.contentList.append(element)
     }
+
+     console.log(i);
 
 
     // if (this.taskList !== undefined ) {
     //   console.log(this.taskList);
     // }
+
   }
 }
 
