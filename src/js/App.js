@@ -1,27 +1,5 @@
 // main class of the whole application
 
-// const inputTask = document.querySelector('.text');
-// const btnAddTask = document.querySelector('.btn-add');
-
-
-// add a task by button
-
-// let todoList = [];
-
-//   btnAddTask.addEventListener('click', event => {
-//     let newToDo = {
-//       todo: inputTask.value,
-//       completed: false
-//     }
-//     todoList.push(newToDo);
-
-//     console.log(todoList);
-//   })
-
-// console.log(todoList.completed)
-
-
-
 // btnAddTask.addEventListener('click', event => {
 //   console.log(inputTask.value);
 //   inputTask.value = '';
@@ -47,17 +25,50 @@ class App {
     // console.log(this.taskList)
     this.input = document.querySelector('.text');
     const btn = document.querySelector('.btn-add');
+    const btnRemove = document.createElement('div');
+    // btnRemove.className = 'btn-delete';
+    // console.log(btnRemove);
+
+    // console.log(this.input.value)
 
     btn.addEventListener('click', (event) => {
-      console.log(this.input.value);
+      console.log('1',this);
       this.taskList.createTask(this.input.value);
+      this.input.value = '';
+      this.render()
     })
 
-    this.taskList.createTask('новая таска')
-    this.taskList.createTask('таска')
-  
-    this.contentList = document.querySelector('.tasks-content');
+    // console.log(createTask);
+    this.input.addEventListener('keydown', function (event) {
+      // console.log('2',this);
+      // if (event.keyCode === 13) {
+      //   this.taskList.createTask(this.value); 
+      //   // console.log(this.value);
+      //   this.value = '';
+      //   this.render()
+      // }
+    }); 
 
+    // bind()
+
+    // remove
+    // btnRemove.addEventListener('click', (event) => {
+    //   deleteTask(slice)
+    //   console.log('asda')
+    // })
+
+
+
+    this.contentList = document.querySelector('.tasks-content');
+  }
+
+
+  
+  displayMessages() {
+    this.taskList((element, text) => {
+      console.log(text)
+    })
+    console.log(this.taskList)  
   }
 
   // init() {
@@ -68,18 +79,45 @@ class App {
 
   render() {
     // this.taskList
-    // const element = document.createElement('div');
+    const element = document.createElement('div');
+    element.className = 'containerList';
+    element.innerHTML = '';
 
-    console.log(this.taskList.tasks)
+    // btn remove
 
-    this.taskList.tasks.forEach((item,index) => {
-      console.log(item.text);
-      this.contentList.innerHTML = `
-        <div>${item.text}</div>
-      `
-    })
+    for(let i = 0; i < this.taskList.tasks.length; i++) {
+      const container = document.createElement("div");
+      const task = document.createElement("div");
+      const taskContent = document.createElement("div");
+      const execute = document.createElement("div");
+      const checkbox = document.createElement("input");
+      const taskText = document.createElement("div");
+      const text = document.createElement("input");
+      const btnDelete = document.createElement("div");
+      const fas =  document.createElement("div");
 
-    
+      this.contentList.append(element);
+      element.insertAdjacentHTML('beforebegin', container)
+
+      // element.innerHTML = `
+      //   <div class="container">
+      //     <div class="task">
+      //       <div class="task-content">
+      //         <div class="execute">
+      //           <input type="checkbox">
+      //         </div>
+      //         <div class="task-text">
+      //           <div class="text">${this.taskList.tasks[i].text}</div>
+      //         </div>
+      //         <div class="btn-delete">
+      //           <button><i class="fas fa-trash-alt"></i></button>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // `
+      // this.contentList.append(element)
+    }
 
 
     // if (this.taskList !== undefined ) {
@@ -87,10 +125,6 @@ class App {
     // }
   }
 }
-
-
-
-
 
 
 
