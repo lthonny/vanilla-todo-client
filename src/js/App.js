@@ -72,12 +72,13 @@ class App {
   render() {
     // this.taskList
     
-    console.log(this.taskList)
+    // console.log(this.taskList)
 
     // btn remove
 
     // this.text = this.taskList.tasks
     for(let i = 0; i < this.taskList.tasks.length; i++) {
+      // console.log(i);
 
       this.contentList = document.querySelector('.tasks-content');
 
@@ -116,9 +117,10 @@ class App {
       this.btnDelete.className = 'btn-delete';
       this.taskContent.append(this.btnDelete);
 
-      // this.btnDelete.addEventListener('click', (event) => {
-      //   console.log(this.taskList.deleteTask);
-      // })
+      this.btnDelete.addEventListener('click', (event) => {
+        console.log('btn delete');
+        // console.log(this.taskList.deleteTask(i));
+      })
 
       this.button = document.createElement("button");
       this.btnDelete.append(this.button);
@@ -130,7 +132,6 @@ class App {
       this.contentList.append(element);
     }
 
-     console.log(i);
 
 
     // if (this.taskList !== undefined ) {
@@ -142,3 +143,32 @@ class App {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function App(params) {
+//   this.test = ''
+// }
+
+// App.prototype.createStructure = function(params) {
+//   console.log('createSructure work');  
+// }
+
+// const app = new App();
+// app.createStructure();
