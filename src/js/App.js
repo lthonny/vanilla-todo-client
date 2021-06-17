@@ -1,98 +1,60 @@
 // main class of the whole application
 
-// ! add a task via a key Enter
-// inputTask.addEventListener('keydown', function(event) {
-//   if (event.keyCode === 13) {
-//     console.log(this.value);
-//     inputTask.value = '';
-//   }
-// });
+function App() {
+  console.log('App init');
+
+  // create installs taskLict
+  this.taskList = new TaskList([]);
+  this.input = document.getElementById('text');
 
 
-class App {
-  // text = '';
-  constructor() {
-    console.log('App init');
-
-      // crate instalse tasklict
-    this.taskList = new TaskList([]);
-
-    this.input = document.querySelector('.text');
-    const btn = document.querySelector('.btn-add');
-
-    console.log(this.taskList)
-    btn.addEventListener('click', (event) => {
-      // console.log('1',this);
-      this.taskList.createTask(this.input.value);
-      // this.input.value = '';
-      this.render()
-    })
-    // console.log(this.input.value)
-
-    // console.log(createTask);
-    this.input.addEventListener('keydown', function (event) {
-      // console.log('2',this);
-      // if (event.keyCode === 13) {
-      //   this.taskList.createTask(this.value); 
-      //   // console.log(this.value);
-      //   this.value = '';
-      //   this.render()
-      // }
-    }); 
-
-    // bind()
-
-    // remove
-    // console.log(this.btnDelete);
+  const btn = document.querySelector('.btn-add');
+  this.contentList = document.getElementById('tasks-content');
 
 
-  // this.btnDelete.addEventListener('click', (event) => {
-    
-  //   })
+  const createNewTask = (function(){
+    this.taskList.createTask(this.input.value);
+    this.render();
+    this.input.value = '';
+  }).bind(this);
 
-  }
+  btn.addEventListener('click', function(event) {
+    createNewTask();
+  })
 
-  creationStructure() {
-    
-  }
-  
-  displayMessages() {
-    this.taskList((element, text) => {
-      console.log(text)
-    })
-    console.log(this.taskList)  
-  }
+  this.input.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+      createNewTask();
+      this.value = '';
+    }
+  });
+}
 
-  // init() {
-  //   console.log('App init');
-  //   const taskList = new TaskList();
-  //   console.log(taskList);
-  // }
 
-  render() {
-    // this.taskList
-    
-    // console.log(this.taskList)
+function createElementWithClassName(tagName, className) {
+  this.element = document.createElement(tagName)
+  this.element.className = className;
+  return this.element;
+}
 
-    // btn remove
 
-    // this.text = this.taskList.tasks
+
+App.prototype.render = function() {
+
+  while (this.contentList.firstChild) {
+    this.contentList.firstChild.remove();
+  } 
+
+
     for(let i = 0; i < this.taskList.tasks.length; i++) {
-      // console.log(i);
 
-      this.contentList = document.querySelector('.tasks-content');
+      createElementWithClassName('div', 'task-content');
 
-      this.container = document.createElement("div");
-      this.container.className = 'container';
-      this.contentList.append(this.container);
+      console.log(this.element);
 
-      this.task = document.createElement("div");
-      this.task.className = 'task';
-      this.container.append(this.task);
-
-      this.taskContent = document.createElement("div");
+      this.taskContent = document.createElement("div")
       this.taskContent.className = 'task-content';
-      this.task.append(this.taskContent);
+      this.contentList.append(this.taskContent);
 
       this.execute = document.createElement("div");
       this.execute.className = 'execute';
@@ -105,43 +67,34 @@ class App {
       this.taskText = document.createElement("div");
       this.taskText.className = 'task-text';
       this.taskContent.append(this.taskText);
-      this.taskList.tasks;
-      this.text = document.createElement("div");
+
+      this.text = document.createElement('div');
       this.text.className = 'text';
       this.taskText.append(this.text);
 
-      this.p = document.createTextNode(this.input.value);
+      this.p = document.createTextNode(this.taskList.tasks[i].text);
       this.text.append(this.p);
 
       this.btnDelete = document.createElement("div");
       this.btnDelete.className = 'btn-delete';
       this.taskContent.append(this.btnDelete);
 
-      this.btnDelete.addEventListener('click', (event) => {
-        console.log('btn delete');
-        // console.log(this.taskList.deleteTask(i));
-      })
-
-      this.button = document.createElement("button");
+      this.button = document.createElement('button');
       this.btnDelete.append(this.button);
+
+
+      this.btnDelete.addEventListener('click', function(event) {
+        // this.taskList.deleteTask(i);
+        // console.log(this.taskList);
+      })
 
       this.i = document.createElement("i");
       this.i.className = 'fas fa-trash-alt';
       this.button.append(this.i);
-
-      this.contentList.append(element);
     }
 
 
-
-    // if (this.taskList !== undefined ) {
-    //   console.log(this.taskList);
-    // }
-
-  }
 }
-
-
 
 
 
@@ -172,3 +125,9 @@ class App {
 
 // const app = new App();
 // app.createStructure();
+
+
+
+
+
+
