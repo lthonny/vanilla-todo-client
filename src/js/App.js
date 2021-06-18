@@ -6,8 +6,6 @@ function App() {
   // create installs taskLict
   this.taskList = new TaskList([]);
   this.input = document.getElementById('text');
-
-
   const btn = document.querySelector('.btn-add');
   this.contentList = document.getElementById('tasks-content');
 
@@ -18,116 +16,113 @@ function App() {
     this.input.value = '';
   }).bind(this);
 
+
+  // const deleteTaskByIndex = (function(i){
+  //   this.taskList.deleteTask(i);
+  //   this.render();
+  // }).bind(this);
+
+  const isInputEmpty = function() {
+    this.input = document.getElementById('text');
+    if(this.input.value == ''){
+      alert('TASK IS EMPTY!!!');
+    } else {
+      createNewTask();
+      this.value = '';
+      
+    }
+  }
+
   btn.addEventListener('click', function(event) {
-    createNewTask();
+    isInputEmpty();
   })
 
   this.input.addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {
-      createNewTask();
-      this.value = '';
+      isInputEmpty();
     }
   });
+
 }
 
 
-function createElementWithClassName(tagName, className) {
-  this.element = document.createElement(tagName)
-  this.element.className = className;
-  return this.element;
+// elementName, tagName, className
+function createElementWithClassName() {
+    // this.taskContent = document.createElement("div")
+    // this.taskContent.className = 'task-content';
+    // this.contentList.append(this.taskContent);
+//   console.log(this.elementName = document.createElement(tagName));
+//   console.log(this.elementName.className = className);
+//   return this.elementName
 }
-
 
 
 App.prototype.render = function() {
+
+  console.log(this.taskList.tasks);
 
   while (this.contentList.firstChild) {
     this.contentList.firstChild.remove();
   } 
 
+  for(let i = 0; i < this.taskList.tasks.length; i++) {
 
-    for(let i = 0; i < this.taskList.tasks.length; i++) {
+    createElementWithClassName();
 
-      createElementWithClassName('div', 'task-content');
+    // console.log(deleteTaskByIndex(i))
 
-      console.log(this.element);
+    this.taskContent = document.createElement("div")
+    this.taskContent.className = 'task-content';
+    this.contentList.append(this.taskContent);
 
-      this.taskContent = document.createElement("div")
-      this.taskContent.className = 'task-content';
-      this.contentList.append(this.taskContent);
+    this.execute = document.createElement("div");
+    this.execute.className = 'execute';
+    this.taskContent.append(this.execute);
 
-      this.execute = document.createElement("div");
-      this.execute.className = 'execute';
-      this.taskContent.append(this.execute);
+    this.checkbox = document.createElement("input");
+    this.checkbox.type = 'checkbox';
+    this.execute.append(this.checkbox);
 
-      this.checkbox = document.createElement("input");
-      this.checkbox.type = 'checkbox';
-      this.execute.append(this.checkbox);
+    this.checkbox.addEventListener('change', function(event) {
+      console.log('checkbox', i);
+      // if (this.taskList)
+      console.log(this.taskList)
+    })
 
-      this.taskText = document.createElement("div");
-      this.taskText.className = 'task-text';
-      this.taskContent.append(this.taskText);
+    this.taskText = document.createElement("div");
+    this.taskText.className = 'task-text';
+    this.taskContent.append(this.taskText);
 
-      this.text = document.createElement('div');
-      this.text.className = 'text';
-      this.taskText.append(this.text);
+    this.text = document.createElement('div');
+    this.text.className = 'text';
+    this.taskText.append(this.text);
 
-      this.p = document.createTextNode(this.taskList.tasks[i].text);
-      this.text.append(this.p);
+    this.p = document.createTextNode(this.taskList.tasks[i].text);
+    this.text.append(this.p);
 
-      this.btnDelete = document.createElement("div");
-      this.btnDelete.className = 'btn-delete';
-      this.taskContent.append(this.btnDelete);
+    this.btnDelete = document.createElement("div");
+    this.btnDelete.className = 'btn-delete';
+    this.taskContent.append(this.btnDelete);
 
-      this.button = document.createElement('button');
-      this.btnDelete.append(this.button);
+    this.button = document.createElement('button');
+    this.btnDelete.append(this.button);
 
 
-      this.btnDelete.addEventListener('click', function(event) {
-        // this.taskList.deleteTask(i);
-        // console.log(this.taskList);
-      })
+    const deleteTaskByIndex = (function(i){
+      this.taskList.deleteTask(i);
+      this.render();
+    }).bind(this);
+        
+    this.btnDelete.addEventListener('click', function(event) {
+      console.log('task index', i);
+      deleteTaskByIndex(i);
+    })
 
-      this.i = document.createElement("i");
-      this.i.className = 'fas fa-trash-alt';
-      this.button.append(this.i);
-    }
 
+    this.i = document.createElement("i");
+    this.i.className = 'fas fa-trash-alt';
+    this.button.append(this.i);
+  }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function App(params) {
-//   this.test = ''
-// }
-
-// App.prototype.createStructure = function(params) {
-//   console.log('createSructure work');  
-// }
-
-// const app = new App();
-// app.createStructure();
-
-
-
-
-
 

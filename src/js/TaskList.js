@@ -4,31 +4,24 @@ function TaskList(tasks,filter) {
 }
 
 TaskList.prototype.completeTask = function(index, completed) { 
-  this.tasks[index].completed = completed
-  // this.render()
+  this.tasks[index].completed = completed;
 }
 
 TaskList.prototype.editTask = function(index, text) { 
-  this.tasks[index].text = text
-  // this.render()
+  this.tasks[index].text = text;
 }
 
 TaskList.prototype.deleteTask = function(index) { 
-  console.log(index)
   this.tasks.splice(index, 1);
-  console.log(this.tasks);
-  
 }
 
 TaskList.prototype.createTask = function(text) {
   const task = new Task(text, false);
   this.tasks.push(task);
-  // this.app.render()
 }
 
 TaskList.prototype.setFilter = function(filter) { // передаем All, Completed, In completed
   this.filter = filter;
-  // this.render()
 }
 
 
