@@ -5,14 +5,6 @@ function TaskList(tasks,filter) {
 
 TaskList.prototype.completeTask = function(index) { 
   this.tasks[index].completed = !this.tasks[index].completed;
-  // console.log(this.tasks[index].completed ? true : false)
-  // if (this.tasks[index].completed == false) {
-  //   this.tasks[index].completed == true
-  //   console.log('true')
-  // } else {
-  //   return this.tasks[index].completed == false;
-  // }
-  // console.log('completed', completed)
 }
 
 TaskList.prototype.editTask = function(index, text) { 

@@ -9,6 +9,11 @@ function App() {
   const btn = document.querySelector('.btn-add');
   this.contentList = document.getElementById('tasks-content');
 
+  const btnAll = document.getElementById('btn-all');
+  const btnCompleted = document.getElementById('btn-completed');
+  const btnInCompleted = document.getElementById('btn-incompleted');
+
+  console.log(btnAll, btnCompleted, btnInCompleted)
 
   const createNewTask = (function(){
     this.taskList.createTask(this.input.value);
@@ -72,6 +77,9 @@ App.prototype.render = function() {
     this.taskContent = document.createElement("div")
     this.taskContent.className = 'task-content';
     this.contentList.append(this.taskContent);
+    if(this.taskList.tasks[i].completed == true) {
+      this.taskContent.style.borderColor = "red";
+    }
 
     this.execute = document.createElement("div");
     this.execute.className = 'execute';
@@ -87,10 +95,7 @@ App.prototype.render = function() {
     }).bind(this);
 
     this.checkbox.addEventListener('change', function(event) {
-      // console.log('checkbox', i);
-      // if (this.taskList)
-      completedTaskByIndex(i)
-      // console.log(this.taskList)
+      completedTaskByIndex(i);
     })
 
     this.taskText = document.createElement("div");
@@ -128,4 +133,3 @@ App.prototype.render = function() {
   }
 
 }
-
