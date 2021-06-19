@@ -20,23 +20,22 @@ TaskList.prototype.createTask = function(text) {
   this.tasks.push(task);
 }
 
-TaskList.prototype.setFilter = function(filter) { // передаем All, Completed, In completed
-  this.filter = filter;
+TaskList.prototype.setFilter = function(filter) {
+  const taskFilter = this.tasks.filter(task => {
+    if (filter === 'All') {
+      return task;
+    } 
+    if (filter === 'Completed') {
+      return task.completed;
+    } 
+    if (filter === 'InCompleted') {
+      return !task.completed;
+    } 
+  })
+
+  console.log(taskFilter);
+  return taskFilter;
 }
-
-
-// TaskList.prototype.render = function() {
-//   const taskFilter = this.tasks.filter(task => {
-//     if (this.filter === 'All') {
-//       return task;
-//     } 
-//     if (this.filter === 'Completed') {
-//       return task.completed;
-//     } 
-//     if (this.filter === 'Incompleted') {
-//       return !task.completed;
-//     } 
-//   })
 
 //   taskFilter.forEach((item, index=1) => {;
 //     console.log(`Task: ${++index} ${item.completed === true ? '[ X ]' : '[   ]'} text: ${item.text} \n`)
