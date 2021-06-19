@@ -69,8 +69,6 @@ App.prototype.render = function() {
 
     createElementWithClassName();
 
-    // console.log(deleteTaskByIndex(i))
-
     this.taskContent = document.createElement("div")
     this.taskContent.className = 'task-content';
     this.contentList.append(this.taskContent);
@@ -83,10 +81,16 @@ App.prototype.render = function() {
     this.checkbox.type = 'checkbox';
     this.execute.append(this.checkbox);
 
+    const completedTaskByIndex = (function(i){
+      this.taskList.completeTask(i);
+      this.render();
+    }).bind(this);
+
     this.checkbox.addEventListener('change', function(event) {
-      console.log('checkbox', i);
+      // console.log('checkbox', i);
       // if (this.taskList)
-      console.log(this.taskList)
+      completedTaskByIndex(i)
+      // console.log(this.taskList)
     })
 
     this.taskText = document.createElement("div");
@@ -114,7 +118,6 @@ App.prototype.render = function() {
     }).bind(this);
         
     this.btnDelete.addEventListener('click', function(event) {
-      console.log('task index', i);
       deleteTaskByIndex(i);
     })
 
