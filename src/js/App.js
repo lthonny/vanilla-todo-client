@@ -23,11 +23,6 @@ function App() {
   }).bind(this);
 
 
-  // const deleteTaskByIndex = (function(i){
-  //   this.taskList.deleteTask(i);
-  //   this.render();
-  // }).bind(this);
-
   const isInputEmpty = function() {
     this.input = document.getElementById('text');
     if(this.input.value == ''){
@@ -53,7 +48,6 @@ function App() {
   const filterTasks = (function(filter){
     this.taskList.setFilter(filter);
     this.render();
-    // this.taskList.tasks = [];
   }).bind(this);
 
   btnAll.addEventListener('click', function(event) {
@@ -82,15 +76,33 @@ function createElementWithClassName() {
 }
 
 
+
 App.prototype.render = function() {
+
+  console.log(this.taskList);
+
+
+  const filtredList = this.taskList.tasks.filter((task, index) => {
+    if(this.taskList.filter === 'All') {
+      return task;
+    }
+    if(this.taskList.filter === 'Completed') {
+      return task.completed;
+    }
+    if (this.taskList.filter === 'InCompleted') {
+      return !task.completed;
+    }
+  })
+
+  // console.log(filtredList);
+
 
   while (this.contentList.firstChild) {
     this.contentList.firstChild.remove();
   } 
 
-  for(let i = 0; i < this.taskList.tasks.length; i++) {
 
-    // createElementWithClassName();
+  for(let i = 0; i < filtredList.length; i++) {
 
     this.taskContent = document.createElement("div")
     this.taskContent.className = 'task-content';

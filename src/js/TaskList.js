@@ -21,26 +21,17 @@ TaskList.prototype.createTask = function(text) {
 }
 
 TaskList.prototype.setFilter = function(filter) {
-  const taskFilter = this.tasks.filter(task => {
-    if (filter === 'All') {
-      return task;
-    } 
-    if (filter === 'Completed') {
-      return task.completed;
-    } 
-    if (filter === 'InCompleted') {
-      return !task.completed;
-    } 
-  })
-
-  console.log(taskFilter);
-  return taskFilter;
+  if (filter === 'All') {
+    this.filter = 'All';
+  } 
+  if (filter === 'Completed') {
+    this.filter = 'Completed';
+  } 
+  if (filter === 'InCompleted') {
+    this.filter = 'InCompleted';
+  } 
 }
 
-//   taskFilter.forEach((item, index=1) => {;
-//     console.log(`Task: ${++index} ${item.completed === true ? '[ X ]' : '[   ]'} text: ${item.text} \n`)
-//   });
-// }
 
 
 
