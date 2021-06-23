@@ -138,10 +138,15 @@ h6 {
 }
 
 .execute {
+  cursor: pointer;
   width: 10%;
   background-color: #E4E2E2;
   border-radius: 5px 0px 0px 5px;
-  position: relative;
+  /* position: relative; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 2px solid #fff;
 }
 .execute input {
   position: absolute;
@@ -215,4 +220,22 @@ h1 {
   background-color: #FFDEDE;
   border-radius: 5px 5px 0px 0px;
   border: 1px solid #fff;
+}
+
+
+.checkboxBtn {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  background-color: rgb(126, 118, 118);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  margin-top: 4%;
+  border-radius: 50%
+}
+
+.fa-check {
+  font-size: 24px;
+  color: #fff;
 }

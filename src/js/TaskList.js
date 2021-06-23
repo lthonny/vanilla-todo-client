@@ -3,11 +3,11 @@ function TaskList(tasks,filter) {
   this.filter =  'All'; // Completed, In completed
 }
 
+
 TaskList.prototype.completeTask = function(id) { 
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
-
   this.tasks[elementIndex].completed = !this.tasks[elementIndex].completed;
 }
 
@@ -27,7 +27,6 @@ TaskList.prototype.createTask = function(text) {
   const task = new Task(text, false, id);
   this.tasks.push(task);
 }
-
 
 
 TaskList.prototype.setFilter = function(filter) {
