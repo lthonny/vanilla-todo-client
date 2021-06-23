@@ -83,15 +83,9 @@ function contentListRemove(contentList) {
 App.prototype.render = function() {
 
   const filtredList = this.taskList.tasks.filter(task => {
-    if(this.taskList.filter === 'All') {
-      return task;
-    }
-    if(this.taskList.filter === 'Completed') {
-      return task.completed;
-    }
-    if (this.taskList.filter === 'InCompleted') {
-      return !task.completed;
-    }
+    if(this.taskList.filter === 'All') return task;
+    if(this.taskList.filter === 'Completed') return task.completed;
+    if (this.taskList.filter === 'InCompleted') return !task.completed;
   })
 
   contentListRemove(this.contentList);
@@ -124,7 +118,7 @@ App.prototype.render = function() {
       this.render();
     }).bind(this);
 
-    this.checkbox.addEventListener('click', function(event) {
+    this.execute.addEventListener('click', function(event) {
       completedTaskByIndex(currentTaskId);
     })
 
@@ -141,10 +135,24 @@ App.prototype.render = function() {
     this.p = document.createTextNode(currentTask.text);
     this.text.append(this.p);
 
-    this.text.addEventListener('dblclick', function(event) {
-      console.log('click p');
+    const editTask = (function(id, text) {
+      this.taskList.editTask(id, text);
+      this.render();
+    }).bind(this);
 
-    })
+
+    // this.text.addEventListener('dblclick', function(event) {
+    //   // this.input = document.createElement('input');
+    //   // this.input.append(this.text)
+    //   console.log('dblclick ->', currentTask.text);
+    //   // text.style.display = 'none';
+
+    //   console.log()
+      
+
+
+    //   editTask(currentTaskId, currentTask.text)
+    // })
 
 
     // * block btn delete 

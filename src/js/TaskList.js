@@ -11,8 +11,11 @@ TaskList.prototype.completeTask = function(id) {
   this.tasks[elementIndex].completed = !this.tasks[elementIndex].completed;
 }
 
-TaskList.prototype.editTask = function(index, text) { 
-  this.tasks[index].text = text;
+TaskList.prototype.editTask = function(id, text) { 
+  const elementIndex = this.tasks.findIndex(element => {
+    return element.id === id;
+  })
+  this.tasks[elementIndex].text = text;
 }
 
 TaskList.prototype.deleteTask = function(id) { 
