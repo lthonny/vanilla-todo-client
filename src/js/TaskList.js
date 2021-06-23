@@ -3,22 +3,32 @@ function TaskList(tasks,filter) {
   this.filter =  'All'; // Completed, In completed
 }
 
-TaskList.prototype.completeTask = function(index) { 
-  this.tasks[index].completed = !this.tasks[index].completed;
+TaskList.prototype.completeTask = function(id) { 
+  const elementIndex = this.tasks.findIndex(element => {
+    return element.id === id;
+  })
+
+  this.tasks[elementIndex].completed = !this.tasks[elementIndex].completed;
 }
 
 TaskList.prototype.editTask = function(index, text) { 
   this.tasks[index].text = text;
 }
 
-TaskList.prototype.deleteTask = function(index) { 
-  this.tasks.splice(index, 1);
+TaskList.prototype.deleteTask = function(id) { 
+  const elementIndex = this.tasks.findIndex(element => {
+    return element.id === id;
+  })
+  this.tasks.splice(elementIndex, 1);
 }
 
 TaskList.prototype.createTask = function(text) {
-  const task = new Task(text, false);
+  let id = Math.random().toString(36).substr(2, 9);
+  const task = new Task(text, false, id);
   this.tasks.push(task);
 }
+
+
 
 TaskList.prototype.setFilter = function(filter) {
   if (filter === 'All') {

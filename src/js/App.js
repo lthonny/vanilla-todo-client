@@ -9,11 +9,13 @@ function App() {
   const btn = document.querySelector('.btn-add');
   this.contentList = document.getElementById('tasks-content');
 
+
+
+
   // filter tasks
   const btnAll = document.getElementById('btn-all');
   const btnCompleted = document.getElementById('btn-completed');
   const btnInCompleted = document.getElementById('btn-incompleted');
-
 
 
   const createNewTask = (function(){
@@ -67,22 +69,17 @@ function App() {
 
 // elementName, tagName, className
 function createElementWithClassName() {
-    // this.taskContent = document.createElement("div")
-    // this.taskContent.className = 'task-content';
-    // this.contentList.append(this.taskContent);
-//   console.log(this.elementName = document.createElement(tagName));
-//   console.log(this.elementName.className = className);
-//   return this.elementName
+    this.taskContent = document.createElement("div")
+    this.taskContent.className = 'task-content';
+    this.contentList.append(this.taskContent);
 }
 
 
 
 App.prototype.render = function() {
 
-  console.log(this.taskList);
 
-
-  const filtredList = this.taskList.tasks.filter((task, index) => {
+  const filtredList = this.taskList.tasks.filter(task => {
     if(this.taskList.filter === 'All') {
       return task;
     }
@@ -94,7 +91,7 @@ App.prototype.render = function() {
     }
   })
 
-  // console.log(filtredList);
+  console.log(filtredList);
 
 
   while (this.contentList.firstChild) {
@@ -102,12 +99,15 @@ App.prototype.render = function() {
   } 
 
 
+
   for(let i = 0; i < filtredList.length; i++) {
+    const currentTask = filtredList[i];
+    const currentTaskId = filtredList[i].id;
 
     this.taskContent = document.createElement("div")
     this.taskContent.className = 'task-content';
     this.contentList.append(this.taskContent);
-    if (this.taskList.tasks[i].completed == true) {
+    if (currentTask.completed === true) {
       this.taskContent.style.borderColor = "red";
     }
 
@@ -119,14 +119,15 @@ App.prototype.render = function() {
     this.checkbox.type = 'checkbox';
     this.execute.append(this.checkbox);
 
-    const completedTaskByIndex = (function(i){
-      this.taskList.completeTask(i);
+    const completedTaskByIndex = (function(id){
+      this.taskList.completeTask(id);
       this.render();
     }).bind(this);
 
     this.checkbox.addEventListener('change', function(event) {
-      completedTaskByIndex(i);
+      completedTaskByIndex(currentTaskId);
     })
+
 
     this.taskText = document.createElement("div");
     this.taskText.className = 'task-text';
@@ -134,26 +135,26 @@ App.prototype.render = function() {
 
     this.text = document.createElement('div');
     this.text.className = 'text';
-    this.taskText.append(this.text);
 
-    this.p = document.createTextNode(this.taskList.tasks[i].text);
+    this.taskText.append(this.text);
+    this.p = document.createTextNode(currentTask.text);
     this.text.append(this.p);
+
 
     this.btnDelete = document.createElement("div");
     this.btnDelete.className = 'btn-delete';
     this.taskContent.append(this.btnDelete);
-
     this.button = document.createElement('button');
     this.btnDelete.append(this.button);
 
 
-    const deleteTaskByIndex = (function(i){
-      this.taskList.deleteTask(i);
+    const deleteTaskById = (function(id) {
+      this.taskList.deleteTask(id);
       this.render();
     }).bind(this);
-        
+
     this.btnDelete.addEventListener('click', function(event) {
-      deleteTaskByIndex(i);
+      deleteTaskById(currentTaskId);
     })
 
 
@@ -163,3 +164,5 @@ App.prototype.render = function() {
   }
 
 }
+
+
