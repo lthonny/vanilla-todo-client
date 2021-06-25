@@ -128,12 +128,12 @@ App.prototype.render = function() {
     this.taskText.className = 'task-text';
     this.taskContent.append(this.taskText);
 
-    this.text = document.createElement('div');
-    this.text.className = 'text';
-    this.taskText.append(this.text);
+    const text = document.createElement('div');
+    text.className = 'text';
+    this.taskText.append(text);
 
-    this.p = document.createTextNode(currentTask.text);
-    this.text.append(this.p);
+    const p = document.createTextNode(currentTask.text);
+    text.append(p);
 
     const editTask = (function(id, text) {
       this.taskList.editTask(id, text);
@@ -141,18 +141,39 @@ App.prototype.render = function() {
     }).bind(this);
 
 
-    // this.text.addEventListener('dblclick', function(event) {
-    //   // this.input = document.createElement('input');
-    //   // this.input.append(this.text)
-    //   console.log('dblclick ->', currentTask.text);
-    //   // text.style.display = 'none';
+    text.addEventListener('dblclick', function (event) {
+      console.log('dblclick');
+      console.log(this);
 
-    //   console.log()
-      
+      // Remove text inside div
+      this.removeChild(p);
+
+      // Create input
+      this.inputEdit = document.createElement('input');
+      this.inputEdit.className = 'inputEdit';
+      this.inputEditLabel = document.createElement('label');
+
+      // Insert text of current todo into input
+      this.inputEdit.value = currentTask.text;
+
+      // Insert input into div
+      this.inputEdit.append(this.inputEditLabel)
+      this.append(this.inputEdit)
+
+      // Add event listners blur, on enter
+      this.inputEdit.addEventListener('focus', function(event) {
+        event.target.style.background = 'pink';
+      });
+
+      this.inputEdit.addEventListener('blur', function(event) {
+        event.target.style.background = '';
+        editTask(currentTaskId, this.value)
+      });
 
 
-    //   editTask(currentTaskId, currentTask.text)
-    // })
+      // editTask(currentTaskId, currentTask.text)
+    })
+
 
 
     // * block btn delete 

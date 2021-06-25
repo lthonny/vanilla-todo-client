@@ -15,6 +15,7 @@ TaskList.prototype.editTask = function(id, text) {
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
+  console.log(this.tasks)
   this.tasks[elementIndex].text = text;
 }
 
