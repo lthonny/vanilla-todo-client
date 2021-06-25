@@ -109,8 +109,8 @@ App.prototype.render = function() {
     this.execute.append(this.checkbox);
 
     if (currentTask.completed === true) {
-      this.execute.style.backgroundColor = "#ccff99";
-      this.checkbox.style.color = '#FB8F8F';
+      this.execute.style.backgroundColor = "#ffbdb3";
+      this.checkbox.style.color = '#ec4f43';
     }
 
     const completedTaskByIndex = (function(id){
@@ -124,13 +124,13 @@ App.prototype.render = function() {
 
 
     // * block text 
-    this.taskText = document.createElement("div");
-    this.taskText.className = 'task-text';
-    this.taskContent.append(this.taskText);
+    const taskText = document.createElement("div");
+    taskText.className = 'task-text';
+    this.taskContent.append(taskText);
 
     const text = document.createElement('div');
     text.className = 'text';
-    this.taskText.append(text);
+    taskText.append(text);
 
     const p = document.createTextNode(currentTask.text);
     text.append(p);
@@ -142,8 +142,7 @@ App.prototype.render = function() {
 
 
     text.addEventListener('dblclick', function (event) {
-      console.log('dblclick');
-      console.log(this);
+      taskText.style.backgroundColor = '#fff';
 
       // Remove text inside div
       this.removeChild(p);
@@ -163,13 +162,14 @@ App.prototype.render = function() {
       // Add event listners blur, on enter
       this.inputEdit.addEventListener('focus', function(event) {
         event.target.style.background = 'pink';
+        event.target.style.paddingLeft = '10px'
       });
 
       this.inputEdit.addEventListener('blur', function(event) {
         event.target.style.background = '';
+
         editTask(currentTaskId, this.value)
       });
-
 
       // editTask(currentTaskId, currentTask.text)
     })
@@ -189,7 +189,7 @@ App.prototype.render = function() {
     }).bind(this);
 
     this.btnDelete.addEventListener('click', function(event) {
-      deleteTaskById(currentTaskId);
+      confirm('REMOVE TASK?') == true ? deleteTaskById(currentTaskId) : null;
     })
 
 
