@@ -174,6 +174,12 @@ App.prototype.render = function() {
         event.target.style.paddingLeft = '10px'
       });
 
+      this.inputEdit.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+          editTask(currentTaskId, this.value)
+        }
+      });
+
       this.inputEdit.addEventListener('blur', function(event) {
         event.target.style.background = '';
 
