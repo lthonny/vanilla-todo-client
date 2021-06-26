@@ -14,6 +14,7 @@ function App() {
   const btnCompleted = document.getElementById('btn-completed');
   const btnInCompleted = document.getElementById('btn-incompleted');
 
+  
 
   const createNewTask = (function(){
     this.taskList.createTask(this.input.value);
@@ -90,6 +91,10 @@ App.prototype.render = function() {
   contentListRemove(this.contentList);
 
   for(let i = 0; i < filtredList.length; i++) {
+
+    const quantityTasks = document.getElementById('quantityTasks');
+    quantityTasks.innerHTML = `<h2 id="quantityTasks">Daily tasks total: ${this.taskList.tasks.length}</h2>`;
+
     const currentTask = filtredList[i];
     const currentTaskId = filtredList[i].id;
 
@@ -177,8 +182,6 @@ App.prototype.render = function() {
 
       // editTask(currentTaskId, currentTask.text)
     })
-
-
 
 
     // * block btn delete 
