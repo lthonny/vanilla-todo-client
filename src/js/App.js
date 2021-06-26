@@ -112,6 +112,7 @@ App.prototype.render = function() {
       this.checkbox.style.color = '#ec4f43';
     }
 
+
     const completedTaskByIndex = (function(id){
       this.taskList.completeTask(id);
       this.render();
@@ -138,6 +139,10 @@ App.prototype.render = function() {
       this.taskList.editTask(id, text);
       this.render();
     }).bind(this);
+
+    if (currentTask.completed) {
+      text.style.textDecoration = "line-through"
+    }
 
 
     text.addEventListener('dblclick', function (event) {
@@ -172,6 +177,7 @@ App.prototype.render = function() {
 
       // editTask(currentTaskId, currentTask.text)
     })
+
 
 
 

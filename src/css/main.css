@@ -272,3 +272,7 @@ h1 {
   font-size: 18px;
 }
 
+
+@media (max-width: 425px) {
+  
+}
