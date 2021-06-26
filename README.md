@@ -32,6 +32,7 @@ As a result of completing my entire work plan, you will end up with a fully func
 
 
 # Mobile
+![image](https://user-images.githubusercontent.com/58366884/123514134-ff824580-d699-11eb-8fa9-0483dc754347.png)
 
 
 
