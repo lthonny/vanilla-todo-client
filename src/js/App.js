@@ -9,8 +9,6 @@ function App() {
   const btn = document.querySelector('.btn-add');
   this.contentList = document.getElementById('tasks-content');
 
-
-
   // filter tasks
   const btnAll = document.getElementById('btn-all');
   const btnCompleted = document.getElementById('btn-completed');
@@ -63,6 +61,11 @@ function App() {
     filterTasks('InCompleted');
   })
 
+
+  function localStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this.taskList))
+  }
+
 }
 
 // elementName, tagName, className
@@ -73,15 +76,11 @@ function contentListRemove(contentList) {
   } 
 }
 
-// function createElementWithClassName() {
-//     this.taskContent = document.createElement("div")
-//     this.taskContent.className = 'task-content';
-//     this.contentList.append(this.taskContent);
-// }
+
 
 
 App.prototype.render = function() {
-
+  
   const filtredList = this.taskList.tasks.filter(task => {
     if(this.taskList.filter === 'All') return task;
     if(this.taskList.filter === 'Completed') return task.completed;

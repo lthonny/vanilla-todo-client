@@ -4,6 +4,8 @@ function TaskList(tasks,filter) {
 }
 
 
+
+
 TaskList.prototype.completeTask = function(id) { 
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;

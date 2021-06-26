@@ -4,18 +4,22 @@
   border: 0;
 }
 
-html,
+html,body {
+  min-height:100% !important;
+  /* min-width: 100% !important; */
+}
+
 body {
-  height: 100%;
-  width: 100%;
+  /* min-width: 100%; */
+  /* width: 100%; */
   font-size: 100%;
   line-height: 1;
   font-size: 14px;
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  background: linear-gradient(to bottom, #68EACC 0%, #497BE8 100%);
-  /* background-repeat: no-repeat; */
+  background: linear-gradient(to bottom, #68EACC 0%, #497BE8 100%) no-repeat;
+  background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
 }
