@@ -81,7 +81,6 @@ function contentListRemove(contentList) {
 
 App.prototype.render = function() {
 
-  console.log(this.taskList.tasks.length)
   const quantityTasks = document.getElementById('quantityTasks');
   quantityTasks.innerHTML = `<h2 id="quantityTasks">Daily tasks total: ${this.taskList.tasks.length}</h2>`;
   
