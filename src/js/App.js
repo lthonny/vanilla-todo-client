@@ -79,8 +79,11 @@ function contentListRemove(contentList) {
 
 
 
-
 App.prototype.render = function() {
+
+  console.log(this.taskList.tasks.length)
+  const quantityTasks = document.getElementById('quantityTasks');
+  quantityTasks.innerHTML = `<h2 id="quantityTasks">Daily tasks total: ${this.taskList.tasks.length}</h2>`;
   
   const filtredList = this.taskList.tasks.filter(task => {
     if(this.taskList.filter === 'All') return task;
@@ -92,8 +95,6 @@ App.prototype.render = function() {
 
   for(let i = 0; i < filtredList.length; i++) {
 
-    const quantityTasks = document.getElementById('quantityTasks');
-    quantityTasks.innerHTML = `<h2 id="quantityTasks">Daily tasks total: ${this.taskList.tasks.length}</h2>`;
 
     const currentTask = filtredList[i];
     const currentTaskId = filtredList[i].id;
