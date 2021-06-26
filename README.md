@@ -27,7 +27,11 @@ The program is implemented in pure javascript programming language using:
 Eventually:
 As a result of completing my entire work plan, you will end up with a fully functional application (TO DO LIST) written in pure JavaScript.
 
-![image](https://user-images.githubusercontent.com/58366884/121873444-0fe80700-cd0f-11eb-85f2-9474a1fd1708.png)
+# Desctop: 
+![image](https://user-images.githubusercontent.com/58366884/123514099-b0d4ab80-d699-11eb-96a4-45ad118854f2.png)
+
+
+# Mobile
 
 
 
