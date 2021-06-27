@@ -28,11 +28,11 @@ Eventually:
 As a result of completing my entire work plan, you will end up with a fully functional application (TO DO LIST) written in pure JavaScript.
 
 # Desctop: 
-![image](https://user-images.githubusercontent.com/58366884/123514099-b0d4ab80-d699-11eb-96a4-45ad118854f2.png)
+
 
 
 # Mobile
-![image](https://user-images.githubusercontent.com/58366884/123514190-4a03c200-d69a-11eb-8984-401c43a9ee63.png)
+
 
 
 
