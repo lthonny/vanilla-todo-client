@@ -30,7 +30,6 @@ function App() {
     } else {
       createNewTask();
       this.value = '';
-      
     }
   }
 
@@ -61,12 +60,6 @@ function App() {
   btnInCompleted.addEventListener('click', function(event) {
     filterTasks('InCompleted');
   })
-
-
-  function localStorage() {
-    localStorage.setItem('tasks', JSON.stringify(this.taskList))
-  }
-
 }
 
 // elementName, tagName, className
@@ -152,8 +145,6 @@ App.prototype.render = function() {
 
     text.addEventListener('dblclick', function (event) {
       taskText.style.backgroundColor = '#fff';
-
-      // Remove text inside div
       this.removeChild(p);
 
       // Create input
@@ -213,5 +204,3 @@ App.prototype.render = function() {
   }
 
 }
-
-

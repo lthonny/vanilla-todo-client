@@ -5,7 +5,6 @@ function TaskList(tasks,filter) {
 
 
 
-
 TaskList.prototype.completeTask = function(id) { 
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
@@ -32,6 +31,8 @@ TaskList.prototype.createTask = function(text) {
   let id = Math.random().toString(36).substr(2, 9);
   const task = new Task(text, false, id);
   this.tasks.push(task);
+
+  localStorage.setItem('tasks', JSON.stringify(this.tasks))
 }
 
 
@@ -46,8 +47,6 @@ TaskList.prototype.setFilter = function(filter) {
     this.filter = 'InCompleted';
   } 
 }
-
-
 
 
 
