@@ -1,5 +1,3 @@
-// main class of the whole application
-
 function App() {
   console.log('App init');
 
@@ -14,18 +12,18 @@ function App() {
   const btnCompleted = document.getElementById('btn-completed');
   const btnInCompleted = document.getElementById('btn-incompleted');
 
-  
 
-  const createNewTask = (function(){
+
+  const createNewTask = (function () {
     this.taskList.createTask(this.input.value);
     this.render();
     this.input.value = '';
   }).bind(this);
 
 
-  const isInputEmpty = function() {
+  const isInputEmpty = function () {
     this.input = document.getElementById('text');
-    if(this.input.value == ''){
+    if (this.input.value == '') {
       alert('TASK IS EMPTY!!!');
     } else {
       createNewTask();
@@ -33,31 +31,31 @@ function App() {
     }
   }
 
-  btn.addEventListener('click', function(event) {
+  btn.addEventListener('click', function (event) {
     isInputEmpty();
   })
 
-  this.input.addEventListener('keydown', function(event) {
+  this.input.addEventListener('keydown', function (event) {
     if (event.keyCode === 13) {
       isInputEmpty();
     }
   });
 
 
-  const filterTasks = (function(filter){
+  const filterTasks = (function (filter) {
     this.taskList.setFilter(filter);
     this.render();
   }).bind(this);
 
-  btnAll.addEventListener('click', function(event) {
+  btnAll.addEventListener('click', function (event) {
     filterTasks('All');
   })
 
-  btnCompleted.addEventListener('click', function(event) {
+  btnCompleted.addEventListener('click', function (event) {
     filterTasks('Completed');
   })
 
-  btnInCompleted.addEventListener('click', function(event) {
+  btnInCompleted.addEventListener('click', function (event) {
     filterTasks('InCompleted');
   })
 }
@@ -67,25 +65,25 @@ function App() {
 function contentListRemove(contentList) {
   while (contentList.firstChild) {
     contentList.firstChild.remove();
-  } 
+  }
 }
 
 
 
-App.prototype.render = function() {
+App.prototype.render = function () {
 
   const quantityTasks = document.getElementById('quantityTasks');
   quantityTasks.innerHTML = `<h2 id="quantityTasks">Daily tasks total: ${this.taskList.tasks.length}</h2>`;
-  
+
   const filtredList = this.taskList.tasks.filter(task => {
-    if(this.taskList.filter === 'All') return task;
-    if(this.taskList.filter === 'Completed') return task.completed;
+    if (this.taskList.filter === 'All') return task;
+    if (this.taskList.filter === 'Completed') return task.completed;
     if (this.taskList.filter === 'InCompleted') return !task.completed;
   })
 
   contentListRemove(this.contentList);
 
-  for(let i = 0; i < filtredList.length; i++) {
+  for (let i = 0; i < filtredList.length; i++) {
 
 
     const currentTask = filtredList[i];
@@ -111,12 +109,12 @@ App.prototype.render = function() {
     }
 
 
-    const completedTaskByIndex = (function(id){
+    const completedTaskByIndex = (function (id) {
       this.taskList.completeTask(id);
       this.render();
     }).bind(this);
 
-    this.execute.addEventListener('click', function(event) {
+    this.execute.addEventListener('click', function (event) {
       completedTaskByIndex(currentTaskId);
     })
 
@@ -133,7 +131,7 @@ App.prototype.render = function() {
     const p = document.createTextNode(currentTask.text);
     text.append(p);
 
-    const editTask = (function(id, text) {
+    const editTask = (function (id, text) {
       this.taskList.editTask(id, text);
       this.render();
     }).bind(this);
@@ -160,18 +158,18 @@ App.prototype.render = function() {
       this.append(this.inputEdit)
 
       // Add event listners blur, on enter
-      this.inputEdit.addEventListener('focus', function(event) {
+      this.inputEdit.addEventListener('focus', function (event) {
         event.target.style.background = 'pink';
         event.target.style.paddingLeft = '10px'
       });
 
-      this.inputEdit.addEventListener('keydown', function(event) {
+      this.inputEdit.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
           editTask(currentTaskId, this.value)
         }
       });
 
-      this.inputEdit.addEventListener('blur', function(event) {
+      this.inputEdit.addEventListener('blur', function (event) {
         event.target.style.background = '';
 
         editTask(currentTaskId, this.value)
@@ -188,12 +186,12 @@ App.prototype.render = function() {
     this.button = document.createElement('button');
     this.btnDelete.append(this.button);
 
-    const deleteTaskById = (function(id) {
+    const deleteTaskById = (function (id) {
       this.taskList.deleteTask(id);
       this.render();
     }).bind(this);
 
-    this.btnDelete.addEventListener('click', function(event) {
+    this.btnDelete.addEventListener('click', function (event) {
       confirm('REMOVE TASK?') == true ? deleteTaskById(currentTaskId) : null;
     })
 

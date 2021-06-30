@@ -1,18 +1,17 @@
-function TaskList(tasks,filter) {
+function TaskList(tasks, filter) {
   this.tasks = tasks;
-  this.filter =  'All'; // Completed, In completed
+  this.filter = 'All';
 }
 
 
-
-TaskList.prototype.completeTask = function(id) { 
+TaskList.prototype.completeTask = function (id) {
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
   this.tasks[elementIndex].completed = !this.tasks[elementIndex].completed;
 }
 
-TaskList.prototype.editTask = function(id, text) { 
+TaskList.prototype.editTask = function (id, text) {
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
@@ -20,14 +19,14 @@ TaskList.prototype.editTask = function(id, text) {
   this.tasks[elementIndex].text = text;
 }
 
-TaskList.prototype.deleteTask = function(id) { 
+TaskList.prototype.deleteTask = function (id) {
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
   this.tasks.splice(elementIndex, 1);
 }
 
-TaskList.prototype.createTask = function(text) {
+TaskList.prototype.createTask = function (text) {
   let id = Math.random().toString(36).substr(2, 9);
   const task = new Task(text, false, id);
   this.tasks.push(task);
@@ -36,16 +35,16 @@ TaskList.prototype.createTask = function(text) {
 }
 
 
-TaskList.prototype.setFilter = function(filter) {
+TaskList.prototype.setFilter = function (filter) {
   if (filter === 'All') {
     this.filter = 'All';
-  } 
+  }
   if (filter === 'Completed') {
     this.filter = 'Completed';
-  } 
+  }
   if (filter === 'InCompleted') {
     this.filter = 'InCompleted';
-  } 
+  }
 }
 
 

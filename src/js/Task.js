@@ -1,6 +1,6 @@
-function Task(text, completed, id) {
+function Task(id, text, completed) {
   this.id = id;
-  this.text = text; 
-  this.completed = completed; 
+  this.text = text;
+  this.completed = completed;
 }
 
