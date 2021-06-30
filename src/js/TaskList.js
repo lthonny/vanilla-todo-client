@@ -1,22 +1,25 @@
-function TaskList(tasks, filter) {
-  this.tasks = tasks;
-  this.filter = 'All';
-}
+function TaskList(tasks, updateLocal) {
+  this.tasks = tasks; // arr tasks
+  this.filter = 'All'; // Completed, In completed
 
+  this.updateLocal = updateLocal;
+}
 
 TaskList.prototype.completeTask = function (id) {
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
   this.tasks[elementIndex].completed = !this.tasks[elementIndex].completed;
+  this.updateLocal(this.tasks);
 }
 
 TaskList.prototype.editTask = function (id, text) {
   const elementIndex = this.tasks.findIndex(element => {
     return element.id === id;
   })
-  console.log(this.tasks)
+  // console.log(this.tasks);
   this.tasks[elementIndex].text = text;
+  this.updateLocal(this.tasks);
 }
 
 TaskList.prototype.deleteTask = function (id) {
@@ -31,7 +34,7 @@ TaskList.prototype.createTask = function (text) {
   const task = new Task(text, false, id);
   this.tasks.push(task);
 
-  localStorage.setItem('tasks', JSON.stringify(this.tasks))
+  this.updateLocal(this.tasks);
 }
 
 
@@ -46,9 +49,4 @@ TaskList.prototype.setFilter = function (filter) {
     this.filter = 'InCompleted';
   }
 }
-
-
-
-
-
 
