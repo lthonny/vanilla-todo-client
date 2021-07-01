@@ -1,43 +1,82 @@
-// function View(rootNode, handlers){
-//   this.rootNode = rootNode;
-//   this.handlers = handlers;
-// }
-
-function View(contentList, taskList, switchBtn, editBtn, deleteBtn, saveLocalTodos) {
-  this.taskList = taskList;
-  this.contentList = contentList;
-
-  // console.log(this.taskList)
-
-  this.switchBtn = switchBtn;
-  this.editBtn = editBtn;
-  this.deleteBtn = deleteBtn;
-
-
-  this.saveLocalTodos = saveLocalTodos;
+function View(rootNode, handlers) {
+  this.rootNode = rootNode;
+  this.handlers = handlers;
 }
 
-
-
-View.prototype.createTaskSwitch = function () {
+View.prototype.createTaskSwitch = function (currentTask) {
   const switchTask = document.createElement("div");
   switchTask.className = 'execute';
 
-  this.checkbox = document.createElement("i");
-  this.checkbox.className = 'fas fa-check';
+  const checkbox = document.createElement("i");
+  checkbox.className = 'fas fa-check';
+  switchTask.append(checkbox);
+
+  if (currentTask.completed) {
+    switchTask.style.backgroundColor = "#ffbdb3";
+    checkbox.style.color = '#ec4f43';
+  }
 
   return switchTask;
 }
 
 
-View.prototype.createTaskText = function () {
+View.prototype.createTaskText = function (currentTask) {
   const containerTaskText = document.createElement("div");
   containerTaskText.className = 'task-text';
 
-  this.text = document.createElement('div');
-  this.text.className = 'text';
+  const text = document.createElement('div');
+  text.className = 'text';
+  const p = document.createTextNode(currentTask.text);
 
+  if (currentTask.completed) text.style.textDecoration = "line-through";
+  text.append(p);
+  containerTaskText.append(text);
   return containerTaskText;
+}
+
+View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
+  inputDiv.style.backgroundColor = '#fff';
+  const childNode = inputDiv.firstChild;
+  inputDiv.removeChild(childNode);
+
+  const inputEdit = document.createElement('input');
+  inputEdit.className = 'inputEdit';
+
+  //const inputEditLabel = document.createElement('label');
+
+  inputEdit.value = currentTask.text;
+
+  // inputEdit.append(inputEditLabel);
+  inputDiv.append(inputEdit);
+
+  inputEdit.addEventListener('focus', function (event) {
+    event.target.style.background = 'pink';
+    event.target.style.paddingLeft = '10px';
+  });
+
+
+  const handleBlur = function (event) {
+    console.log('blur')
+    event.target.style.background = '';
+    inputEdit.removeEventListener('blur', handleBlur);
+    inputEdit.removeEventListener('keydown', handleEnter);
+    editTask(currentTask.id, this.value);
+  }
+  const handleEnter = function (event) {
+    if (event.keyCode === 13) {
+      //this.blur();
+      inputEdit.removeEventListener('blur', handleBlur);
+      inputEdit.removeEventListener('keydown', handleEnter);
+      editTask(currentTask.id, this.value);
+    }
+  }
+
+  const handlers = [handleBlur, handleEnter];
+
+
+  inputEdit.addEventListener('blur', handleBlur);
+  inputEdit.addEventListener('keydown', handleEnter);
+
 }
 
 
@@ -45,116 +84,65 @@ View.prototype.createDeleteBtn = function () {
   const btnDelete = document.createElement("div");
   btnDelete.className = 'btn-delete';
 
-  this.button = document.createElement('button');
-
-  this.icon = document.createElement("i");
-  this.icon.className = 'fas fa-trash-alt';
-
+  const button = document.createElement('button');
+  const icon = document.createElement("i");
+  icon.className = 'fas fa-trash-alt';
+  button.append(icon);
+  btnDelete.append(button);
   return btnDelete;
 }
 
-
-
-// function createTasksCounter(length) {
-//   this.quantityTasks = document.getElementById('quantityTasks');
-//   this.quantityTasks.innerHTML = `<h2 id = "quantityTasks"> Daily tasks total: ${length}</h2>`;
-// }
-
-
-function clearElement(element) {
-  while (element.firstChild) {
-    element.firstChild.remove();
+function clearNode(element) {
+  while (element.lastChild) {
+    element.removeChild(element.lastChild);
   }
 }
 
+
 View.prototype.render = function () {
+
+  console.log(this.rootNode);
+  clearNode(this.rootNode);
   const tasks = this.handlers.getTasks(); // filtered tasks
 
-}
+  for (let i = 0; i < tasks.length; i++) {
+    const currentTask = tasks[i];
 
-View.prototype.render = function () {
-  clearElement(this.contentList);
-
-  const arrLocalStorage = !localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'))
-  // const local = this.saveLocalTodos(this.taskList.tasks);
-
-  console.log('local collection', arrLocalStorage)
-
-
-  this.taskList.tasks = []
-
-  arrLocalStorage.forEach(item => {
-    return this.taskList.tasks.push(item)
-  })
-
-  console.log('taskList', this.taskList)
-
-
-  const filtredList = this.taskList.tasks.filter(task => {
-    if (this.taskList.filter === 'All') return task;
-    if (this.taskList.filter === 'Completed') return task.completed;
-    if (this.taskList.filter === 'InCompleted') return !task.completed;
-  })
-
-  for (let i = 0; i < filtredList.length; i++) {
-    const currentTask = filtredList[i];
-    const currentTaskId = filtredList[i].id;
-
-    this.createTask(
-      currentTask.text,
-      currentTask
-    )
-
-    this.deleteBtn(this.btnDeleteTask, currentTaskId);
-
-    this.editBtn(
-      this.text,
-      this.taskInputText,
-      this.p,
-      currentTask.text,
-      currentTaskId);
-
-    this.switchBtn(this.switchTask, currentTaskId);
-
+    this.createTask(currentTask);
   }
 
 }
 
-View.prototype.createTask = function (input, currentTask) {
+View.prototype.createTask = function (currentTask) {
 
   const taskContent = document.createElement("div")
   taskContent.className = 'task-content';
 
-  this.switchTask = this.createTaskSwitch();
-  this.switchTask.append(this.checkbox);
-  taskContent.append(this.switchTask);
+  const switchTask = this.createTaskSwitch(currentTask);
+  taskContent.append(switchTask);
+  const toggleTaskState = this.handlers.toggleTaskState;
 
-  if (currentTask.completed) {
-    this.switchTask.style.backgroundColor = "#ffbdb3";
-    this.checkbox.style.color = '#ec4f43';
-  }
+  switchTask.addEventListener('click', function (event) {
+    toggleTaskState(currentTask.id);
+  });
 
+  const taskInputText = this.createTaskText(currentTask);
+  taskContent.append(taskInputText);
 
-  this.taskInputText = this.createTaskText();
-  this.taskInputText.append(this.text);
-  this.p = document.createTextNode(input);
-  this.text.append(this.p);
-  taskContent.append(this.taskInputText);
+  const btnDeleteTask = this.createDeleteBtn();
+  taskContent.append(btnDeleteTask);
+  const deleteTask = this.handlers.deleteTask;
 
-  if (currentTask.completed) {
-    this.text.style.textDecoration = "line-through"
-  }
+  btnDeleteTask.addEventListener('click', function (event) {
+    deleteTask(currentTask.id);
+  })
 
+  const editTask = this.handlers.editTask;
+  const createEditText = this.createEditText.bind(this);
+  taskInputText.addEventListener('dblclick', function (event) {
+    console.log('taskInputText', taskInputText)
+    createEditText(taskInputText, currentTask, editTask);
+  })
 
-  this.btnDeleteTask = this.createDeleteBtn();
-  this.btnDeleteTask.append(this.button);
-  this.button.append(this.icon);
-  taskContent.append(this.btnDeleteTask);
-
-  return this.contentList.append(taskContent);
+  return this.rootNode.append(taskContent);
 }
-
-
-
-
-

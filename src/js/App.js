@@ -3,182 +3,99 @@
 function App() {
   console.log('App init');
 
-  this.taskList = new TaskList([], updateLocal);
+  this.taskList = new TaskList([]);
 
-  // const arrLocalStorage = !localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'))
-  // console.log(arrLocalStorage)
-
-  console.log(this.taskList)
-
-  // !localStorage.tasks ? tasks = [] : tasks = JSON.parse(localStorage.getItem('tasks'))
-
-  this.input = document.getElementById('text');
+  const input = document.getElementById('text');
   const btnAddTask = document.querySelector('.btn-add');
-  const contentList = document.getElementById('tasks-content');
 
-  // filter tasks
+  const rootNode = document.getElementById('tasks-content');
+
   const btnAll = document.getElementById('btn-all');
   const btnCompleted = document.getElementById('btn-completed');
   const btnInCompleted = document.getElementById('btn-incompleted')
 
-  this.view = new View(
-    contentList,
-    this.taskList,
-    this.switchBtn,
-    this.editBtn,
-    this.deleteBtn,
-  );
 
-  // const getTasks = (function () {
-  //   const tasklist = this.taskList;
-  //   const filter = tasklist.filter;
-  //   return taskList.filter(function (task) {
-  //     if (filter === 'All') return task;
-  //     if (filter === 'Completed') return task.completed;
-  //     if (filter === 'InCompleted') return !task.completed;
-  //   })
-  // }).bind(this);
-
-
-  // const handlers = {
-  //   getTasks,
-  //   // toggleTaskState: function(){},
-  //   // deleteTask: function(){},
-  //   // editTask: function(){},
-  //   // setFilter: function(){}
-  // };
-
-
-  // new View (rootNode, handlers);
-
-
-
-  // addContentTask
-  this.inputData(btnAddTask);
-
-  // filterEventBtn
-  this.eventFilterBtn(btnAll, btnCompleted, btnInCompleted);
-
-
-  function updateLocal(tasks) {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    return tasks;
-  }
-
-}
-
-
-
-App.prototype.inputData = function (btnAdd) {
   const createNewTask = (function () {
     this.taskList.createTask(input.value);
     input.value = '';
-    this.view.render();
+    view.render();
   }).bind(this);
 
   const isInputEmpty = function () {
-    this.input = document.getElementById('text');
-    if (this.input.value) {
+    if (input.value) {
       createNewTask();
       this.value = '';
     }
   }
-
-  btnAdd.addEventListener('click', function (event) {
-    isInputEmpty();
-    // updateLocal()
-  })
-
-  this.input.addEventListener('keydown', function (event) {
+  btnAddTask.addEventListener('click', function (event) { isInputEmpty() });
+  input.addEventListener('keydown', function (event) {
     if (event.keyCode === 13) isInputEmpty();
   });
-}
 
 
+  const getTasks = (function () {
+    const taskList = this.taskList;
+    const filter = taskList.filter;
+    return taskList.tasks.filter(function (task) {
+      if (filter === 'All') return task;
+      if (filter === 'Completed') return task.completed;
+      if (filter === 'InCompleted') return !task.completed;
+    })
+  }).bind(this);
 
-App.prototype.eventFilterBtn = function (btnAll, btnCompleted, btnInCompleted) {
+
+  const deleteTask = (function (id) {
+    this.taskList.deleteTask(id);
+    confirm('REMOVE TASK?') == true ? id : null;
+    view.render();
+  }).bind(this);
+
+
   const filterTasks = (function (filter) {
     this.taskList.setFilter(filter);
-    this.view.render();
+    view.render();
   }).bind(this);
 
-  addEventBtn(btnAll, filterTasks, 'All');
-  addEventBtn(btnCompleted, filterTasks, 'Completed');
-  addEventBtn(btnInCompleted, filterTasks, 'InCompleted');
-}
+  function filterEvent(btn, filter, status) {
+    btn.addEventListener('click', function (event) { filter(status) });
+  }
 
-function addEventBtn(btn, filter, status) {
-  btn.addEventListener('click', function (event) {
-    filter(status);
+  filterEvent(btnAll, filterTasks, 'All');
+  filterEvent(btnCompleted, filterTasks, 'Completed');
+  filterEvent(btnInCompleted, filterTasks, 'InCompleted');
+
+  btnAll.addEventListener('click', function (event) {
+    filterTasks('All');
   })
-}
+
+  btnCompleted.addEventListener('click', function (event) {
+    filterTasks('Completed');
+  })
+
+  btnInCompleted.addEventListener('click', function (event) {
+    filterTasks('InCompleted');
+  })
 
 
-App.prototype.switchBtn = function (element, currentTaskId) {
-  const completedTaskByIndex = (function (id) {
+  const toggleTaskState = (function (id) {
     this.taskList.completeTask(id);
-    this.render();
+    view.render();
   }).bind(this);
 
-  element.addEventListener('click', function (event) {
-    completedTaskByIndex(currentTaskId);
-  })
-}
-
-
-App.prototype.editBtn = function (
-  elementEvent,
-  elementStyle,
-  input,
-  currentTask,
-  currentTaskId) {
 
   const editTask = (function (id, text) {
     this.taskList.editTask(id, text);
-    this.render();
+    view.render();
   }).bind(this);
 
-  elementEvent.addEventListener('dblclick', function (event) {
-    elementStyle.style.backgroundColor = '#fff';
+  const handlers = {
+    getTasks,
+    deleteTask,
+    toggleTaskState,
+    editTask,
+  };
 
-    elementEvent.removeChild(input);
-
-    this.inputEdit = document.createElement('input');
-    this.inputEdit.className = 'inputEdit';
-    this.inputEditLabel = document.createElement('label');
-
-    this.inputEdit.value = currentTask;
-
-    this.inputEdit.append(this.inputEditLabel)
-    this.append(this.inputEdit)
-
-    this.inputEdit.addEventListener('focus', function (event) {
-      event.target.style.background = 'pink';
-      event.target.style.paddingLeft = '10px'
-    });
-
-    this.inputEdit.addEventListener('keydown', function (event) {
-      if (event.keyCode === 13) editTask(currentTaskId, this.value);
-    });
-
-    this.inputEdit.addEventListener('blur', function (event) {
-      event.target.style.background = '';
-      editTask(currentTaskId, this.value)
-    });
-  })
-
-}
-
-
-App.prototype.deleteBtn = function (element, currentTaskId) {
-  const deleteTaskById = (function (id) {
-    this.taskList.deleteTask(id);
-    this.render();
-  }).bind(this);
-
-  element.addEventListener('click', function (event) {
-    confirm('REMOVE TASK?') == true ? deleteTaskById(currentTaskId) : null;
-  })
+  const view = new View(rootNode, handlers);
 }
 
 
