@@ -42,21 +42,17 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
   const inputEdit = document.createElement('input');
   inputEdit.className = 'inputEdit';
 
-  //const inputEditLabel = document.createElement('label');
-
   inputEdit.value = currentTask.text;
-
-  // inputEdit.append(inputEditLabel);
   inputDiv.append(inputEdit);
 
   inputEdit.addEventListener('focus', function (event) {
-    event.target.style.background = 'pink';
+    event.target.style.background = '#e9e9e9';
     event.target.style.paddingLeft = '10px';
   });
 
 
+
   const handleBlur = function (event) {
-    console.log('blur')
     event.target.style.background = '';
     inputEdit.removeEventListener('blur', handleBlur);
     inputEdit.removeEventListener('keydown', handleEnter);
@@ -64,7 +60,6 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
   }
   const handleEnter = function (event) {
     if (event.keyCode === 13) {
-      //this.blur();
       inputEdit.removeEventListener('blur', handleBlur);
       inputEdit.removeEventListener('keydown', handleEnter);
       editTask(currentTask.id, this.value);
@@ -100,8 +95,6 @@ function clearNode(element) {
 
 
 View.prototype.render = function () {
-
-  console.log(this.rootNode);
   clearNode(this.rootNode);
   const tasks = this.handlers.getTasks(); // filtered tasks
 
@@ -140,7 +133,6 @@ View.prototype.createTask = function (currentTask) {
   const editTask = this.handlers.editTask;
   const createEditText = this.createEditText.bind(this);
   taskInputText.addEventListener('dblclick', function (event) {
-    console.log('taskInputText', taskInputText)
     createEditText(taskInputText, currentTask, editTask);
   })
 
