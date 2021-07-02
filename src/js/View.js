@@ -41,18 +41,18 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
 
   const inputEdit = document.createElement('textarea');
   inputEdit.className = 'inputEdit';
-  inputEdit.maxLength = 250;
+  inputEdit.maxLength = 200;
 
   inputEdit.value = currentTask.text;
   inputDiv.append(inputEdit);
 
-  // inputEdit.addEventListener('focus', function (event) {
-  //   event.target.style.background = '#e9e9e9';
-  //   // event.target.style.paddingLeft = '50px';
-  //   // event.target.style.padding = '10px';
-  //   event.target.style.height = '100%';
-  // });
-
+  inputEdit.addEventListener('focus', function (event) {
+    event.target.style.background = '#e9e9e9';
+    // event.target.style.paddingLeft = '50px';
+    // event.target.style.padding = '10px';
+    // event.target.style.height = '110px';
+  });
+  inputEdit.focus();
 
 
   const handleBlur = function (event) {
@@ -146,7 +146,7 @@ View.prototype.createTask = function (currentTask) {
   })
 
   const date = this.createDate(currentTask.date);
-  taskInputText.append(date);
+  taskContent.append(date);
 
 
   const editTask = this.handlers.editTask;

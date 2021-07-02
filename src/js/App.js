@@ -1,5 +1,3 @@
-// main class of the whole application
-
 function App() {
   console.log('App init');
 
