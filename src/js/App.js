@@ -5,8 +5,10 @@ function App() {
 
   this.taskList = new TaskList([]);
 
+  !localStorage.tasks ? this.taskList.tasks = [] : this.taskList.tasks = JSON.parse(localStorage.getItem('tasks'));
+
   const input = document.getElementById('text');
-  const btnAddTask = document.querySelector('.btn-add');
+  const addTaskBtn = document.querySelector('.btn-add');
 
   const rootNode = document.getElementById('tasks-content');
 
@@ -27,7 +29,7 @@ function App() {
       this.value = '';
     }
   }
-  btnAddTask.addEventListener('click', function (event) { isInputEmpty() });
+  addTaskBtn.addEventListener('click', function (event) { isInputEmpty() });
   input.addEventListener('keydown', function (event) {
     if (event.keyCode === 13) isInputEmpty();
   });
@@ -56,14 +58,6 @@ function App() {
     view.render();
   }).bind(this);
 
-  function filterEvent(btn, filter, status) {
-    btn.addEventListener('click', function (event) { filter(status) });
-  }
-
-  filterEvent(btnAll, filterTasks, 'All');
-  filterEvent(btnCompleted, filterTasks, 'Completed');
-  filterEvent(btnInCompleted, filterTasks, 'InCompleted');
-
   btnAll.addEventListener('click', function (event) {
     filterTasks('All');
   })
@@ -83,10 +77,11 @@ function App() {
   }).bind(this);
 
 
-  const editTask = (function (id, text) {
-    this.taskList.editTask(id, text);
+  const editTask = (function (id, text, date) {
+    this.taskList.editTask(id, text, date);
     view.render();
   }).bind(this);
+
 
   const handlers = {
     getTasks,
@@ -96,6 +91,7 @@ function App() {
   };
 
   const view = new View(rootNode, handlers);
+  view.render();
 }
 
 

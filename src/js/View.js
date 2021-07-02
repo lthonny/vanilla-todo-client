@@ -39,16 +39,19 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
   const childNode = inputDiv.firstChild;
   inputDiv.removeChild(childNode);
 
-  const inputEdit = document.createElement('input');
+  const inputEdit = document.createElement('textarea');
   inputEdit.className = 'inputEdit';
+  inputEdit.maxLength = 250;
 
   inputEdit.value = currentTask.text;
   inputDiv.append(inputEdit);
 
-  inputEdit.addEventListener('focus', function (event) {
-    event.target.style.background = '#e9e9e9';
-    event.target.style.paddingLeft = '10px';
-  });
+  // inputEdit.addEventListener('focus', function (event) {
+  //   event.target.style.background = '#e9e9e9';
+  //   // event.target.style.paddingLeft = '50px';
+  //   // event.target.style.padding = '10px';
+  //   event.target.style.height = '100%';
+  // });
 
 
 
@@ -86,6 +89,18 @@ View.prototype.createDeleteBtn = function () {
   btnDelete.append(button);
   return btnDelete;
 }
+
+
+View.prototype.createDate = function (currentDate) {
+  const date = document.createElement('div');
+  date.className = 'date';
+
+  const dateTimeText = document.createTextNode(currentDate);
+  date.append(dateTimeText);
+
+  return date;
+}
+
 
 function clearNode(element) {
   while (element.lastChild) {
@@ -129,6 +144,10 @@ View.prototype.createTask = function (currentTask) {
   btnDeleteTask.addEventListener('click', function (event) {
     deleteTask(currentTask.id);
   })
+
+  const date = this.createDate(currentTask.date);
+  taskInputText.append(date);
+
 
   const editTask = this.handlers.editTask;
   const createEditText = this.createEditText.bind(this);

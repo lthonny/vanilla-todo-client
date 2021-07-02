@@ -94,17 +94,33 @@ h6 {
   font-size: 16px;
 }
 
+.texterea {
+  width: 95%;
+  padding: 10px 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  resize: none;
+  overflow: hidden;
+  font-size: 16px;
+  outline:none;
+}
+
+
 .button-task {
   width: 10%;
 }
 .button-task button {
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: 30px;
   width: 100%;
-  height: 43px;
-  background-color: #8E49E8;
+  min-height: 43px;
+  /* padding: 10px 0px; */
+  /* background-color: #8E49E8; */
+  background-color: #fff;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  color: #fff;
+  /* border: 1px solid #ccc; */
+  /* color: #000; */
+  color: #8E49E8;
   font-weight: 800;
 }
 
@@ -143,6 +159,7 @@ h6 {
   margin-top: 20px;
   margin: 20px 35px 0px 35px;
   border-radius: 5px;
+  /* min-height: 40px; */
 }
 
 .execute {
@@ -184,7 +201,7 @@ h6 {
           align-items: center;
   font-size: 16px;
   width: 100%;
-  height: 40px;
+  /* height: 40px; */
   /* height: 100px; */
   /* padding: 10px 0px; */
   
@@ -210,7 +227,8 @@ h6 {
 }
 .btn-delete button {
   width: 100%;
-  height: 40px;
+  /* height: 40px; */
+  height: 100%;
   color: #fff;
   font-size: 20px;
   border-radius: 0px 5px 5px 0px;
@@ -269,10 +287,23 @@ h1 {
 }
 
 .inputEdit {
-  width: 100%;
-  height: 40px;
+  width: 95%;
   outline: none;
   font-size: 18px;
+  resize: none;
+  overflow: hidden;
+  font-size: 16px;
+  /* height: 100%; */
+}
+
+.task-text .inputEdit {
+  padding-bottom: 20%;
+}
+
+.task-text {
+  width: 95%;
+  padding: 15px 5px;
+  height: 100%;
 }
 
 
@@ -280,6 +311,10 @@ h1 {
   color: #3e3f43;
 }
 
+
+.date {
+  margin-top: 30px;
+}
 
 
 @media (max-width: 425px) {
@@ -350,6 +385,7 @@ h1 {
     display: flex;
     margin: 5px 0px;
     min-height: 60px;
+    padding: 50px;
   }
   .text {
     min-height: 60px;
@@ -375,6 +411,7 @@ h1 {
     min-height: 60px;
   }
 }
+
 
 @media (max-width: 375px) {
   .task-filter {
