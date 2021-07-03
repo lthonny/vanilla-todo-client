@@ -11,7 +11,14 @@ View.prototype.createTaskSwitch = function (currentTask) {
   checkbox.className = 'fas fa-check';
   switchTask.append(checkbox);
 
+  // switchTask.className = ''
+
+  console.log(switchTask)
+
   if (currentTask.completed) {
+    // switchTask.classList.remove('execute');
+    // switchTask.className = 'bgr';
+
     switchTask.style.backgroundColor = "#ffbdb3";
     checkbox.style.color = '#ec4f43';
   }

@@ -1,6 +1,7 @@
 function App() {
   console.log('App init');
 
+  // this.storage = new Storage();
   this.taskList = new TaskList([]);
 
   !localStorage.tasks ? this.taskList.tasks = [] : this.taskList.tasks = JSON.parse(localStorage.getItem('tasks'));

@@ -1,0 +1,24 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "Project \"to do list\" - designed to create a list of tasks. The program helps to manage to-do lists, implement planned tasks and not forget anything. The user has the ability to create a list of tasks, in the process of their execution, can change delete, complete, sort, search by name.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lthonny/vanillaToDo.git"
+  },
+  "keywords": [],
+  "author": "Vasiliy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lthonny/vanillaToDo/issues"
+  },
+  "homepage": "https://github.com/lthonny/vanillaToDo#readme",
+  "devDependencies": {
+    "webpack": "^5.42.0",
+    "webpack-cli": "^4.7.2"
+  }
+}

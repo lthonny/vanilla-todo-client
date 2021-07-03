@@ -1,0 +1,105 @@
+@media (max-width: 425px) {
+  .add-task {
+    padding: 0px;
+  }
+  .container {
+    padding: 0 5px;
+  }
+  .input-task {
+    width: 80%;
+  }
+  .input-task input {
+    min-height: 50px;
+    border-radius: 0px;
+  }
+
+  .button-task {
+    width: 20%;
+  }
+  .button-task button {
+    border-radius: 0px;
+    border: none;
+    min-height: 52px;
+    padding-left: 5px;
+  }
+  .to-do-list {
+    padding-top: 0px;
+  }
+  h1 {
+    padding-top: 30px;
+    /* display: none; */
+  }
+  .task-filter {
+    width: 100%;
+    background-color: transparent;
+    
+    position: sticky;
+    bottom: 25px;
+    left: 0;
+  }
+  .btn button {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    max-width: 120px;
+    min-height: 40px;
+    margin: 0px 0px;
+    background-color: rgb(142, 73, 232);
+    border-radius: 3px;
+  }
+  .completed {
+  }
+  .incompleted {
+    margin-bottom: 0px;
+  }
+  .add-task {
+    margin-top: 30px;
+    background-color: transparent;
+  }
+  .tasks {
+    min-height: 30%;
+    background-color: transparent;
+  }
+  .task-content {
+    display: flex;
+    margin: 5px 0px;
+    min-height: 60px;
+    padding: 50px;
+  }
+  .text {
+    min-height: 60px;
+  }
+  .btn-delete button {
+    height: 60px;
+    border-radius: 0px 3px 3px 0px;
+    color: #e74c3c;
+    background-color: #f2f2f2;
+  }
+  .quantityTasks {
+    margin-bottom: 20px;
+  }
+  .execute {
+    background-color: #f2f2f2;
+    padding: 0px 5px;
+    border-radius: 3px 0px 0px 3px;
+  }
+  .execute i {
+    color:rgb(142, 73, 232)
+  }
+  .inputEdit {
+    min-height: 60px;
+  }
+}
+
+
+@media (max-width: 375px) {
+  .task-filter {
+    display: block;
+  }
+  .btn button  {
+    margin-top: 5px;
+    min-width: 100%;
+  }
+}
