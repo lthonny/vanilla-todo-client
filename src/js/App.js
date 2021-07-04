@@ -92,7 +92,3 @@ function App() {
   const view = new View(rootNode, handlers);
   view.render();
 }
-
-
-
-

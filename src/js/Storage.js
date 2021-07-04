@@ -13,3 +13,4 @@ Storage.prototype.getItem = function () {
 Storage.prototype.removeItem = function () {
 
 }
+

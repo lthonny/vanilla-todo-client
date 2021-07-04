@@ -56,4 +56,3 @@ TaskList.prototype.setFilter = function (filter) {
     this.filter = 'InCompleted';
   }
 }
-

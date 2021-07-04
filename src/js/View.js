@@ -164,3 +164,5 @@ View.prototype.createTask = function (currentTask) {
 
   return this.rootNode.append(taskContent);
 }
+
+

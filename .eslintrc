@@ -1,0 +1,5 @@
+{
+  "ruler": {
+    "no-unused-vars": "warn"
+  }
+}
