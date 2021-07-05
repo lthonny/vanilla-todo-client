@@ -1,13 +1,15 @@
 import { TaskList } from './TaskList'
 import { View } from './View'
+import { Storage } from './Storage'
 
-export function App () {
+export function App() {
   console.log('App init')
 
-  // this.storage = new Storage();
-  this.taskList = new TaskList([])
+  const storage = new Storage();
+  this.taskList = new TaskList([], storage);
+  console.log('qwerty', this.taskList.getTasks())
 
-  !localStorage.tasks ? this.taskList.tasks = [] : this.taskList.tasks = JSON.parse(localStorage.getItem('tasks'))
+  // * !localStorage.tasks ? this.taskList.tasks = [] : this.taskList.tasks = JSON.parse(localStorage.getItem('tasks'))
 
   const input = document.getElementById('text')
   const addTaskBtn = document.querySelector('.btn-add')
@@ -22,7 +24,7 @@ export function App () {
     this.taskList.createTask(input.value)
     input.value = ''
     view.render()
-  }.bind(this)
+  }.bind(this);
 
   const isInputEmpty = function () {
     if (input.value) {
@@ -35,10 +37,12 @@ export function App () {
     if (event.keyCode === 13) isInputEmpty()
   })
 
+
+
   const getTasks = function () {
     const taskList = this.taskList
     const filter = taskList.filter
-    return taskList.tasks.filter(function (task) {
+    return taskList.getTask().filter(function (task) {
       if (filter === 'All') return task
       if (filter === 'Completed') return task.completed
       if (filter === 'InCompleted') return !task.completed
