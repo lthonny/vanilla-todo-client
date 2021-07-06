@@ -11,3 +11,4 @@ Storage.prototype.getItem = function () {
   return JSON.parse(localStorage.getItem(this.key));
 }
 
+

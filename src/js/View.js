@@ -1,4 +1,4 @@
-export function View (rootNode, handlers) {
+export function View(rootNode, handlers) {
   this.rootNode = rootNode
   this.handlers = handlers
 }
@@ -10,10 +10,6 @@ View.prototype.createTaskSwitch = function (currentTask) {
   const checkbox = document.createElement('i')
   checkbox.className = 'fas fa-check'
   switchTask.append(checkbox)
-
-  // switchTask.className = ''
-
-  // console.log(switchTask)
 
   if (currentTask.completed) {
     // switchTask.classList.remove('execute');
@@ -99,10 +95,10 @@ View.prototype.createDate = function (currentDate) {
   const dateTimeText = document.createTextNode(currentDate)
   date.append(dateTimeText)
 
-  return date
+  return date;
 }
 
-function clearNode (element) {
+function clearNode(element) {
   while (element.lastChild) {
     element.removeChild(element.lastChild)
   }
@@ -110,7 +106,8 @@ function clearNode (element) {
 
 View.prototype.render = function () {
   clearNode(this.rootNode)
-  const tasks = this.handlers.getTasks() // filtered tasks
+  const tasks = this.handlers.getTasksFilter() // filtered tasks
+  // console.log('render', this.handlers)
 
   for (let i = 0; i < tasks.length; i++) {
     const currentTask = tasks[i]
@@ -126,6 +123,7 @@ View.prototype.createTask = function (currentTask) {
   const switchTask = this.createTaskSwitch(currentTask)
   taskContent.append(switchTask)
   const toggleTaskState = this.handlers.toggleTaskState
+
 
   switchTask.addEventListener('click', function (event) {
     toggleTaskState(currentTask.id)

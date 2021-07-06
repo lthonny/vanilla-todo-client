@@ -7,9 +7,9 @@ export function App() {
 
   const storage = new Storage();
   this.taskList = new TaskList([], storage);
-  console.log('qwerty', this.taskList.getTasks())
+  // console.log('qwerty', this.taskList.getTasks())
 
-  // * !localStorage.tasks ? this.taskList.tasks = [] : this.taskList.tasks = JSON.parse(localStorage.getItem('tasks'))
+  // !localStorage.tasks ? this.taskList.getTasks() = [] : this.taskList.getTasks() = JSON.parse(localStorage.getItem('tasks'))
 
   const input = document.getElementById('text')
   const addTaskBtn = document.querySelector('.btn-add')
@@ -37,17 +37,21 @@ export function App() {
     if (event.keyCode === 13) isInputEmpty()
   })
 
-
-
-  const getTasks = function () {
-    const taskList = this.taskList
-    const filter = taskList.filter
-    return taskList.getTask().filter(function (task) {
-      if (filter === 'All') return task
-      if (filter === 'Completed') return task.completed
-      if (filter === 'InCompleted') return !task.completed
+  const getTasksFilter = function () {
+    const taskList = this.taskList;
+    const filter = getTasksFilter.filter;
+    return taskList.getTasks().filter(function (task) {
+      return task;
+      //   if (filter === 'All') return task
+      //   if (filter === 'Completed') return task.completed
+      //   if (filter === 'InCompleted') return !task.completed
     })
   }.bind(this)
+
+  // console.log('tasks', this.taskList.getTasks())
+
+  // const getTasksFilters = getTasksFilter();
+  // console.log(getTasksFilters)
 
   const deleteTask = function (id) {
     this.taskList.deleteTask(id)
@@ -83,7 +87,7 @@ export function App() {
   }.bind(this)
 
   const handlers = {
-    getTasks,
+    getTasksFilter,
     deleteTask,
     toggleTaskState,
     editTask
