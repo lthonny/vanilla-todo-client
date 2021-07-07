@@ -57,10 +57,14 @@ TaskList.prototype.deleteTask = function (id) {
 
 
 TaskList.prototype.createTask = function (text) {
-  const id = Math.random().toString(36).substr(2, 9);
-  const date = new Date();
-  const task = new Task(id, text, false, date.toLocaleString(), id);
   const tasks = this.getTasks() || [];
+
+  const id = Math.random().toString(36).substr(2, 9);
+  const idDrop = tasks.length + 1;
+  // console.log(tasks.length);
+  const date = new Date();
+  const task = new Task(id, text, false, date.toLocaleString(), idDrop);
+
   tasks.push(task);
   this.storage.setItem(tasks);
 

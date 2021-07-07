@@ -15,7 +15,7 @@
 }
 
 /* input task */
-/* .add-task {
+.add-task {
   display: flex;
   min-height: 50px;
   margin-top: 30px;
@@ -38,11 +38,11 @@
   overflow: hidden;
   font-size: 16px;
   outline:none;
-} */
+}
 
 
 /* button add + */
-/* .button-task {
+.button-task {
   width: 10%;
 }
 .button-task button {
@@ -53,10 +53,10 @@
   border-radius: 5px;
   color: #8E49E8;
   font-weight: 800;
-} */
+}
 
 /* content */
-/* .tasks {
+.tasks {
   background-color: #fff;
   width: 100%;
   min-height: 50px;
@@ -103,11 +103,11 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-} */
+}
 
 
 /* title TODO */
-/* h1 {
+h1 {
   text-align: center;
   font-size: 34px;
   font-weight: 800;
@@ -135,7 +135,7 @@
   overflow: hidden;
   padding: 10px;
   height: 30%;
-} */
+}
 
 
 /* title content */
@@ -145,16 +145,16 @@
 
 
 /* arg date */
-/* .date {
+.date {
   position: absolute;
   bottom: -15px;
   right: 0px;
   font-size: 12px;
   color:rgb(142, 73, 232)
-} */
+}
 
 /* button [ALL], [COMPLETED], [INCOMPLETED] */
-/* .task-filter {
+.task-filter {
   display: flex;
   -ms-flex-pack: distribute;
       justify-content: space-around;
@@ -172,4 +172,5 @@
   background-color: rgb(142, 73, 232);
   border-radius: 5px;
   margin: 30px 0px 0px 20px 0px;
-} */
+}
+

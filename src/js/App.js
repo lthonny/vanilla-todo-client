@@ -17,7 +17,6 @@ export function App() {
   const btnCompleted = document.getElementById('btn-completed')
   const btnInCompleted = document.getElementById('btn-incompleted')
 
-
   const createNewTask = function () {
     this.taskList.createTask(input.value)
     input.value = ''

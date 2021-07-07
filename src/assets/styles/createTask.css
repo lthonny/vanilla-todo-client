@@ -1,0 +1,61 @@
+.tasks-content {
+  margin: 0 auto;
+}
+
+.task-content {
+  display: flex;
+  margin: 20px 35px 0px 35px;
+  border-radius: 5px;
+  min-height: 40px;
+
+  cursor: move;
+  user-select: none;
+
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+
+/* toggle */
+.execute {
+  cursor: pointer;
+  width: 10%;
+  background-color: #96dff4;
+  border-radius: 5px 0px 0px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* pointer-events: none; */
+}
+
+.fa-check {
+  font-size: 24px;
+  color: #fff;
+}
+
+
+/* text */
+.task-text .inputEdit {
+  padding-bottom: 20%;
+}
+
+.task-text {
+  width: 100%;
+}
+
+
+/* delete */
+.btn-delete {
+  width: 15%;
+  /* pointer-events: none; */
+}
+
+.btn-delete button {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 0px 5px 5px 0px;
+  background-color: #e74c3c;
+}

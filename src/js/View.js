@@ -1,3 +1,5 @@
+import { dragAndDrop } from './drag-and-drop';
+
 export function View(rootNode, handlers) {
   this.rootNode = rootNode
   this.handlers = handlers
@@ -28,11 +30,12 @@ View.prototype.createTaskText = function (currentTask) {
 
   const text = document.createElement('div')
   text.className = 'text'
-  const p = document.createTextNode(currentTask.text)
+  const p = document.createTextNode(`${currentTask.idDrop})  ${currentTask.text}`)
 
   if (currentTask.completed) text.style.textDecoration = 'line-through'
   text.append(p)
   containerTaskText.append(text)
+
   return containerTaskText
 }
 
@@ -50,9 +53,6 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
 
   inputEdit.addEventListener('focus', function (event) {
     event.target.style.background = '#e9e9e9'
-    // event.target.style.paddingLeft = '50px';
-    // event.target.style.padding = '10px';
-    // event.target.style.height = '110px';
   })
   inputEdit.focus()
 
@@ -109,6 +109,8 @@ View.prototype.render = function () {
   const tasks = this.handlers.getTasksFilter() // filtered tasks
   // console.log('render', this.handlers)
 
+  // dragAndDrop(document.querySelectorAll('.task-content'))
+
   for (let i = 0; i < tasks.length; i++) {
     const currentTask = tasks[i]
 
@@ -120,34 +122,35 @@ View.prototype.createTask = function (currentTask) {
   const taskContent = document.createElement('div')
   taskContent.className = 'task-content'
 
-  const switchTask = this.createTaskSwitch(currentTask)
-  taskContent.append(switchTask)
-  const toggleTaskState = this.handlers.toggleTaskState
+  dragAndDrop('.task-content')
 
+  // const switchTask = this.createTaskSwitch(currentTask)
+  // taskContent.append(switchTask)
+  // const toggleTaskState = this.handlers.toggleTaskState
 
-  switchTask.addEventListener('click', function (event) {
-    toggleTaskState(currentTask.id)
-  })
+  // switchTask.addEventListener('click', function (event) {
+  //   toggleTaskState(currentTask.id)
+  // })
 
   const taskInputText = this.createTaskText(currentTask)
   taskContent.append(taskInputText)
 
-  const btnDeleteTask = this.createDeleteBtn()
-  taskContent.append(btnDeleteTask)
-  const deleteTask = this.handlers.deleteTask
+  // const btnDeleteTask = this.createDeleteBtn()
+  // taskContent.append(btnDeleteTask)
+  // const deleteTask = this.handlers.deleteTask
 
-  btnDeleteTask.addEventListener('click', function (event) {
-    deleteTask(currentTask.id)
-  })
+  // btnDeleteTask.addEventListener('click', function (event) {
+  //   deleteTask(currentTask.id)
+  // })
 
-  const date = this.createDate(currentTask.date)
-  taskContent.append(date)
+  // const date = this.createDate(currentTask.date)
+  // taskContent.append(date)
 
-  const editTask = this.handlers.editTask
-  const createEditText = this.createEditText.bind(this)
-  taskInputText.addEventListener('dblclick', function (event) {
-    createEditText(taskInputText, currentTask, editTask)
-  })
+  // const editTask = this.handlers.editTask
+  // const createEditText = this.createEditText.bind(this)
+  // taskInputText.addEventListener('dblclick', function (event) {
+  //   createEditText(taskInputText, currentTask, editTask)
+  // })
 
   return this.rootNode.append(taskContent)
 }

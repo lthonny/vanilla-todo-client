@@ -1,4 +1,7 @@
 export function dragAndDrop(element) {
+  console.log('drag and drop');
+
+
   const list = document.getElementById('tasks-content');
 
   let draggingEle;

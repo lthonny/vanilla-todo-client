@@ -1,4 +1,5 @@
-import '../src/assets/styles/style.css'
+// import '../src/assets/styles/style.css'
+import '../src/assets/styles/dragdrop.css'
 
 import { App } from './js/App'
 
