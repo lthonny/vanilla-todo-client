@@ -1,7 +1,6 @@
 /* @import "~normalize.css"; */
 @import "./mobile.css";
 
-
 * {
   padding: 0;
   margin: 0;
@@ -171,6 +170,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* pointer-events: none; */
 }
 
 .bgr {
@@ -184,7 +185,6 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
 }
-.bgr
 
 .execute input {
   position: absolute;
@@ -236,7 +236,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-delete {
   width: 15%;
+  /* pointer-events: none; */
 }
+
 .btn-delete button {
   width: 100%;
   /* height: 40px; */
@@ -338,4 +340,15 @@ h1 {
   right: 0px;
   font-size: 12px;
   color:rgb(142, 73, 232)
+}
+
+
+
+
+
+/* drag and drop */
+
+.task-content {
+  cursor: move;
+  user-select: none;
 }

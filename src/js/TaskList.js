@@ -8,8 +8,8 @@ export function TaskList(tasks, storage) {
 
 
 TaskList.prototype.getTasks = function () {
-  return (this.storage.getItem() || []).map(function ({ id, text, completed, date }) {
-    return new Task(id, text, completed, date);
+  return (this.storage.getItem() || []).map(function ({ id, text, completed, date, idDrop }) {
+    return new Task(id, text, completed, date, idDrop);
   })
 }
 
@@ -59,7 +59,7 @@ TaskList.prototype.deleteTask = function (id) {
 TaskList.prototype.createTask = function (text) {
   const id = Math.random().toString(36).substr(2, 9);
   const date = new Date();
-  const task = new Task(id, text, false, date.toLocaleString());
+  const task = new Task(id, text, false, date.toLocaleString(), id);
   const tasks = this.getTasks() || [];
   tasks.push(task);
   this.storage.setItem(tasks);
