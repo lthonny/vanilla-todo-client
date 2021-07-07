@@ -1,5 +1,5 @@
 export function Storage(key) {
-  this.key = key || 'tasks'
+  this.key = key || 'tasks';
 }
 
 Storage.prototype.setItem = function (data) {
@@ -10,5 +10,6 @@ Storage.prototype.setItem = function (data) {
 Storage.prototype.getItem = function () {
   return JSON.parse(localStorage.getItem(this.key));
 }
+
 
 
