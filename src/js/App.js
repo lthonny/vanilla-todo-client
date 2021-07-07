@@ -7,9 +7,6 @@ export function App() {
 
   const storage = new Storage();
   this.taskList = new TaskList([], storage);
-  // console.log('qwerty', this.taskList.getTasks())
-
-  // !localStorage.tasks ? this.taskList.getTasks() = [] : this.taskList.getTasks() = JSON.parse(localStorage.getItem('tasks'))
 
   const input = document.getElementById('text')
   const addTaskBtn = document.querySelector('.btn-add')
@@ -19,6 +16,7 @@ export function App() {
   const btnAll = document.getElementById('btn-all')
   const btnCompleted = document.getElementById('btn-completed')
   const btnInCompleted = document.getElementById('btn-incompleted')
+
 
   const createNewTask = function () {
     this.taskList.createTask(input.value)
@@ -37,27 +35,25 @@ export function App() {
     if (event.keyCode === 13) isInputEmpty()
   })
 
+
   const getTasksFilter = function () {
     const taskList = this.taskList;
-    const filter = getTasksFilter.filter;
+    const { filter } = taskList;
     return taskList.getTasks().filter(function (task) {
-      return task;
-      //   if (filter === 'All') return task
-      //   if (filter === 'Completed') return task.completed
-      //   if (filter === 'InCompleted') return !task.completed
+      // return task;
+      if (filter === 'All') return task
+      if (filter === 'Completed') return task.completed
+      if (filter === 'InCompleted') return !task.completed
     })
   }.bind(this)
 
-  // console.log('tasks', this.taskList.getTasks())
-
-  // const getTasksFilters = getTasksFilter();
-  // console.log(getTasksFilters)
 
   const deleteTask = function (id) {
     this.taskList.deleteTask(id)
     confirm('REMOVE TASK?') == true ? id : null
     view.render()
   }.bind(this)
+
 
   const filterTasks = function (filter) {
     this.taskList.setFilter(filter)
@@ -76,10 +72,12 @@ export function App() {
     filterTasks('InCompleted')
   })
 
+
   const toggleTaskState = function (id) {
     this.taskList.completeTask(id)
     view.render()
   }.bind(this)
+
 
   const editTask = function (id, text, date) {
     this.taskList.editTask(id, text, date)

@@ -15,42 +15,44 @@ TaskList.prototype.getTasks = function () {
 
 
 TaskList.prototype.completeTask = function (id) {
-  const elementIndex = this.getTasks().findIndex(element => {
+  const tasks = this.getTasks();
+  const updatedTasks = tasks.map(function (task) {
+    if (task.id === id) {
+      task.completed = !task.completed
+    }
+    return task;
+  });
+
+  this.storage.setItem(updatedTasks);
+}
+
+
+
+TaskList.prototype.editTask = function (id, text) {
+  const tasks = this.getTasks();
+
+  const elementIndex = tasks.findIndex(element => {
     return element.id === id
   })
 
+  const date = new Date()
 
-  this.getTasks()[elementIndex].completed = !this.getTasks()[elementIndex].completed
+  tasks[elementIndex].text = text
+  tasks[elementIndex].date = date.toLocaleString()
 
-
-  this.storage.setItem(this.getTasks());
-
-
-
-  // this.tasks =
-  // console.log(this.getTasks())
-  console.log('completed', this.getTasks()[elementIndex].completed);
+  this.storage.setItem(tasks);
 }
-
-// TaskList.prototype.editTask = function (id, text) {
-//   const elementIndex = this.tasks.findIndex(element => {
-//     return element.id === id
-//   })
-
-//   const date = new Date()
-
-//   this.tasks[elementIndex].text = text
-//   this.tasks[elementIndex].date = date.toLocaleString()
-
-// }
 
 
 TaskList.prototype.deleteTask = function (id) {
-  const elementIndex = this.getTasks().findIndex(element => {
+  const tasks = this.getTasks();
+
+  const elementIndex = tasks.findIndex(element => {
     return element.id === id
   })
 
-  this.getTasks().splice(elementIndex, 1)
+  tasks.splice(elementIndex, 1);
+  this.storage.setItem(tasks);
 }
 
 
