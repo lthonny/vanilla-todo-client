@@ -1,8 +1,9 @@
-export function Task(id, text, completed, date, idDrop) {
+export function Task(id, text, status, date, order) {
   this.id = id
+
   this.text = text
-  this.completed = completed
+  this.status = status
 
   this.date = date
-  this.idDrop = idDrop
+  this.order = order
 }

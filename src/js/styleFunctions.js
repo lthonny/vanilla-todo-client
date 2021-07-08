@@ -1,9 +1,5 @@
-function scrollTexterea() {
+export function scrollTexterea() {
   const texterea = document.querySelector('.texterea')
-
-  const form = document.querySelector('.task-text')
-
-  const inputEdit = document.querySelector('.inputEdit')
 
   function auto_grow(element) {
     element.style.height = '5px'

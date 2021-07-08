@@ -13,13 +13,7 @@ View.prototype.createTaskSwitch = function (currentTask) {
   checkbox.className = 'fas fa-check'
   switchTask.append(checkbox)
 
-  if (currentTask.completed) {
-    // switchTask.classList.remove('execute');
-    // switchTask.className = 'bgr';
-
-    switchTask.style.backgroundColor = '#ffbdb3'
-    checkbox.style.color = '#ec4f43'
-  }
+  if (currentTask.status) checkbox.style.color = '#ffbdb3';
 
   return switchTask
 }
@@ -30,9 +24,9 @@ View.prototype.createTaskText = function (currentTask) {
 
   const text = document.createElement('div')
   text.className = 'text'
-  const p = document.createTextNode(`${currentTask.idDrop})  ${currentTask.text}`)
+  const p = document.createTextNode(`${currentTask.text}`)
 
-  if (currentTask.completed) text.style.textDecoration = 'line-through'
+  if (currentTask.status) text.style.textDecoration = 'line-through'
   text.append(p)
   containerTaskText.append(text)
 
@@ -52,7 +46,7 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
   inputDiv.append(inputEdit)
 
   inputEdit.addEventListener('focus', function (event) {
-    event.target.style.background = '#e9e9e9'
+    event.target.style.background = '#dff2ef'
   })
   inputEdit.focus()
 
@@ -88,15 +82,15 @@ View.prototype.createDeleteBtn = function () {
   return btnDelete
 }
 
-View.prototype.createDate = function (currentDate) {
-  const date = document.createElement('div')
-  date.className = 'date'
+// View.prototype.createDate = function (currentDate) {
+//   const date = document.createElement('div')
+//   date.className = 'date'
 
-  const dateTimeText = document.createTextNode(currentDate)
-  date.append(dateTimeText)
+//   const dateTimeText = document.createTextNode(currentDate)
+//   date.append(dateTimeText)
 
-  return date;
-}
+//   return date;
+// }
 
 function clearNode(element) {
   while (element.lastChild) {
@@ -107,50 +101,52 @@ function clearNode(element) {
 View.prototype.render = function () {
   clearNode(this.rootNode)
   const tasks = this.handlers.getTasksFilter() // filtered tasks
-  // console.log('render', this.handlers)
-
-  // dragAndDrop(document.querySelectorAll('.task-content'))
 
   for (let i = 0; i < tasks.length; i++) {
     const currentTask = tasks[i]
 
     this.createTask(currentTask)
   }
+
+  dragAndDrop();
 }
 
 View.prototype.createTask = function (currentTask) {
   const taskContent = document.createElement('div')
-  taskContent.className = 'task-content'
+  taskContent.className = 'tasks__item'
 
-  dragAndDrop('.task-content')
+  const switchTask = this.createTaskSwitch(currentTask)
+  taskContent.append(switchTask)
+  const toggleTaskState = this.handlers.toggleTaskState
 
-  // const switchTask = this.createTaskSwitch(currentTask)
-  // taskContent.append(switchTask)
-  // const toggleTaskState = this.handlers.toggleTaskState
-
-  // switchTask.addEventListener('click', function (event) {
-  //   toggleTaskState(currentTask.id)
-  // })
+  switchTask.addEventListener('click', function (event) {
+    toggleTaskState(currentTask.id)
+  })
 
   const taskInputText = this.createTaskText(currentTask)
   taskContent.append(taskInputText)
 
-  // const btnDeleteTask = this.createDeleteBtn()
-  // taskContent.append(btnDeleteTask)
-  // const deleteTask = this.handlers.deleteTask
+  const btnDeleteTask = this.createDeleteBtn()
+  taskContent.append(btnDeleteTask)
+  const deleteTask = this.handlers.deleteTask
 
-  // btnDeleteTask.addEventListener('click', function (event) {
-  //   deleteTask(currentTask.id)
-  // })
+  btnDeleteTask.addEventListener('click', function (event) {
+    deleteTask(currentTask.id)
+  })
 
   // const date = this.createDate(currentTask.date)
   // taskContent.append(date)
 
-  // const editTask = this.handlers.editTask
-  // const createEditText = this.createEditText.bind(this)
-  // taskInputText.addEventListener('dblclick', function (event) {
-  //   createEditText(taskInputText, currentTask, editTask)
-  // })
+  const idDrop = document.createElement('div');
+  const idText = document.createTextNode(`[${currentTask.order}]`);
+  idDrop.append(idText);
+  taskContent.append(idDrop)
+
+  const editTask = this.handlers.editTask
+  const createEditText = this.createEditText.bind(this)
+  taskInputText.addEventListener('dblclick', function (event) {
+    createEditText(taskInputText, currentTask, editTask)
+  })
 
   return this.rootNode.append(taskContent)
 }

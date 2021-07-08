@@ -17,16 +17,10 @@
 
 <body>
 
-  <section id="qqz" class="to-do-list">
+  <section class="tasks">
     <div class="container">
-      <h1>TO DO LIST</h1>
-
-      <!-- <a href="http://localhost:3333/">server -> JSON</a> -->
-
-      <!-- adding tasks in the input -->
       <div class="add-task">
         <div class="input-task">
-          <!-- <input id='text' type="text" placeholder="Enter the task"> -->
           <textarea class='texterea' maxlength="200" id='text' type="text" placeholder="Enter the task"></textarea>
         </div>
         <div class="button-task">
@@ -34,15 +28,25 @@
         </div>
       </div>
 
-      <!-- tasks -->
-      <div class="tasks">
-        <!-- <h2 id="quantityTasks" class="quantityTasks">Daily tasks total: </h2> -->
-        <div id="tasks-content">
-
+      <h2 id="quantityTasks" class="quantityTasks">Daily tasks total: </h2>
+      <ul class="tasks__list">
+        <!-- <div class="tasks__item">
+          <div class="execute"><i class="fas fa-check" aria-hidden="true"></i></div>
+          <div class="task-text">
+            <div class="text">1) JavaScript</div>
+          </div>
+          <div class="btn-delete"><button><i class="fas fa-trash-alt" aria-hidden="true"></i></button></div>
         </div>
-      </div>
 
-      <!-- task management -->
+        <div class="tasks__item">
+          <div class="execute"><i class="fas fa-check" aria-hidden="true"></i></div>
+          <div class="task-text">
+            <div class="text">2) Angular</div>
+          </div>
+          <div class="btn-delete"><button><i class="fas fa-trash-alt" aria-hidden="true"></i></button></div>
+        </div> -->
+      </ul>
+
       <div class="task-filter">
         <div class="btn task-all">
           <button id='btn-all'>All</button>
@@ -60,16 +64,6 @@
 
   <!-- icons -->
   <script src="https://kit.fontawesome.com/50f730e0bb.js" crossorigin="anonymous"></script>
-  <!-- scripts js -->
-  <!-- <script src='src/js/styleFunctions.js'></script> -->
-
-  <!-- <script src="src/js/App.js"></script>
-  <script src="src/js/Task.js"></script>
-  <script src="src/js/TaskList.js"></script>
-  <script src="src/js/View.js"></script>
-
-  <script src="src/js/index.js"></script> -->
-  <!-- <script src="js/drag-and-drop.js"></script> -->
 </body>
 
 </html>

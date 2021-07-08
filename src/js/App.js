@@ -11,7 +11,7 @@ export function App() {
   const input = document.getElementById('text')
   const addTaskBtn = document.querySelector('.btn-add')
 
-  const rootNode = document.getElementById('tasks-content')
+  const rootNode = document.querySelector('.tasks__list')
 
   const btnAll = document.getElementById('btn-all')
   const btnCompleted = document.getElementById('btn-completed')
@@ -38,11 +38,15 @@ export function App() {
   const getTasksFilter = function () {
     const taskList = this.taskList;
     const { filter } = taskList;
-    return taskList.getTasks().filter(function (task) {
-      // return task;
+
+    const sorted = taskList.getTasks().sort(function (a, b) {
+      return a.order - b.order;
+    });
+
+    return sorted.filter(function (task) {
       if (filter === 'All') return task
-      if (filter === 'Completed') return task.completed
-      if (filter === 'InCompleted') return !task.completed
+      if (filter === 'Completed') return task.status
+      if (filter === 'InCompleted') return !task.status
     })
   }.bind(this)
 
@@ -73,7 +77,7 @@ export function App() {
 
 
   const toggleTaskState = function (id) {
-    this.taskList.completeTask(id)
+    this.taskList.statusTask(id)
     view.render()
   }.bind(this)
 
@@ -82,6 +86,8 @@ export function App() {
     this.taskList.editTask(id, text, date)
     view.render()
   }.bind(this)
+
+
 
   const handlers = {
     getTasksFilter,
