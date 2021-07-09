@@ -4,7 +4,7 @@
   "description": "Project \"to do list\" - designed to create a list of tasks. The program helps to manage to-do lists, implement planned tasks and not forget anything. The user has the ability to create a list of tasks, in the process of their execution, can change delete, complete, sort, search by name.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development",
+    "dev": "webpack --mode development --watch",
     "build": "webpack --mode production"
   },
   "browserslist": "> 0.25%, not dead",

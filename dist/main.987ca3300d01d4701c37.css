@@ -1,0 +1,244 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
+body {
+  font-family: "Tahoma", sans-serif;
+  font-size: 18px;
+  line-height: 25px;
+  color: #164a44;
+
+  background-color: #b2d9d0;
+}
+
+
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+html,body {
+  min-height:100% !important;
+}
+
+input, button, textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+.tasks {
+  margin-top: 60px;
+}
+
+.tasks__title {
+  margin: 50px 0 20px 0;
+
+  text-align: center;
+  text-transform: uppercase;
+ }
+
+.tasks__list {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.tasks__item {
+  transition: background-color 0.5s;
+  margin-bottom: 10px;
+  padding: 5px;
+
+  text-align: center;
+  border: 2px dashed #b2d9d0;
+  border-radius: 10px;
+  cursor: move;
+  background-color: #dff2ef;
+
+  transition: background-color 0.5s;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 20px 35px 0px 35px;
+  min-height: 40px;
+}
+
+
+.tasks__item:last-child {
+  margin-bottom: 0;
+}
+
+.selected {
+  opacity: 0.6;
+}
+
+
+
+
+/* style my todo */
+
+/* button delete */
+.btn-delete {
+  width: 15%;
+}
+
+.btn-delete button {
+  width: 100%;
+  height: 100%;
+  color: #ec4f43;
+  font-size: 25px;
+  background-color: transparent;
+  padding-left: 20px;
+}
+
+
+/* toggle */
+.execute {
+  cursor: pointer;
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fa-check {
+  font-size: 24px;
+  color: rgb(129, 201, 67);
+}
+
+
+/* add task */
+/* input task */
+.add-task {
+  display: flex;
+  align-items: center;
+}
+
+.message-task {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+
+  margin: 0px 35px 0px 35px;
+
+  width: 80%;
+
+}
+
+.message-task .texterea {
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 5px;
+  resize: none;
+  overflow: hidden;
+  font-size: 16px;
+  outline:none;
+} 
+
+/* button add task */
+.button-task {
+  width: 20%;
+}
+.button-task button {
+  width: 100%;
+  font-size: 30px;
+  color: #fff;
+  background-color: transparent;
+}
+
+/* title */
+.quantityTasks {
+  text-align: center;
+  font-size: 25px;
+  font-weight: 800;
+  margin: 30px 0px 20px 0px;
+}
+
+/* filter */
+.task-filter {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn button {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  width: 130px;
+  min-height: 35px;
+  background-color: #164a44;
+  border-radius: 5px;
+}
+
+
+
+
+.task-text {
+  width: 75%;
+}
+.task-text .text {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-size: 18px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+} 
+
+
+.inputEdit {
+  width: 95%;
+  outline: none;
+  font-size: 16px;
+  resize: none;
+  overflow: hidden;
+  padding: 10px;
+} 
+
+.task-text {
+  display: flex;
+}

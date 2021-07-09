@@ -1,9 +1,8 @@
-import { dragAndDrop } from './drag-and-drop';
-
 export function View(rootNode, handlers) {
   this.rootNode = rootNode
   this.handlers = handlers
 }
+
 
 View.prototype.createTaskSwitch = function (currentTask) {
   const switchTask = document.createElement('div')
@@ -64,10 +63,9 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
     }
   }
 
-  const handlers = [handleBlur, handleEnter]
+  inputEdit.addEventListener('blur', handleBlur);
+  inputEdit.addEventListener('keydown', handleEnter);
 
-  inputEdit.addEventListener('blur', handleBlur)
-  inputEdit.addEventListener('keydown', handleEnter)
 }
 
 View.prototype.createDeleteBtn = function () {
@@ -92,14 +90,12 @@ View.prototype.createDeleteBtn = function () {
 //   return date;
 // }
 
-function clearNode(element) {
-  while (element.lastChild) {
-    element.removeChild(element.lastChild)
-  }
-}
 
 View.prototype.render = function () {
-  clearNode(this.rootNode)
+  while (this.rootNode.lastChild) {
+    this.rootNode.removeChild(this.rootNode.lastChild)
+  }
+
   const tasks = this.handlers.getTasksFilter() // filtered tasks
 
   for (let i = 0; i < tasks.length; i++) {
@@ -108,15 +104,53 @@ View.prototype.render = function () {
     this.createTask(currentTask)
   }
 
-  dragAndDrop();
 }
 
 View.prototype.createTask = function (currentTask) {
-  const taskContent = document.createElement('div')
-  taskContent.className = 'tasks__item'
+  const taskElements = document.createElement('div');
+  taskElements.className = 'tasks__item';
+
+  // drag and drop .....
+  this.rootNode.addEventListener(`dragstart`, function (event) {
+    event.target.classList.add(`selected`);
+  })
+
+  this.rootNode.addEventListener(`dragend`, function (event) {
+    event.target.classList.remove(`selected`);
+  });
+
+  // task item can be dragged
+  taskElements.draggable = true;
+
+  const rootNode = this.rootNode;
+  rootNode.addEventListener(`dragover`, function (event) {
+    event.preventDefault();
+
+    const activeElement = rootNode.querySelector(`.selected`);
+    const currentElement = event.target;
+
+    const isMoveable = activeElement !== currentElement && currentElement.classList.contains(`tasks__item`);
+
+    if (!isMoveable) {
+      return;
+    }
+
+    let nextElement;
+    if (currentElement === activeElement.nextElementSibling) {
+      nextElement = currentElement.nextElementSibling
+    } else {
+      nextElement = currentElement
+    }
+
+    rootNode.insertBefore(activeElement, nextElement);
+  })
+
+  // drag and drop .
+
+
 
   const switchTask = this.createTaskSwitch(currentTask)
-  taskContent.append(switchTask)
+  taskElements.append(switchTask)
   const toggleTaskState = this.handlers.toggleTaskState
 
   switchTask.addEventListener('click', function (event) {
@@ -124,15 +158,16 @@ View.prototype.createTask = function (currentTask) {
   })
 
   const taskInputText = this.createTaskText(currentTask)
-  taskContent.append(taskInputText)
+  taskElements.append(taskInputText)
 
   const btnDeleteTask = this.createDeleteBtn()
-  taskContent.append(btnDeleteTask)
+  taskElements.append(btnDeleteTask)
   const deleteTask = this.handlers.deleteTask
 
   btnDeleteTask.addEventListener('click', function (event) {
     deleteTask(currentTask.id)
   })
+
 
   // const date = this.createDate(currentTask.date)
   // taskContent.append(date)
@@ -140,7 +175,7 @@ View.prototype.createTask = function (currentTask) {
   const idDrop = document.createElement('div');
   const idText = document.createTextNode(`[${currentTask.order}]`);
   idDrop.append(idText);
-  taskContent.append(idDrop)
+  taskElements.append(idDrop)
 
   const editTask = this.handlers.editTask
   const createEditText = this.createEditText.bind(this)
@@ -148,5 +183,5 @@ View.prototype.createTask = function (currentTask) {
     createEditText(taskInputText, currentTask, editTask)
   })
 
-  return this.rootNode.append(taskContent)
+  return this.rootNode.append(taskElements)
 }
