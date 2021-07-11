@@ -3209,7 +3209,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Storage\": function() { return /* binding */ Storage; }\n/* harmony export */ });\nfunction Storage(key) {\n  this.key = key || 'tasks';\n}\n\nStorage.prototype.setItem = function (data) {\n  localStorage.setItem(this.key, JSON.stringify(data));\n  return this;\n};\n\nStorage.prototype.getItem = function () {\n  return JSON.parse(localStorage.getItem(this.key));\n};\n\n//# sourceURL=webpack://todo/./src/js/Storage.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Storage\": function() { return /* binding */ Storage; }\n/* harmony export */ });\nfunction Storage(key) {\n  this.key = key || 'tasks';\n}\n\nStorage.prototype.setItem = function (data) {\n  localStorage.setItem(this.key, JSON.stringify(data));\n  return this;\n};\n\nStorage.prototype.getItem = function () {\n  return JSON.parse(localStorage.getItem(this.key));\n}; // let response = fetch('http://localhost:3333/');\n// console.log('server')\n// fetch('http://localhost:3333/')\n//   .then((response) => {\n//     return response.json();\n//     console.log(response)\n//   })\n// .then((data) => {\n//   console.log(data);\n// });\n\n//# sourceURL=webpack://todo/./src/js/Storage.js?");
 
 /***/ }),
 
