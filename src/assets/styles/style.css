@@ -1,6 +1,0 @@
-@import "./zeroing.css";
-@import './dragdrop.css';
-
-.task-text {
-  display: flex;
-}
