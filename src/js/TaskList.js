@@ -8,9 +8,10 @@ export function TaskList(tasks, storage) {
 
 
 TaskList.prototype.getTasks = function () {
-  return (this.storage.getItem() || []).map(function ({ id, text, status, date, order }) {
-    return new Task(id, text, status, date, order);
-  })
+  console.log('this.storage', this.storage);
+  // return (this.storage.getItem() || []).map(function ({ id, text, status, date, order }) {
+  //   return new Task(id, text, status, date, order);
+  // })
 }
 
 
