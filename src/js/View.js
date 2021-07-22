@@ -206,12 +206,8 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
 
   taskElements.addEventListener('dragstart', function (event) {
-    console.log('dragstart', currentTask)
-    const orderStart = currentTask.order;
-    // console.log('orderStart', orderStart)
-
+    // console.log('dragstart', currentTask)
     event.dataTransfer.setData('application/todo', currentTask.id);
-    event.dataTransfer.setData('application/todo/order', currentTask.order);
   });
 
   taskElements.addEventListener('dragover', function (event) {
@@ -220,34 +216,37 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
   const editOrder = this.editOrder.bind(this);
   taskElements.addEventListener('drop', function (event) {
-    console.log('drop currentTask', currentTask);
+    // console.log('drop currentTask', currentTask);
     const dragId = event.dataTransfer.getData('application/todo');
-    const orderDrag = event.dataTransfer.getData('application/todo/order');
-
     event.dataTransfer.clearData('application/todo');
-    // event.dataTransfer.clearData('application/todo/order');
 
     const dropId = currentTask.id;
-    // console.log(currentTask.id[i])
-
-    const dropOrder = currentTask.order;
-    const beforeDrop = dropOrder;
-    const afterDrop = dropOrder;
 
     const index = tasks.findIndex(el => el.id === dropId);
-    console.log('index dropId', index - 1)
-
-
-    // const last = tasks[current - 1];
+    const afterDropIndex = index - 1;
+    const beforeDropIndex = index + 1;
 
     console.log('tasks', tasks)
-    console.log('beforeDrop:', beforeDrop);
 
-    let order = (orderDrag - afterDrop) / 2;
-    console.log(order)
+    let order;
+    if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
+      order = tasks[index].order / 2;
+    }
+    if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
+      order = tasks[index].order + 1;
+    }
+
+    if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
+      order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
+      console.log('top')
+    }
+
+    // if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
+    //   order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
+    //   console.log('bottom')
+    // }
 
     editOrder(dragId, order);
-
   });
 
   taskElements.addEventListener('dragend', function (event) {
@@ -284,10 +283,10 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   })
 
 
-  const idDrop = document.createElement('div');
-  const idText = document.createTextNode(`[${currentTask.order}]`);
-  idDrop.append(idText);
-  taskElements.append(idDrop);
+  // const idDrop = document.createElement('div');
+  // const idText = document.createTextNode(`[${currentTask.order}]`);
+  // idDrop.append(idText);
+  // taskElements.append(idDrop);
 
   //return this.rootNode.append(taskElements);
   return taskElements;
