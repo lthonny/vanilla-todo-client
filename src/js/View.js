@@ -206,17 +206,19 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
 
   taskElements.addEventListener('dragstart', function (event) {
-    // console.log('dragstart', currentTask)
     event.dataTransfer.setData('application/todo', currentTask.id);
+    event.target.classList.add('selected');
   });
 
   taskElements.addEventListener('dragover', function (event) {
     event.preventDefault();
   });
 
+
+
   const editOrder = this.editOrder.bind(this);
+
   taskElements.addEventListener('drop', function (event) {
-    // console.log('drop currentTask', currentTask);
     const dragId = event.dataTransfer.getData('application/todo');
     event.dataTransfer.clearData('application/todo');
 
@@ -226,7 +228,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     const afterDropIndex = index - 1;
     const beforeDropIndex = index + 1;
 
-    console.log('tasks', tasks)
+    // console.log('tasks', tasks)
 
     let order;
     if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
@@ -238,22 +240,16 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
     if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
       order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
-      console.log('top')
     }
-
-    // if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
-    //   order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
-    //   console.log('bottom')
-    // }
 
     editOrder(dragId, order);
   });
 
-  taskElements.addEventListener('dragend', function (event) {
-  });
 
+  // dragenter
+  // event.target.classList.remove('selected');
   taskElements.draggable = true;
-  taskElements.dropzone = true;
+  // taskElements.dropzone = true;
 
   // handlers toggle
   const switchTask = this.createTaskSwitch(currentTask);
@@ -282,12 +278,5 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     deleteTask(currentTask.id);
   })
 
-
-  // const idDrop = document.createElement('div');
-  // const idText = document.createTextNode(`[${currentTask.order}]`);
-  // idDrop.append(idText);
-  // taskElements.append(idDrop);
-
-  //return this.rootNode.append(taskElements);
   return taskElements;
 }
