@@ -1,110 +1,53 @@
-import { TaskList } from './TaskList'
-import { View } from './View'
-import { Storage } from './Storage'
+export function App(taskslist, view) {
+  console.log('App init');
 
-export function App() {
-  console.log('App init')
+  const buttons = document.querySelectorAll('.btn');
+  const allTasks = buttons[0], compTasks = buttons[1], inCompTasks = buttons[2];
 
-  const storage = new Storage();
-  this.taskList = new TaskList([], storage);
+  // this.taskslist = taskslist;
 
-  const message = document.getElementById('message')
-  const addBtn = document.querySelector('.message-add')
-
-  const rootNode = document.querySelector('.tasks__list')
-
-  const allBtn = document.getElementById('btn-all')
-  const completedBtn = document.getElementById('btn-completed')
-  const inCompletedBtn = document.getElementById('btn-incompleted')
-
-
-  const deleteTask = function (id) {
-    this.taskList.deleteTask(id)
-    confirm('REMOVE TASK?') == true ? id : null
-    view.render()
-  }.bind(this);
-
-
-
-  const createNewTask = function () {
-    this.taskList.createTask(message.value)
-    message.value = ''
-    view.render()
-  }.bind(this);
-
-  const isInputEmpty = function () {
-    if (message.value) {
-      createNewTask()
-      message.value = ''
-    }
-  }
-  addBtn.addEventListener('click', function (event) { isInputEmpty() })
-  message.addEventListener('keydown', function (event) {
-    if (event.keyCode === 13) isInputEmpty()
-  })
-
-
-  const getTasksFilter = function () {
-    const taskList = this.taskList;
-    const { filter } = taskList;
-
-    const sorted = taskList.getTasks().sort(function (a, b) {
-      return a.order - b.order;
-    });
-
-    return sorted.filter(function (task) {
-      if (filter === 'All') return task
-      if (filter === 'Completed') return task.status
-      if (filter === 'InCompleted') return !task.status
-    })
-  }.bind(this);
-
+  const getTasks = taskslist.getTasks.bind(taskslist);
+  const createTask = taskslist.createTask.bind(taskslist);
+  const editTask = taskslist.editTask.bind(taskslist);
+  const deleteTask = taskslist.deleteTask.bind(taskslist);
+  const setFilter = taskslist.setFilter.bind(taskslist);
 
   const filterTasks = function (filter) {
-    this.taskList.setFilter(filter)
-    view.render()
-  }.bind(this)
+    setFilter(filter);
+    this.view.render();
+  }.bind(this);
 
-  allBtn.addEventListener('click', function () { filterTasks('All') })
-  completedBtn.addEventListener('click', function () { filterTasks('Completed') })
-  inCompletedBtn.addEventListener('click', function () { filterTasks('InCompleted') })
-
-
-  const toggleTaskState = function (id) {
-    this.taskList.statusTask(id)
-    view.render()
-  }.bind(this)
-
-
-  const editTask = function (id, text, date) {
-    this.taskList.editTask(id, text, date)
-    view.render()
-  }.bind(this)
+  allTasks.addEventListener('click', function () {
+    filterTasks('All')
+  });
+  compTasks.addEventListener('click', function () {
+    filterTasks('Completed')
+  });
+  inCompTasks.addEventListener('click', function () {
+    filterTasks('InCompleted')
+  });
 
 
-  // auto grow texterea
-  const texterea = document.querySelector('.texterea')
-  texterea.addEventListener('keydown', function (event) {
-    texterea.style.height = '5px'
-    texterea.style.height = (texterea.scrollHeight) + 'px'
-  })
+  const getState = function () {
+    const { filter } = taskslist;
+    return getTasks()
+      .then(function (tasks) {
+        return { filter, tasks };
+      })
+  };
 
 
-
-
+  this.view = view;
   const handlers = {
-    getTasksFilter,
-    deleteTask,
-    toggleTaskState,
-    editTask
-  }
+    getState,
+    createTask,
+    editTask,
+    deleteTask
+  };
 
-  const view = new View(rootNode, handlers)
-  view.render()
+  this.view.handlers = handlers;
 }
 
-
-
-App.prototype.itemEdit = function (id) {
-
+App.prototype.render = function () {
+  this.view.render();
 }

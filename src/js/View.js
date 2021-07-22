@@ -1,22 +1,100 @@
-export function View(rootNode, handlers) {
-  this.rootNode = rootNode
-  this.handlers = handlers
+export function View(rootNode) {
+  this.rootNode = rootNode;
+  this.handlers = {};
+  const message = document.getElementById('message');
+  const addBtn = document.querySelector('.message-add');
+
+  const render = this.render.bind(this);
+
+  const createNewTaskAction = function (text) {
+    this.handlers.createTask(text)
+      .then(function () {
+        render();
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  }.bind(this);
+
+
+  // add new todos
+  addBtn.addEventListener('click', function () {
+    createNewTaskAction(message.value);
+    message.value = '';
+  })
+  message.addEventListener('keydown', function (event) {
+    if (event.keyCode === 13) {
+      createNewTaskAction(message.value);
+      message.value = '';
+    }
+  })
+}
+
+// delete todos
+View.prototype.deleteTask = function (id) {
+  const render = this.render.bind(this);
+  this.handlers.deleteTask(id)
+    .then(function () {
+      render();
+    })
+    .catch(function (e) {
+      console.log('error delete: ', e);
+    })
+}
+
+// toggle todos
+View.prototype.toggleStatus = function (id, status) {
+  const render = this.render.bind(this);
+  this.handlers.editTask(id, { status })
+    .then(function () {
+      render();
+    })
+    .catch(function (e) {
+      console.log('error edit status: ', e);
+    })
+}
+
+// edit order
+View.prototype.editOrder = function (id, order) {
+  const render = this.render.bind(this);
+  this.handlers.editTask(id, { order })
+    .then(function () {
+      render();
+    })
+    .catch(function (e) {
+      console.log('error edit order: ', e);
+    })
 }
 
 
+// edit todos
+View.prototype.editTask = function (id, text) {
+  const render = this.render.bind(this);
+  this.handlers.editTask(id, { text })
+    .then(function () {
+      render();
+    })
+    .catch(function (e) {
+      console.log('error edit text: ', e);
+    })
+}
+
+
+// layout toggle
 View.prototype.createTaskSwitch = function (currentTask) {
-  const switchTask = document.createElement('div')
-  switchTask.className = 'execute'
+  const switchTask = document.createElement('div');
+  switchTask.className = 'execute';
 
-  const checkbox = document.createElement('i')
-  checkbox.className = 'fas fa-check'
-  switchTask.append(checkbox)
+  const checkbox = document.createElement('i');
+  checkbox.className = 'fas fa-check';
+  switchTask.append(checkbox);
 
-  if (currentTask.status) checkbox.style.color = '#ffbdb3';
+  if (currentTask.status) checkbox.style.color = 'rgb(129, 201, 67)';
 
-  return switchTask
+  return switchTask;
 }
 
+// layout messages
 View.prototype.createTaskText = function (currentTask) {
   const containerTaskText = document.createElement('div')
   containerTaskText.className = 'task-text'
@@ -32,42 +110,44 @@ View.prototype.createTaskText = function (currentTask) {
   return containerTaskText
 }
 
+// layout edit messages
 View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
-  inputDiv.style.backgroundColor = '#fff'
-  const childNode = inputDiv.firstChild
-  inputDiv.removeChild(childNode)
+  inputDiv.style.backgroundColor = '#fff';
 
-  const inputEdit = document.createElement('textarea')
-  inputEdit.className = 'inputEdit'
-  inputEdit.maxLength = 200
+  const childNode = inputDiv.firstChild;
+  inputDiv.removeChild(childNode);
 
-  inputEdit.value = currentTask.text
-  inputDiv.append(inputEdit)
+  const inputEdit = document.createElement('textarea');
+  inputEdit.className = 'inputEdit';
+  inputEdit.maxLength = 200;
+
+  inputEdit.value = currentTask.text;
+  inputDiv.append(inputEdit);
 
   inputEdit.addEventListener('focus', function (event) {
     event.target.style.background = '#dff2ef'
-  })
-  inputEdit.focus()
+  });
+  inputEdit.focus();
 
   const handleBlur = function (event) {
     event.target.style.background = ''
     inputEdit.removeEventListener('blur', handleBlur)
     inputEdit.removeEventListener('keydown', handleEnter)
     editTask(currentTask.id, this.value)
-  }
+  };
   const handleEnter = function (event) {
     if (event.keyCode === 13) {
       inputEdit.removeEventListener('blur', handleBlur)
       inputEdit.removeEventListener('keydown', handleEnter)
       editTask(currentTask.id, this.value)
     }
-  }
+  };
 
   inputEdit.addEventListener('blur', handleBlur);
   inputEdit.addEventListener('keydown', handleEnter);
-
 }
 
+// layout delete button
 View.prototype.createDeleteBtn = function () {
   const btnDelete = document.createElement('div')
   btnDelete.className = 'btn-delete'
@@ -80,108 +160,135 @@ View.prototype.createDeleteBtn = function () {
   return btnDelete
 }
 
-// View.prototype.createDate = function (currentDate) {
-//   const date = document.createElement('div')
-//   date.className = 'date'
 
-//   const dateTimeText = document.createTextNode(currentDate)
-//   date.append(dateTimeText)
-
-//   return date;
-// }
-
-
+// render layout
 View.prototype.render = function () {
-  while (this.rootNode.lastChild) {
-    this.rootNode.removeChild(this.rootNode.lastChild)
-  }
+  const createTaskItem = this.createTaskItem.bind(this);
+  const root = this.rootNode;
+  this.handlers
+    .getState()
+    .then(function ({ filter, tasks }) {
+      while (root.lastChild) {
+        root.removeChild(root.lastChild);
+      }
+      const filteredTasks = tasks.sort(function (a, b) {
+        return a.order - b.order;
+      }).filter(function (task) {
+        if (filter === 'All') return task
+        if (filter === 'Completed') return task.status
+        if (filter === 'InCompleted') return !task.status
+      })
 
-  const tasks = this.handlers.getTasksFilter() // filtered tasks
 
-  for (let i = 0; i < tasks.length; i++) {
-    const currentTask = tasks[i]
+      const taskContainer = document.createDocumentFragment();
+      for (let i = 0; i < filteredTasks.length; i++) {
+        const currentTask = filteredTasks[i];
+        const item = createTaskItem(currentTask, tasks);
+        taskContainer.append(item);
+      }
 
-    this.createTask(currentTask)
-  }
-
+      root.append(taskContainer);
+    })
+    .catch(function (e) {
+      console.log(e)
+    });
 }
 
-View.prototype.createTask = function (currentTask) {
+// alignment components
+View.prototype.createTaskItem = function (currentTask, tasks) {
+  const deleteTask = this.deleteTask.bind(this);
+  const toggleStatus = this.toggleStatus.bind(this);
+  const editTask = this.editTask.bind(this);
+  const rootNode = this.rootNode;
+
   const taskElements = document.createElement('div');
   taskElements.className = 'tasks__item';
 
-  // drag and drop .....
-  this.rootNode.addEventListener(`dragstart`, function (event) {
-    event.target.classList.add(`selected`);
-  })
 
-  this.rootNode.addEventListener(`dragend`, function (event) {
-    event.target.classList.remove(`selected`);
+  taskElements.addEventListener('dragstart', function (event) {
+    console.log('dragstart', currentTask)
+    const orderStart = currentTask.order;
+    // console.log('orderStart', orderStart)
+
+    event.dataTransfer.setData('application/todo', currentTask.id);
+    event.dataTransfer.setData('application/todo/order', currentTask.order);
   });
 
-  // task item can be dragged
-  taskElements.draggable = true;
-
-  const rootNode = this.rootNode;
-  rootNode.addEventListener(`dragover`, function (event) {
+  taskElements.addEventListener('dragover', function (event) {
     event.preventDefault();
+  });
 
-    const activeElement = rootNode.querySelector(`.selected`);
-    const currentElement = event.target;
+  const editOrder = this.editOrder.bind(this);
+  taskElements.addEventListener('drop', function (event) {
+    console.log('drop currentTask', currentTask);
+    const dragId = event.dataTransfer.getData('application/todo');
+    const orderDrag = event.dataTransfer.getData('application/todo/order');
 
-    const isMoveable = activeElement !== currentElement && currentElement.classList.contains(`tasks__item`);
+    event.dataTransfer.clearData('application/todo');
+    // event.dataTransfer.clearData('application/todo/order');
 
-    if (!isMoveable) {
-      return;
-    }
+    const dropId = currentTask.id;
+    // console.log(currentTask.id[i])
 
-    let nextElement;
-    if (currentElement === activeElement.nextElementSibling) {
-      nextElement = currentElement.nextElementSibling
-    } else {
-      nextElement = currentElement
-    }
+    const dropOrder = currentTask.order;
+    const beforeDrop = dropOrder;
+    const afterDrop = dropOrder;
 
-    rootNode.insertBefore(activeElement, nextElement);
-  })
-
-  // drag and drop .
-
+    const index = tasks.findIndex(el => el.id === dropId);
+    console.log('index dropId', index - 1)
 
 
-  const switchTask = this.createTaskSwitch(currentTask)
+    // const last = tasks[current - 1];
+
+    console.log('tasks', tasks)
+    console.log('beforeDrop:', beforeDrop);
+
+    let order = (orderDrag - afterDrop) / 2;
+    console.log(order)
+
+    editOrder(dragId, order);
+
+  });
+
+  taskElements.addEventListener('dragend', function (event) {
+  });
+
+  taskElements.draggable = true;
+  taskElements.dropzone = true;
+
+  // handlers toggle
+  const switchTask = this.createTaskSwitch(currentTask);
   taskElements.append(switchTask)
-  const toggleTaskState = this.handlers.toggleTaskState
 
   switchTask.addEventListener('click', function (event) {
-    toggleTaskState(currentTask.id)
+    toggleStatus(currentTask.id, currentTask.status);
   })
 
+
+  // handlers edit
   const taskInputText = this.createTaskText(currentTask)
   taskElements.append(taskInputText)
 
-  const btnDeleteTask = this.createDeleteBtn()
-  taskElements.append(btnDeleteTask)
-  const deleteTask = this.handlers.deleteTask
-
-  btnDeleteTask.addEventListener('click', function (event) {
-    deleteTask(currentTask.id)
+  const createEdit = this.createEditText;
+  taskInputText.addEventListener('dblclick', function (event) {
+    createEdit(taskInputText, currentTask, editTask);
   })
 
 
-  // const date = this.createDate(currentTask.date)
-  // taskContent.append(date)
+  // handlers delete
+  const btnDeleteTask = this.createDeleteBtn()
+  taskElements.append(btnDeleteTask)
+
+  btnDeleteTask.addEventListener('click', function () {
+    deleteTask(currentTask.id);
+  })
+
 
   const idDrop = document.createElement('div');
   const idText = document.createTextNode(`[${currentTask.order}]`);
   idDrop.append(idText);
-  taskElements.append(idDrop)
+  taskElements.append(idDrop);
 
-  const editTask = this.handlers.editTask
-  const createEditText = this.createEditText.bind(this)
-  taskInputText.addEventListener('dblclick', function (event) {
-    createEditText(taskInputText, currentTask, editTask)
-  })
-
-  return this.rootNode.append(taskElements)
+  //return this.rootNode.append(taskElements);
+  return taskElements;
 }

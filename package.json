@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "firebase": "^8.7.1",
     "normalize.css": "^8.0.1"
   }
 }
