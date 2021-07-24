@@ -1,6 +1,8 @@
 const path = require('path');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
 
@@ -52,6 +54,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
+    new Dotenv({
+      path: './.env'
+    })
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
