@@ -5,14 +5,14 @@ import { Task } from './Task';
 
 export function TaskList() {
     const firebaseConfig = {
-        apiKey: process.env.FB_APIKEY,
-        authDomain: process.env.FB_AUTHDOMAIN,
-        databaseURL: process.env.FB_DATABASEURL,
-        projectId: process.env.FB_PROJECTID,
-        storageBucket: process.env.FB_STORAGEBUCKET,
-        messagingSenderId: process.env.FB_MESSAGINGSENDERID,
-        appId: process.env.FB_APPID,
-        measurementId: process.env.FB_MEASUREMENTID
+        apiKey: "AIzaSyCi-UOx-5q3TGuwm463fqEWHAPOCk7cqpQ",
+        authDomain: "todo-9dbb4.firebaseapp.com",
+        databaseURL: "https://todo-9dbb4-default-rtdb.firebaseio.com",
+        projectId: "todo-9dbb4",
+        storageBucket: "todo-9dbb4.appspot.com",
+        messagingSenderId: "853688421023",
+        appId: "1:853688421023:web:f1d13176b618de532cb0aa",
+        measurementId: "G-Y6BX7QZP6V"
     };
     this.app = firebase.initializeApp(firebaseConfig);
     this.filter = 'All';
