@@ -73,11 +73,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  position: relative;
 }
 
 .fa-check {
-  font-size: 24px;
+  font-size: 22px;
   color: rgb(129, 201, 67);
+  text-align: center;
+  align-items: center;
+  display: flex;
+  /* margin: 0;
+  position: absolute;              
+  top: 50%;                       
+  transform: translate(0, -50%) */
+}
+.fas {
+  line-height: 0px;
 }
 
 

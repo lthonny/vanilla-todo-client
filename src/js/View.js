@@ -89,7 +89,13 @@ View.prototype.createTaskSwitch = function (currentTask) {
   checkbox.className = 'fas fa-check';
   switchTask.append(checkbox);
 
-  if (currentTask.status) checkbox.style.color = 'rgb(129, 201, 67)';
+  if (currentTask.status === false) {
+    checkbox.classList.add('circle-toggle-false')
+    checkbox.classList.remove('fa-check')
+  } else {
+    // checkbox.style.color = '#d02a2a';
+    checkbox.classList.add('circle-toggle-false')
+  }
 
   return switchTask;
 }
