@@ -9,10 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <!-- favicon -->
-  <!-- <link rel="shortcut icon" href="src/images/favicon.svg?" /> -->
-  <!-- styles -->
-  <title>To Do</title>
+  <title>Todolist</title>
 </head>
 
 <body>
@@ -45,10 +42,16 @@
     </div>
   </section>
 
-
-  <div class='circle-toggle-false'></div>
-  <div class='circle-toggle-true'></div>
-
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Exactly remove?</p>
+      <div class="selection-by-buttons">
+        <button class="removebtn btn-delete-no">NO</button>
+        <button class="removebtn btn-delete-yes">YES</button>
+      </div>
+    </div>
+  </div>
 
   <!-- icons -->
   <script src="https://kit.fontawesome.com/50f730e0bb.js" crossorigin="anonymous"></script>

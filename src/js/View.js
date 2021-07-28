@@ -1,3 +1,5 @@
+// import './Views';
+
 export function View(rootNode) {
   this.rootNode = rootNode;
   this.handlers = {};
@@ -15,7 +17,6 @@ export function View(rootNode) {
         console.log(e);
       });
   }.bind(this);
-
 
   // add new todos
   addBtn.addEventListener('click', function () {
@@ -66,7 +67,6 @@ View.prototype.editOrder = function (id, order) {
     })
 }
 
-
 // edit todos
 View.prototype.editTask = function (id, text) {
   const render = this.render.bind(this);
@@ -89,12 +89,13 @@ View.prototype.createTaskSwitch = function (currentTask) {
   checkbox.className = 'fas fa-check';
   switchTask.append(checkbox);
 
+  const task = document.querySelectorAll('.tasks__item');
+
   if (currentTask.status === false) {
     checkbox.classList.add('circle-toggle-false')
     checkbox.classList.remove('fa-check')
   } else {
-    // checkbox.style.color = '#d02a2a';
-    checkbox.classList.add('circle-toggle-false')
+    checkbox.classList.add('circle-toggle-false');
   }
 
   return switchTask;
@@ -109,11 +110,14 @@ View.prototype.createTaskText = function (currentTask) {
   text.className = 'text'
   const p = document.createTextNode(`${currentTask.text}`)
 
-  if (currentTask.status) text.style.textDecoration = 'line-through'
+  if (currentTask.status) {
+    text.style.textDecoration = 'line-through';
+    text.style.color = 'green';
+  }
   text.append(p)
-  containerTaskText.append(text)
+  containerTaskText.append(text);
 
-  return containerTaskText
+  return containerTaskText;
 }
 
 // layout edit messages
@@ -166,6 +170,40 @@ View.prototype.createDeleteBtn = function () {
   return btnDelete
 }
 
+const modalWindow = function (btn, fnDelete, currentTask) {
+  const modal = document.getElementById("myModal");
+  const btnNo = document.querySelector('.btn-delete-no');
+  const btnYes = document.querySelector('.btn-delete-yes');
+  const span = document.getElementsByClassName("close")[0];
+
+  btn.addEventListener('click', () => {
+    modal.style.display = "block";
+  })
+  span.addEventListener('click', () => {
+    modal.style.display = "none";
+  })
+  btnNo.addEventListener('click', () => {
+    modal.style.display = "none";
+  })
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  document.addEventListener('keydown', function (event) {
+    if (event.keyCode === 27) {
+      modal.style.display = "none";
+    }
+  })
+
+  btnYes.addEventListener('click', () => {
+    // console.log('yes')
+    fnDelete(currentTask.id);
+    modal.style.display = "none";
+  })
+}
+
 
 // render layout
 View.prototype.render = function () {
@@ -205,11 +243,10 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   const deleteTask = this.deleteTask.bind(this);
   const toggleStatus = this.toggleStatus.bind(this);
   const editTask = this.editTask.bind(this);
-  const rootNode = this.rootNode;
+  const editOrder = this.editOrder.bind(this);
 
   const taskElements = document.createElement('div');
-  taskElements.className = 'tasks__item';
-
+  taskElements.className = 'tasks__item active';
 
   taskElements.addEventListener('dragstart', function (event) {
     event.dataTransfer.setData('application/todo', currentTask.id);
@@ -220,10 +257,6 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     event.preventDefault();
   });
 
-
-
-  const editOrder = this.editOrder.bind(this);
-
   taskElements.addEventListener('drop', function (event) {
     const dragId = event.dataTransfer.getData('application/todo');
     event.dataTransfer.clearData('application/todo');
@@ -233,8 +266,6 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     const index = tasks.findIndex(el => el.id === dropId);
     const afterDropIndex = index - 1;
     const beforeDropIndex = index + 1;
-
-    // console.log('tasks', tasks)
 
     let order;
     if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
@@ -279,10 +310,12 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   // handlers delete
   const btnDeleteTask = this.createDeleteBtn()
   taskElements.append(btnDeleteTask)
-
-  btnDeleteTask.addEventListener('click', function () {
-    deleteTask(currentTask.id);
+  btnDeleteTask.addEventListener('click', () => {
+    modalWindow(btnDeleteTask, deleteTask, currentTask);
   })
+  if (currentTask.status) {
+    taskElements.style.opacity = '0.6';
+  }
 
   return taskElements;
 }

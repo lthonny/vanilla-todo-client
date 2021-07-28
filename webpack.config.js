@@ -5,7 +5,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
-
 module.exports = {
   mode: "development",
   entry: [
@@ -52,7 +51,8 @@ module.exports = {
       filename: '[name].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/index.html',
+      favicon: "./src/img/favicon.svg"
     }),
     new Dotenv({
       path: './.env'
@@ -61,6 +61,6 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000,
+    port: 9999,
   },
 }

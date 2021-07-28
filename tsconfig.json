@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "es6",
+    "esModuleInterop": true,
+    "strict": false,
+    "sourceMap": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "noUnusedLocals": true
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
