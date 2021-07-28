@@ -40,9 +40,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@fortawesome/fontawesome-free": "^5.15.3",
     "dotenv": "^10.0.0",
     "firebase": "^8.7.1",
-    "normalize.css": "^8.0.1"
+    "source-map-loader": "^3.0.0",
+    "ts-loader": "^9.2.4"
   }
 }

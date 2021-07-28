@@ -1,9 +1,8 @@
-export function Task(id, text, status, date, order) {
+export function Task(id: Number, text: String, status: Boolean, order: Number) {
   this.id = id;
 
   this.text = text;
   this.status = status;
 
-  this.date = date;
   this.order = order;
 }

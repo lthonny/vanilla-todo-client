@@ -7,28 +7,27 @@ const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: "development",
-  entry: [
-    './src/index.js',
-    '@babel/polyfill'
-  ],
+  entry: "./src/index.ts",
+  // entry: [
+  //   './src/index.js',
+  //   '@babel/polyfill'
+  // ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    assetModuleFilename: 'assets/[hash][ext]',
+    filename: './dist/bundle.js'
+    // path: path.resolve(__dirname, 'dist'),
+    // filename: 'bundle.js',
+    // assetModuleFilename: 'assets/[hash][ext]',
   },
+  devtool: "source-map",
   module: {
     rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      { test: /\.js$/, loader: "source-map-loader" },
       // {
-      //   enforce: 'pre',
       //   test: /\.js$/,
-      //   loader: 'eslint-loader',
+      //   loader: 'babel-loader',
       //   exclude: '/node_modules/'
       // },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: '/node_modules/'
-      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
@@ -44,7 +43,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
   },
   plugins: [
     new MiniCssExtractPlugin({

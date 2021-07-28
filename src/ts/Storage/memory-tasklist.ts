@@ -1,11 +1,7 @@
-import { Task } from './Task';
+import { Task } from '../Task';
 
 export function TaskList() {
-    this.tasks = [
-        // {id: "7wdos7ev1", text: "Angular", status: false, date: "2021-07-15T14:25:20.647Z", order: 1},
-        // {id: "7wdos7ev1", text: "Express js", status: false, date: "2021-07-15T14:25:20.647Z", order: 2},
-        // {id: "7wdos7ev1", text: ".NET", status: false, date: "2021-07-15T14:25:20.647Z", order: 3},
-    ];
+    this.tasks = [];
     this.filter = 'All';
 }
 
@@ -14,52 +10,50 @@ TaskList.prototype.getTasks = function () {
     const tasks = this.tasks;
     return new Promise(function (resolve, reject) {
         try {
-            const drawingTasks = (tasks || []).map(function ({ id, text, status, date, order }) {
-                return new Task(id, text, status, date, order);
+            const drawingTasks = (tasks || []).map(function ({ id, text, status, order }) {
+                return new Task(id, text, status, order);
             })
             resolve(drawingTasks)
-        } catch (e) {
-            reject(e);
+        } catch (err: any) {
+            reject(err);
         }
     })
 }
 
 
-TaskList.prototype.createTask = function (text) {
+TaskList.prototype.createTask = function (text: String) {
     const tasks = this.tasks;
 
     return new Promise(function (resolve, reject) {
         try {
-            const date = new Date();
-
-            const id = Math.random().toString(36).substr(2, 9);
-            let order;
+            const id: any = Math.random().toString(36).substr(2, 9);
+            let order: any;
             if (tasks.length) {
-                order = tasks.reduce(function (acc, curr) {
+                order = tasks.reduce(function (acc: any, curr: any) {
                     return acc > curr.order ? acc : curr.order;
                 }, 1) + 1;
             } else {
                 order = 1;
             }
 
-            const task = new Task(id, text, false, date.toLocaleString(), order);
+            const task = new Task(id, text, false, order);
             tasks.push(task);
 
             resolve(tasks);
-        } catch (e) {
-            reject(e);
+        } catch (err: any) {
+            reject(err);
         }
     })
 }
 
 
-TaskList.prototype.editTask = function (id, taskData) {
+TaskList.prototype.editTask = function (id: Number, taskData: any) {
     const { text, status } = taskData;
     const tasks = this.tasks;
 
     return new Promise(function (resolve, reject) {
         try {
-            const index = tasks.findIndex(function (element) {
+            const index = tasks.findIndex(function (element: any) {
                 return element.id === id;
             })
 
@@ -72,34 +66,34 @@ TaskList.prototype.editTask = function (id, taskData) {
             }
 
             resolve(tasks);
-        } catch (e) {
-            reject(e);
+        } catch (err: any) {
+            reject(err);
         }
     })
 
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+TaskList.prototype.deleteTask = function (id: Number) {
     const tasks = this.tasks;
 
     return new Promise(function (resolve, reject) {
         try {
-            const elementIndex = tasks.findIndex(function (element) {
+            const elementIndex = tasks.findIndex(function (element: any) {
                 return element.id === id;
             })
 
             tasks.splice(elementIndex, 1);
 
             resolve(tasks);
-        } catch (e) {
-            reject(e);
+        } catch (err: any) {
+            reject(err);
         }
     })
 }
 
 
-TaskList.prototype.setFilter = function (filter) {
+TaskList.prototype.setFilter = function (filter: String) {
     if (filter === 'All') {
         this.filter = 'All';
     }

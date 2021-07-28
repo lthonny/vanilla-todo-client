@@ -1,10 +1,8 @@
-export function App(taskslist, view) {
+export function App(taskslist: any, view: any) {
   console.log('App init');
 
   const buttons = document.querySelectorAll('.btn');
   const allTasks = buttons[0], compTasks = buttons[1], inCompTasks = buttons[2];
-
-  // this.taskslist = taskslist;
 
   const getTasks = taskslist.getTasks.bind(taskslist);
   const createTask = taskslist.createTask.bind(taskslist);
@@ -12,7 +10,7 @@ export function App(taskslist, view) {
   const deleteTask = taskslist.deleteTask.bind(taskslist);
   const setFilter = taskslist.setFilter.bind(taskslist);
 
-  const filterTasks = function (filter) {
+  const filterTasks = function (filter: String) {
     setFilter(filter);
     this.view.render();
   }.bind(this);
@@ -31,7 +29,7 @@ export function App(taskslist, view) {
   const getState = function () {
     const { filter } = taskslist;
     return getTasks()
-      .then(function (tasks) {
+      .then(function (tasks: Object) {
         return { filter, tasks };
       })
   };

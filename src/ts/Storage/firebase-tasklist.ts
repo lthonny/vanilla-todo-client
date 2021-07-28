@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import { Task } from './Task';
+import { Task } from '../Task';
 
 export function TaskList() {
     const firebaseConfig = {
@@ -27,32 +27,30 @@ TaskList.prototype.getTasks = function () {
 
             db.collection("tasks")
                 .onSnapshot((snapshot) => {
-                    const data = snapshot.docs.map((doc) => ({
+                    const data: any = snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data(),
                     }));
 
-                    const tasks = (data).map(function ({ id, text, status, date, order }) {
-                        return new Task(id, text, status, date, order);
+                    const tasks = (data).map(function ({ id, text, status, order }) {
+                        return new Task(id, text, status, order);
                     })
                     resolve(data);
                 })
-        } catch (e) {
-            reject(e);
+        } catch (err: any) {
+            reject(err);
         }
     }
     )
 }
 
 
-TaskList.prototype.createTask = function (text) {
+TaskList.prototype.createTask = function (text: String) {
     const db = firebase.firestore();
 
     return this.getTasks()
         .then(function (tasks) {
-            const date = new Date();
-            // const id = Math.random().toString(36).substr(2, 9);
-            let order;
+            let order: Number;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
                     return acc > curr.order ? acc : curr.order;
@@ -62,20 +60,18 @@ TaskList.prototype.createTask = function (text) {
             }
 
             db.collection("tasks").add({
-                //     id: id,
                 text: text,
                 status: false,
-                data: date.toLocaleString(),
                 order: order
             })
         })
-        .catch(function (e) {
-            console.log(e);
+        .catch(function (err: any) {
+            console.log(err);
         })
 }
 
 
-TaskList.prototype.editTask = function (id, taskData) {
+TaskList.prototype.editTask = function (id: any, taskData) {
     const db = firebase.firestore();
     const { text, status } = taskData;
 
@@ -97,26 +93,26 @@ TaskList.prototype.editTask = function (id, taskData) {
                 taskData
             });
         })
-        .catch(function (e) {
-            console.log(e);
+        .catch(function (err: any) {
+            console.log(err);
         })
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+TaskList.prototype.deleteTask = function (id: any) {
     const db = firebase.firestore();
 
     return this.getTasks()
         .then(function (tasks) {
             db.collection('tasks').doc(id).delete();
         })
-        .catch(function (e) {
-            console.log(e);
+        .catch(function (err: any) {
+            console.log(err);
         })
 }
 
 
-TaskList.prototype.setFilter = function (filter) {
+TaskList.prototype.setFilter = function (filter: String) {
     if (filter === 'All') {
         this.filter = 'All';
     }

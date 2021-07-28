@@ -1,11 +1,11 @@
-import { Task } from './Task';
+import { Task } from '../Task';
 
-export function TaskList(baseUrl) {
+export function TaskList() {
     this.filter = 'All';
     this.key = 'tasks' || '[]';
 }
 
-TaskList.prototype.setItem = function (data) {
+TaskList.prototype.setItem = function (data: Object) {
     localStorage.setItem(this.key, JSON.stringify(data));
     return this;
 }
@@ -19,40 +19,39 @@ TaskList.prototype.getTasks = function () {
     const tasksItem = this.getItem();
     return new Promise(function (resolve, reject) {
         try {
-            const tasks = (tasksItem || []).map(function ({ id, text, status, date, order }) {
-                return new Task(id, text, status, date, order);
+            const tasks = (tasksItem || []).map(function ({ id, text, status, order }) {
+                return new Task(id, text, status, order);
             })
             resolve(tasks);
-        } catch (e) {
-            reject(e);
+        } catch (err: any) {
+            reject(err);
         }
     })
 }
 
 
-TaskList.prototype.createTask = function (text) {
+TaskList.prototype.createTask = function (text: String) {
     const setLocalStorage = this.setItem.bind(this);
 
     return this.getTasks()
-        .then(function (tasks) {
-            const date = new Date();
-            const id = Math.random().toString(36).substr(2, 9);
+        .then(function (tasks: any) {
+            const id: any = Math.random().toString(36).substr(2, 9);
             let order;
             if (tasks.length) {
-                order = tasks.reduce(function (acc, curr) {
+                order = tasks.reduce(function (acc: any, curr: any) {
                     return acc > curr.order ? acc : curr.order;
                 }, 1) + 1;
             } else {
                 order = 1;
             }
 
-            const task = new Task(id, text, false, date.toLocaleString(), order);
+            const task = new Task(id, text, false, order);
 
             tasks.push(task);
             setLocalStorage(tasks);
         })
-        .catch(function (e) {
-            console.log(e);
+        .catch(function (err: any) {
+            console.log(err);
         })
 }
 
@@ -62,8 +61,8 @@ TaskList.prototype.editTask = function (id, taskData) {
     const { text, status } = taskData;
 
     return this.getTasks()
-        .then(function (tasks) {
-            const index = tasks.findIndex(function (element) {
+        .then(function (tasks: any) {
+            const index = tasks.findIndex(function (element: any) {
                 return element.id === id;
             })
 
@@ -77,31 +76,31 @@ TaskList.prototype.editTask = function (id, taskData) {
 
             setLocalStorage(tasks);
         })
-        .catch(function (e) {
-            console.log(e);
+        .catch(function (err: any) {
+            console.log(err);
         })
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+TaskList.prototype.deleteTask = function (id: Number) {
     const setLocalStorage = this.setItem.bind(this);
 
     return this.getTasks()
-        .then(function (tasks) {
-            const index = tasks.findIndex(function (element) {
+        .then(function (tasks: any) {
+            const index = tasks.findIndex(function (element: any) {
                 return element.id === id;
             })
 
             tasks.splice(index, 1);
             setLocalStorage(tasks);
         })
-        .catch(function (e) {
-            console.log(e);
+        .catch(function (err: any) {
+            console.log(err);
         })
 }
 
 
-TaskList.prototype.setFilter = function (filter) {
+TaskList.prototype.setFilter = function (filter: String) {
     if (filter === 'All') {
         this.filter = 'All';
     }

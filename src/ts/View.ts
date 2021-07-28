@@ -1,29 +1,29 @@
 // import './Views';
 
-export function View(rootNode) {
+export function View(rootNode: String) {
   this.rootNode = rootNode;
   this.handlers = {};
-  const message = document.getElementById('message');
+  const message = <HTMLInputElement>document.getElementById('message');
   const addBtn = document.querySelector('.message-add');
 
   const render = this.render.bind(this);
 
-  const createNewTaskAction = function (text) {
+  const createNewTaskAction = function (text: String) {
     this.handlers.createTask(text)
       .then(function () {
         render();
       })
-      .catch(function (e) {
-        console.log(e);
+      .catch(function (err: any) {
+        console.log(err);
       });
   }.bind(this);
 
   // add new todos
   addBtn.addEventListener('click', function () {
     createNewTaskAction(message.value);
-    message.value = '';
+    message.value = ''
   })
-  message.addEventListener('keydown', function (event) {
+  message.addEventListener('keydown', function (event: any) {
     if (event.keyCode === 13) {
       createNewTaskAction(message.value);
       message.value = '';
@@ -32,50 +32,50 @@ export function View(rootNode) {
 }
 
 // delete todos
-View.prototype.deleteTask = function (id) {
+View.prototype.deleteTask = function (id: Number | String) {
   const render = this.render.bind(this);
   this.handlers.deleteTask(id)
     .then(function () {
       render();
     })
-    .catch(function (e) {
-      console.log('error delete: ', e);
+    .catch(function (err: any) {
+      console.log('error delete: ', err);
     })
 }
 
 // toggle todos
-View.prototype.toggleStatus = function (id, status) {
+View.prototype.toggleStatus = function (id: Number | String, status: Boolean) {
   const render = this.render.bind(this);
   this.handlers.editTask(id, { status })
     .then(function () {
       render();
     })
-    .catch(function (e) {
-      console.log('error edit status: ', e);
+    .catch(function (err: any) {
+      console.log('error edit status: ', err);
     })
 }
 
 // edit order
-View.prototype.editOrder = function (id, order) {
+View.prototype.editOrder = function (id: Number | String, order: Boolean) {
   const render = this.render.bind(this);
   this.handlers.editTask(id, { order })
     .then(function () {
       render();
     })
-    .catch(function (e) {
-      console.log('error edit order: ', e);
+    .catch(function (err: any) {
+      console.log('error edit order: ', err);
     })
 }
 
 // edit todos
-View.prototype.editTask = function (id, text) {
+View.prototype.editTask = function (id: Number | String, text: String) {
   const render = this.render.bind(this);
   this.handlers.editTask(id, { text })
     .then(function () {
       render();
     })
-    .catch(function (e) {
-      console.log('error edit text: ', e);
+    .catch(function (err: any) {
+      console.log('error edit text: ', err);
     })
 }
 
@@ -92,8 +92,8 @@ View.prototype.createTaskSwitch = function (currentTask) {
   const task = document.querySelectorAll('.tasks__item');
 
   if (currentTask.status === false) {
-    checkbox.classList.add('circle-toggle-false')
-    checkbox.classList.remove('fa-check')
+    checkbox.classList.add('circle-toggle-false');
+    checkbox.classList.remove('fa-check');
   } else {
     checkbox.classList.add('circle-toggle-false');
   }
@@ -134,18 +134,18 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
   inputEdit.value = currentTask.text;
   inputDiv.append(inputEdit);
 
-  inputEdit.addEventListener('focus', function (event) {
+  inputEdit.addEventListener('focus', function (event: any) {
     event.target.style.background = '#dff2ef'
   });
   inputEdit.focus();
 
-  const handleBlur = function (event) {
+  const handleBlur = function (event: any) {
     event.target.style.background = ''
     inputEdit.removeEventListener('blur', handleBlur)
     inputEdit.removeEventListener('keydown', handleEnter)
     editTask(currentTask.id, this.value)
   };
-  const handleEnter = function (event) {
+  const handleEnter = function (event: any) {
     if (event.keyCode === 13) {
       inputEdit.removeEventListener('blur', handleBlur)
       inputEdit.removeEventListener('keydown', handleEnter)
@@ -191,14 +191,13 @@ const modalWindow = function (btn, fnDelete, currentTask) {
     }
   }
 
-  document.addEventListener('keydown', function (event) {
+  document.addEventListener('keydown', function (event: any) {
     if (event.keyCode === 27) {
       modal.style.display = "none";
     }
   })
 
   btnYes.addEventListener('click', () => {
-    // console.log('yes')
     fnDelete(currentTask.id);
     modal.style.display = "none";
   })
@@ -233,8 +232,8 @@ View.prototype.render = function () {
 
       root.append(taskContainer);
     })
-    .catch(function (e) {
-      console.log(e)
+    .catch(function (err: any) {
+      console.log(err);
     });
 }
 
@@ -248,16 +247,16 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   const taskElements = document.createElement('div');
   taskElements.className = 'tasks__item active';
 
-  taskElements.addEventListener('dragstart', function (event) {
+  taskElements.addEventListener('dragstart', function (event: any) {
     event.dataTransfer.setData('application/todo', currentTask.id);
     event.target.classList.add('selected');
   });
 
-  taskElements.addEventListener('dragover', function (event) {
+  taskElements.addEventListener('dragover', function (event: any) {
     event.preventDefault();
   });
 
-  taskElements.addEventListener('drop', function (event) {
+  taskElements.addEventListener('drop', function (event: any) {
     const dragId = event.dataTransfer.getData('application/todo');
     event.dataTransfer.clearData('application/todo');
 
@@ -267,7 +266,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     const afterDropIndex = index - 1;
     const beforeDropIndex = index + 1;
 
-    let order;
+    let order: Number;
     if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
       order = tasks[index].order / 2;
     }
@@ -282,8 +281,6 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     editOrder(dragId, order);
   });
 
-
-  // dragenter
   // event.target.classList.remove('selected');
   taskElements.draggable = true;
   // taskElements.dropzone = true;
@@ -292,7 +289,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   const switchTask = this.createTaskSwitch(currentTask);
   taskElements.append(switchTask)
 
-  switchTask.addEventListener('click', function (event) {
+  switchTask.addEventListener('click', function (event: any) {
     toggleStatus(currentTask.id, currentTask.status);
   })
 
@@ -302,7 +299,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   taskElements.append(taskInputText)
 
   const createEdit = this.createEditText;
-  taskInputText.addEventListener('dblclick', function (event) {
+  taskInputText.addEventListener('dblclick', function (event: any) {
     createEdit(taskInputText, currentTask, editTask);
   })
 
