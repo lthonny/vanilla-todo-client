@@ -1,8 +1,10 @@
-import { Task } from '../Task';
+import Task from '../Task';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-class TaskList {
+export default class TaskList {
+    filter: 'All' | 'Completed' | 'InCompleted';
+
     constructor() {
         const firebaseConfig = {
             apiKey: "AIzaSyCi-UOx-5q3TGuwm463fqEWHAPOCk7cqpQ",
@@ -36,19 +38,19 @@ class TaskList {
                         })
                         resolve(data);
                     })
-            } catch (err) {
+            } catch (err: any) {
                 reject(err);
             }
         }
         )
     }
 
-    createTask(text) {
+    createTask(text: string) {
         const db = firebase.firestore();
 
         return this.getTasks()
             .then(tasks => {
-                let order;
+                let order: number;
                 if (tasks.length) {
                     order = tasks.reduce((acc, curr) => {
                         return acc > curr.order ? acc : curr.order;
@@ -63,10 +65,10 @@ class TaskList {
                     order: order
                 })
             })
-            .catch(err => console.log(err));
+            .catch((err: any) => console.log(err));
     }
 
-    editTask(id, taskData) {
+    editTask(id: string, taskData) {
         const db = firebase.firestore();
         const { text, status } = taskData;
 
@@ -88,20 +90,20 @@ class TaskList {
                     taskData
                 });
             })
-            .catch(err => console.log(err));
+            .catch((err: any) => console.log(err));
     }
 
-    deleteTask(id) {
+    deleteTask(id: string) {
         const db = firebase.firestore();
 
         return this.getTasks()
             .then(tasks => {
                 db.collection('tasks').doc(id).delete();
             })
-            .catch(err => console.log(err));
+            .catch((err: any) => console.log(err));
     }
 
-    setFilter(filter) {
+    setFilter(filter: string): void {
         if (filter === 'All') {
             this.filter = 'All';
         }

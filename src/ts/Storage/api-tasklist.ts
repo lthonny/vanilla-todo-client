@@ -1,5 +1,8 @@
-class TaskList {
-  constructor(baseUrl) {
+export default class TaskList {
+  baseUrl: string;
+  filter: 'All' | 'Completed' | 'InCompleted';
+
+  constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
     this.filter = 'All'
   }
@@ -18,7 +21,7 @@ class TaskList {
   }
 
 
-  createTask(text) {
+  createTask(text: string) {
     const endpoint = `${this.baseUrl}/tasks`;
     const response = fetch(endpoint, {
       method: 'POST',
@@ -56,7 +59,7 @@ class TaskList {
   }
 
 
-  setFilter(filter) {
+  setFilter(filter: string): void {
     if (filter === 'All') {
       this.filter = 'All';
     }
@@ -68,5 +71,3 @@ class TaskList {
     }
   }
 }
-
-exports.module = TaskList;

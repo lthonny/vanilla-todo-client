@@ -1,6 +1,9 @@
-import { Task } from '../Task';
+import Task from '../Task';
 
-class TaskList {
+export default class TaskList {
+    filter: 'All' | 'Completed' | 'InCompleted';
+    key: string | [];
+
     constructor() {
         this.filter = 'All';
         this.key = 'tasks' || '[]';
@@ -15,7 +18,7 @@ class TaskList {
         return JSON.parse(localStorage.getItem(this.key));
     }
 
-    getTasks() {
+    getTasks(): Promise<Task[]> {
         const tasksItem = this.getItem();
         return new Promise((resolve, reject) => {
             try {
@@ -23,19 +26,19 @@ class TaskList {
                     return new Task(id, text, status, order);
                 })
                 resolve(tasks);
-            } catch (err) {
+            } catch (err: any) {
                 reject(err);
             }
         })
     }
 
-    createTask(text) {
+    createTask(text: string) {
         const setLocalStorage = this.setItem.bind(this);
 
         return this.getTasks()
             .then(tasks => {
                 const id = Math.random().toString(36).substr(2, 9);
-                let order;
+                let order: number;
                 if (tasks.length) {
                     order = tasks.reduce((acc, curr) => {
                         return acc > curr.order ? acc : curr.order;
@@ -49,7 +52,7 @@ class TaskList {
                 tasks.push(task);
                 setLocalStorage(tasks);
             })
-            .catch(err => console.log(err));
+            .catch((err: any) => console.log(err));
     }
 
     editTask(id, taskData) {
@@ -72,12 +75,10 @@ class TaskList {
 
                 setLocalStorage(tasks);
             })
-            .catch(err => console.log(err));
+            .catch((err: any) => console.log(err));
     }
 
     deleteTask(id) {
-        const setLocalStorage = this.setItem.bind(this);
-
         return this.getTasks()
             .then(tasks => {
                 const index = tasks.findIndex(element => {
@@ -87,10 +88,10 @@ class TaskList {
                 tasks.splice(index, 1);
                 this.setItem(tasks);
             })
-            .catch(err => console.log(err));
+            .catch((err: any) => console.log(err));
     }
 
-    setFilter(filter) {
+    setFilter(filter: string): void {
         if (filter === 'All') {
             this.filter = 'All';
         }
