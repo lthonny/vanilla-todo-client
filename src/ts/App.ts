@@ -1,26 +1,33 @@
 export default class App {
-  taskslist: any;
-  view: any;
 
-  constructor(taskslist: any, view: any) {
+  constructor(
+    public taskslist: any,
+    public view: any,
+  ) {
     console.log('App init');
 
-    this.taskslist = taskslist;
-    this.view = view;
+    const getElemId = (id: string) => document.getElementById(id);
+    const allTasks: HTMLElement = getElemId('btn-all');
+    const compTasks: HTMLElement = getElemId('btn-completed');
+    const inCompTasks: HTMLElement = getElemId('btn-incompleted');
 
-    const allTasks: HTMLElement = document.getElementById('btn-all');
-    const compTasks: HTMLElement = document.getElementById('btn-completed');
-    const inCompTasks: HTMLElement = document.getElementById('btn-incompleted')
 
-    allTasks.addEventListener('click', () => this.filterTasks('All'));
-    compTasks.addEventListener('click', () => this.filterTasks('Completed'));
-    inCompTasks.addEventListener('click', () => this.filterTasks('InCompleted'));
+    const handlerFilter = (btn, statusFilter) => {
+      return btn.addEventListener('click',
+        () => this.filterTasks(statusFilter));
+    }
 
+    handlerFilter(allTasks, 'All');
+    handlerFilter(compTasks, 'Completed');
+    handlerFilter(inCompTasks, 'InCompleted');
+
+
+    const tasklist = this.taskslist;
+    const createTask = tasklist.createTask.bind(taskslist);
+    const deleteTask = tasklist.deleteTask.bind(taskslist);
+    const editTask = tasklist.editTask.bind(taskslist);
 
     const getState = this.getState.bind(this);
-    const createTask = this.taskslist.createTask.bind(taskslist);
-    const deleteTask = this.taskslist.deleteTask.bind(taskslist);
-    const editTask = this.taskslist.editTask.bind(taskslist);
 
     const handlers: object = {
       getState,

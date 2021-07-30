@@ -1,73 +1,56 @@
 import Task from "./Task";
+// import { DOMElements } from './components/index';
 
 export default class View {
-  rootNode: HTMLElement;
   handlers: any;
 
-  constructor(rootNode: HTMLElement) {
-    this.rootNode = rootNode;
+  constructor(
+    public rootNode: HTMLElement
+  ) {
     this.handlers = {};
 
     const message: HTMLInputElement = document.getElementById('message') as HTMLInputElement;
     const addBtn: HTMLButtonElement = document.querySelector('.message-add');
-    // CONST A: DocumentFragment
 
-    // const handlers = this.handlers.bind(this);
-
-    addBtn.addEventListener('click', (e: any): void => {
+    const crearMessage = () => {
       this.createNewTaskAction(message.value);
       message.value = '';
-    })
-    message.addEventListener('keydown', (e: any): void => {
-      if (e.keyCode === 13) {
-        this.createNewTaskAction(message.value);
-        message.value = '';
-      }
-    })
+    }
 
-    console.log('this.handlers', this.handlers)
+    addBtn.addEventListener('click', (e: any): void => crearMessage());
+    message.addEventListener('keydown', (e: any): void => {
+      if (e.keyCode === 13) crearMessage();
+    })
   }
 
   createNewTaskAction(text: string): void {
     this.handlers.createTask(text)
       .then(() => this.render())
-      .catch((err: any) => {
-        console.log('error create', err)
-      })
+      .catch((e: any) => e);
   }
 
   deleteTask(id: string | number): void {
-    console.log('id', id);
-    console.log('this.handlers', this.handlers)
-    // this.handlers.deleteTask(id)
-    //   .then(() => this.render())
-    //   .catch((err: any) => {
-    //     console.log('error delete: ', err)
-    //   })
+    this.handlers.deleteTask(id)
+      .then(() => this.render())
+      .catch((e: any) => e);
   }
 
   toggleStatus(id: string | number, status: boolean): void {
     this.handlers.editTask(id, { status })
       .then(() => this.render())
-      .catch((err: any) => {
-        console.log('error edit status: ', err)
-      })
+      .catch((e: any) => e);
   }
 
-  // editOrder(id: string | number, order: number): void {
-  //   this.handlers.editTask(id, { order })
-  //     .then(() => this.render())
-  //     .catch((err: any) => {
-  //       console.log('error edit order: ', err);
-  //     })
-  // }
+  editOrder(id: string | number, order: number): void {
+    this.handlers.editTask(id, { order })
+      .then(() => this.render())
+      .catch((e: any) => e);
+  }
 
   editTask(id: string | number, text: string): void {
     this.handlers.editTask(id, { text })
       .then(() => this.render())
-      .catch((err: any) => {
-        console.log('error edit text: ', err);
-      })
+      .catch((e: any) => e);
   }
 
   createTaskSwitch(currentTask: HTMLElement): HTMLElement {
@@ -155,30 +138,30 @@ export default class View {
     return btnDelete;
   }
 
-  modalWindow(btn, fnDelete, currentTask) {
+  modalWindow(btnDel, currentTask) {
     const modal = document.getElementById("myModal");
+    const span = document.querySelector(".close");
     const btnNo = document.querySelector('.btn-delete-no');
     const btnYes = document.querySelector('.btn-delete-yes');
-    const span = document.getElementsByClassName("close")[0];
 
-    btn.addEventListener('click', () => modal.style.display = "block");
-    span.addEventListener('click', () => modal.style.display = "none");
-    btnNo.addEventListener('click', () => modal.style.display = "none");
+    const eventDisplay = (region, display) => {
+      return region.addEventListener('click', () => modal.style.display = display);
+    }
+    eventDisplay(btnDel, "block");
+    eventDisplay(btnNo, "none");
+    eventDisplay(span, "none");
+
     window.addEventListener('click', (e): void => {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
+      if (e.target === modal) modal.style.display = "none";
     })
 
     document.addEventListener('keydown', (e): void => {
-      if (e.keyCode === 27) {
-        modal.style.display = "none";
-      }
+      if (e.keyCode === 27) modal.style.display = "none";
     })
 
     btnYes.addEventListener('click', (e): void => {
-      console.log('gg');
-      fnDelete(currentTask.id);
+      this.deleteTask(currentTask.id);
+      console.log('id', currentTask.id)
       modal.style.display = "none";
     })
   }
@@ -191,14 +174,14 @@ export default class View {
         while (root.lastChild) {
           root.removeChild(root.lastChild);
         }
-        console.log(filter, tasks)
+        // console.log(filter, tasks)
         const filteredTasks = tasks.sort((a, b) => {
           return a.order - b.order;
         }).filter(task => {
-          return task;
-          // if (filter === 'All') return task;
-          // if (filter === 'Completed') return task.status;
-          // if (filter === 'InCompleted') return !task.status;
+          // return task;
+          if (filter === 'All') return task;
+          if (filter === 'Completed') return task.status;
+          if (filter === 'InCompleted') return !task.status;
         })
 
 
@@ -211,15 +194,14 @@ export default class View {
 
         root.append(taskContainer);
       })
-      .catch((err: any) => console.log(err));
+      .catch((err: any) => err);
   }
 
 
-  createTaskItem = function (currentTask, tasks: Task[]): HTMLElement {
-    const deleteTask = this.deleteTask;
-    // const toggleStatus = this.toggleStatus.bind(this);
-    // const editTask = this.editTask.bind(this);
-    // const editOrder = this.editOrder.bind(this);
+  createTaskItem(currentTask, tasks: Task[]): HTMLElement {
+    const editTask = this.editTask.bind(this);
+    const editOrder = this.editOrder.bind(this);
+
 
     const taskElements = document.createElement('div');
     taskElements.className = 'tasks__item active';
@@ -255,34 +237,33 @@ export default class View {
         order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
       }
 
-      this.editOrder(dragId, order);
+      editOrder(dragId, order);
     });
 
     taskElements.draggable = true;
 
     // handlers toggle
     const switchTask = this.createTaskSwitch(currentTask);
-    taskElements.append(switchTask)
+    taskElements.append(switchTask);
 
     switchTask.addEventListener('click', (e: any): void => {
       this.toggleStatus(currentTask.id, currentTask.status);
     })
 
-
     // handlers edit
-    const taskInputText = this.createTaskText(currentTask)
-    taskElements.append(taskInputText)
+    const taskInputText = this.createTaskText(currentTask);
+    taskElements.append(taskInputText);
 
     taskInputText.addEventListener('dblclick', (e: any): void => {
-      this.createEditText(taskInputText, currentTask, this.editTask);
+      this.createEditText(taskInputText, currentTask, editTask);
     })
 
 
     // handlers delete
-    const btnDeleteTask = this.createDeleteBtn()
-    taskElements.append(btnDeleteTask)
-    btnDeleteTask.addEventListener('click', () => {
-      this.modalWindow(btnDeleteTask, deleteTask, currentTask);
+    const btnDel = this.createDeleteBtn();
+    taskElements.append(btnDel);
+    btnDel.addEventListener('click', () => {
+      this.modalWindow(btnDel, currentTask);
     })
     if (currentTask.status) {
       taskElements.style.opacity = '0.6';

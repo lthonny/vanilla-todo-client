@@ -78,7 +78,7 @@ export default class TaskList {
             .catch((err: any) => console.log(err));
     }
 
-    deleteTask(id) {
+    deleteTask(id: string | number) {
         return this.getTasks()
             .then(tasks => {
                 const index = tasks.findIndex(element => {

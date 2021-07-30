@@ -1,9 +1,9 @@
 export default class TaskList {
-  baseUrl: string;
   filter: 'All' | 'Completed' | 'InCompleted';
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor(
+    public baseUrl: string
+  ) {
     this.filter = 'All'
   }
 

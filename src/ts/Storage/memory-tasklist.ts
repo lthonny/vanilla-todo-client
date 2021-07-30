@@ -7,8 +7,8 @@ enum FiltersValues {
 }
 
 export default class TaskList {
-    tasks: Task[] = [];
-    filter: FiltersValues;
+    tasks: Array<Task> = [];
+    filter: FiltersValues = FiltersValues.All;
 
     getTasks(): Promise<Task[]> {
         return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ export default class TaskList {
 
     createTask(text: string) {
         const tasks = this.tasks;
-        return new Promise((resolve, reject) => {
+        return new Promise<Task[]>((resolve, reject) => {
             try {
                 const id = Math.random().toString(36).substr(2, 9);
                 let order: number;
@@ -73,10 +73,10 @@ export default class TaskList {
 
     deleteTask(id: number | string) {
         const tasks = this.tasks;
-        return new Promise((resolve, reject) => {
+        return new Promise<Task[]>((resolve, reject) => {
             try {
+                console.log('I promise', id)
                 const index = tasks.findIndex(el => el.id === id);
-
                 tasks.splice(index, 1);
 
                 resolve(tasks);
@@ -88,13 +88,13 @@ export default class TaskList {
 
     setFilter(filter: string): void {
         if (filter === 'All') {
-            this.filter = FiltersValues['All'];
+            this.filter = FiltersValues.All;
         }
         if (filter === 'Completed') {
-            this.filter = FiltersValues['Completed'];
+            this.filter = FiltersValues.Completed;
         }
         if (filter === 'InCompleted') {
-            this.filter = FiltersValues['InCompleted'];
+            this.filter = FiltersValues.InCompleted;
         }
     }
 }

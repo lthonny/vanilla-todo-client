@@ -9,19 +9,27 @@ export default class Task {
 }
 
 
-// export default class Task {
+// const arr: number[] = [1, 2, 3, 4];
+const arr: Array<number> = [1, 2, 3, 4];
 
-//   id: string;
-//   text: string;
-//   status: boolean;
-//   order: number;
+console.log(arr);
 
-//   constructor(id: string, text: string, status: boolean, order: number) {
-//     this.id = id;
-//     this.text = text;
-//     this.status = status;
-//     this.order = order;
-//   }
+interface Iuser {
+  id: number,
+  name: string,
+  age: number
+}
 
-// }
+const users: Array<Iuser> = [
+  { id: 1, name: 'F', age: 23 },
+  { id: 1, name: 'F', age: 23 },
+  { id: 1, name: 'F', age: 23 },
+]
 
+const users: Iuser[] = [
+  { id: 1, name: 'F', age: 23 },
+  { id: 1, name: 'F', age: 23 },
+  { id: 1, name: 'F', age: 23 },
+]
+
+console.log(users);
