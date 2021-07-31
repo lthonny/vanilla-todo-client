@@ -1,11 +1,12 @@
-import Task from '../Task';
+import { Task } from "../Task";
+import { TasksList } from './../../index';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-export default class TaskList {
-    filter: 'All' | 'Completed' | 'InCompleted';
+export class InMemoryTasksList extends TasksList {
 
     constructor() {
+        super();
         const firebaseConfig = {
             apiKey: "AIzaSyCi-UOx-5q3TGuwm463fqEWHAPOCk7cqpQ",
             authDomain: "todo-9dbb4.firebaseapp.com",
@@ -17,10 +18,9 @@ export default class TaskList {
             measurementId: "G-Y6BX7QZP6V"
         };
         this.app = firebase.initializeApp(firebaseConfig);
-        this.filter = 'All';
     }
 
-    getTasks() {
+    getTasks(): Promise<Task[]> {
         const db = firebase.firestore();
 
         return new Promise((resolve, reject) => {
@@ -68,7 +68,7 @@ export default class TaskList {
             .catch((err: any) => console.log(err));
     }
 
-    editTask(id: string, taskData) {
+    editTask(id: number | string, taskData: { text: string, status: boolean }) {
         const db = firebase.firestore();
         const { text, status } = taskData;
 
@@ -93,7 +93,7 @@ export default class TaskList {
             .catch((err: any) => console.log(err));
     }
 
-    deleteTask(id: string) {
+    deleteTask(id: number | string) {
         const db = firebase.firestore();
 
         return this.getTasks()
@@ -102,18 +102,5 @@ export default class TaskList {
             })
             .catch((err: any) => console.log(err));
     }
-
-    setFilter(filter: string): void {
-        if (filter === 'All') {
-            this.filter = 'All';
-        }
-        if (filter === 'Completed') {
-            this.filter = 'Completed';
-        }
-        if (filter === 'InCompleted') {
-            this.filter = 'InCompleted';
-        }
-    }
 }
 
-exports.module = TaskList;

@@ -1,18 +1,12 @@
 import '../src/assets/styles/style.css';
-import App from './ts/App';
-import View from './ts/View';
-
-// import TaskList from './ts/Storage/memory-tasklist';
-import TaskList from './ts/Storage/local-tasklist';
-// import TaskList from './ts/Storage/api-tasklist';
-// import TaskList from './ts/Storage/firebase-tasklist';
-
+import { App } from './ts/App';
+import { View } from './ts/View';
+import { InMemoryTasksList } from './ts/storage/memory-tasklist';
+// import { InMemoryTasksList } from './ts/storage/local-tasklist';
+// import { InMemoryTasksList } from './ts/storage/api-tasklist';
+// import { InMemoryTasksList } from './ts/storage/firebase-tasklist';
 
 document.addEventListener('DOMContentLoaded', (): void => {
-  const rootNode: HTMLElement = document.querySelector('.tasks__list');
-  const view: View = new View(rootNode);
-  const tasklist: TaskList = new TaskList('http://localhost:3000');
-  const app: App = new App(tasklist, view);
+  const app: App = new App(InMemoryTasksList, View);
   app.render();
 });
-

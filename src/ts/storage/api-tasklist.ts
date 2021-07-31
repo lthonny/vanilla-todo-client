@@ -1,14 +1,17 @@
-export default class TaskList {
-  filter: 'All' | 'Completed' | 'InCompleted';
+import process from "dotenv/config";
+import { TasksList } from './../../index';
+import { Task } from "../Task";
+
+export class InMemoryTasksList extends TasksList {
 
   constructor(
-    public baseUrl: string
+    private baseUrl: process.env.URL
   ) {
-    this.filter = 'All'
+    super();
   }
 
 
-  getTasks() {
+  getTasks(): Promise<Task[]> {
     const endpoint = `${this.baseUrl}/tasks`;
     const response = fetch(endpoint, {
       method: 'GET',
@@ -35,7 +38,7 @@ export default class TaskList {
   }
 
 
-  editTask(id, taskData) {
+  editTask(id: number | string, taskData: { text: string, status: boolean }) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
       method: 'PUT',
@@ -49,25 +52,12 @@ export default class TaskList {
   }
 
 
-  deleteTask(id) {
+  deleteTask(id: number | string) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
       method: 'DELETE',
     });
 
     return response.then((response) => response.json());
-  }
-
-
-  setFilter(filter: string): void {
-    if (filter === 'All') {
-      this.filter = 'All';
-    }
-    if (filter === 'Completed') {
-      this.filter = 'Completed';
-    }
-    if (filter === 'InCompleted') {
-      this.filter = 'InCompleted';
-    }
   }
 }

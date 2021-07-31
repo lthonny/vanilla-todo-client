@@ -9,7 +9,13 @@
     "sourceMap": true,
     "module": "commonjs",
     "removeComments": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "baseUrl": "src",
+    "paths": {
+      "@interfaces": [
+        "ts/*"
+      ]
+    }
   },
   "include": [
     "./src/**/*"

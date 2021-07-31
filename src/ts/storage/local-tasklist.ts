@@ -1,19 +1,16 @@
-import Task from '../Task';
+import { TasksList } from './../../index';
+import { Task } from "../Task";
 
-export default class TaskList {
-    filter: 'All' | 'Completed' | 'InCompleted';
-    key: string | [];
-
+export class InMemoryTasksList extends TasksList {
     constructor() {
-        this.filter = 'All';
-        this.key = 'tasks' || '[]';
+        super();
     }
-
 
     setItem(data) {
         localStorage.setItem(this.key, JSON.stringify(data));
         return this;
     }
+
     getItem() {
         return JSON.parse(localStorage.getItem(this.key));
     }
@@ -55,7 +52,7 @@ export default class TaskList {
             .catch((err: any) => console.log(err));
     }
 
-    editTask(id, taskData) {
+    editTask(id: number | string, taskData: { text: string, status: boolean }) {
         const setLocalStorage = this.setItem.bind(this);
         const { text, status } = taskData;
 
@@ -78,7 +75,7 @@ export default class TaskList {
             .catch((err: any) => console.log(err));
     }
 
-    deleteTask(id: string | number) {
+    deleteTask(id: number | string) {
         return this.getTasks()
             .then(tasks => {
                 const index = tasks.findIndex(element => {
@@ -90,18 +87,5 @@ export default class TaskList {
             })
             .catch((err: any) => console.log(err));
     }
-
-    setFilter(filter: string): void {
-        if (filter === 'All') {
-            this.filter = 'All';
-        }
-        if (filter === 'Completed') {
-            this.filter = 'Completed';
-        }
-        if (filter === 'InCompleted') {
-            this.filter = 'InCompleted';
-        }
-    }
 }
 
-exports.module = TaskList;

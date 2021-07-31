@@ -1,15 +1,10 @@
-import Task from '../Task';
+import { Task } from "../Task";
+import { TasksList } from './../types';
 
-enum FiltersValues {
-    'All',
-    'Completed',
-    'InCompleted'
-}
-
-export default class TaskList {
-    tasks: Array<Task> = [];
-    filter: FiltersValues = FiltersValues.All;
-
+export class InMemoryTasksList extends TasksList {
+    constructor() {
+        super();
+    }
     getTasks(): Promise<Task[]> {
         return new Promise((resolve, reject) => {
             try {
@@ -24,21 +19,23 @@ export default class TaskList {
     }
 
     createTask(text: string) {
-        const tasks = this.tasks;
+        const { tasks } = this;
         return new Promise<Task[]>((resolve, reject) => {
             try {
                 const id = Math.random().toString(36).substr(2, 9);
                 let order: number;
-                console.log('tasks', tasks)
-                if (tasks.length) {
-                    order = tasks.reduce((acc, curr) => {
-                        return acc > curr.order ? acc : curr.order;
-                    }, 1) + 1;
-                } else {
-                    order = 1;
-                }
+                // console.log('tasks', tasks)
+                // if (tasks.length) {
+                //     order = tasks.reduce((acc, curr) => {
+                //         return acc > curr.order ? acc : curr.order;
+                //     }, 1) + 1;
+                // } else {
+                //     order = 1;
+                // }
 
-                const task = new Task(id, text, false, order);
+                const task = new Task(id, text, false, order = 3);
+                // console.log('task type', typeof task)
+                // console.log('tasks type', typeof tasks)
                 tasks.push(task);
 
                 resolve(tasks);
@@ -85,16 +82,5 @@ export default class TaskList {
             }
         })
     }
-
-    setFilter(filter: string): void {
-        if (filter === 'All') {
-            this.filter = FiltersValues.All;
-        }
-        if (filter === 'Completed') {
-            this.filter = FiltersValues.Completed;
-        }
-        if (filter === 'InCompleted') {
-            this.filter = FiltersValues.InCompleted;
-        }
-    }
 }
+
