@@ -1,5 +1,5 @@
 import { Task } from './Task';
-import { IAppHandlers } from './types';
+import { IAppHandlers, FiltersValues } from './types';
 
 export class View {
 
@@ -23,36 +23,35 @@ export class View {
   }
 
   createNewTaskAction(text: string): void {
-    // console.log(this.handlers)
     this.handlers.createTask(text)
       .then(data => console.log(data))
       .then(() => this.render())
       .catch((e: any) => e);
   }
 
-  // deleteTask(id: string | number): void {
-  //   this.handlers.deleteTask(id)
-  //     .then(() => this.render())
-  //     .catch((e: any) => e);
-  // }
+  deleteTask(id: string | number): void {
+    this.handlers.deleteTask(id)
+      .then(() => this.render())
+      .catch((e: any) => e);
+  }
 
-  // toggleStatus(id: string | number, status: boolean): void {
-  //   this.handlers.editTask(id, { status })
-  //     .then(() => this.render())
-  //     .catch((e: any) => e);
-  // }
+  toggleStatus(id: string | number, status: boolean): void {
+    this.handlers.editTask(id, { status })
+      .then(() => this.render())
+      .catch((e: any) => e);
+  }
 
-  // editOrder(id: string | number, order: number): void {
-  //   this.handlers.editTask(id, { order })
-  //     .then(() => this.render())
-  //     .catch((e: any) => e);
-  // }
+  editOrder(id: string | number, order: number): void {
+    this.handlers.editTask(id, { order })
+      .then(() => this.render())
+      .catch((e: any) => e);
+  }
 
-  // editTask(id: string | number, text: string): void {
-  //   this.handlers.editTask(id, { text })
-  //     .then(() => this.render())
-  //     .catch((e: any) => e);
-  // }
+  editTask(id: string | number, text: string): void {
+    this.handlers.editTask(id, { text })
+      .then(() => this.render())
+      .catch((e: any) => e);
+  }
 
   createTaskSwitch(currentTask: any): HTMLElement {
     const switchTask = document.createElement('div');
@@ -176,14 +175,15 @@ export class View {
         while (root.lastChild) {
           root.removeChild(root.lastChild);
         }
-        // console.log(filter, tasks)
+        // console.log(filter, tasks);
         const filteredTasks = tasks.sort((a, b) => {
           return a.order - b.order;
         }).filter(task => {
+          console.log(filter)
           return task;
-          // if (filter === FiltersValues.All) return task;
-          // if (filter === FiltersValues.Completed) return task.status;
-          // if (filter === FiltersValues.InCompleted) return !task.status;
+          // if (FiltersValues === 'All') return task;
+          // if (FiltersValues === 'Completed') return task.status;
+          // if (FiltersValues === 'InCompleted') return !task.status;
         })
 
 
@@ -200,9 +200,8 @@ export class View {
 
 
   createTaskItem(currentTask, tasks: Task[]): HTMLElement {
-    // const editTask = this.editTask.bind(this);
+    const editTask = this.editTask.bind(this);
     // const editOrder = this.editOrder.bind(this);
-
 
     const taskElements = document.createElement('div');
     taskElements.className = 'tasks__item active';
@@ -246,25 +245,28 @@ export class View {
     const switchTask = this.createTaskSwitch(currentTask);
     taskElements.append(switchTask);
 
-    // switchTask.addEventListener('click', (e: any): void => {
-    //   this.toggleStatus(currentTask.id, currentTask.status);
-    // })
+    switchTask.addEventListener('click', (e: any): void => {
+      this.toggleStatus(currentTask.id, currentTask.status);
+    })
 
     // handlers edit
     const taskInputText = this.createTaskText(currentTask);
     taskElements.append(taskInputText);
 
-    // taskInputText.addEventListener('dblclick', (e: any): void => {
-    //   this.createEditText(taskInputText, currentTask, editTask);
-    // })
+    taskInputText.addEventListener('dblclick', (e: any): void => {
+      this.createEditText(taskInputText, currentTask, editTask);
+    })
 
 
     // handlers delete
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
-    // btnDel.addEventListener('click', () => {
-    //   this.modalWindow(btnDel, currentTask);
-    // })
+
+    const deleteTask = this.deleteTask.bind(this);
+    btnDel.addEventListener('click', () => {
+      deleteTask(currentTask.id)
+      // this.modalWindow(btnDel, currentTask);
+    })
     // if (currentTask.status) {
     //   taskElements.style.opacity = '0.6';
     // }

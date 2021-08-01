@@ -15,7 +15,7 @@ export interface IAppHandlers {
 
 export abstract class TasksList {
   public tasks: Task[] = [
-    { id: 1, text: 'Js one love', status: false, order: 213 }
+    // { id: 1, text: 'Js one love', status: false, order: 213 }
   ];
   public filter = FiltersValues.All;
 

@@ -24,18 +24,15 @@ export class InMemoryTasksList extends TasksList {
             try {
                 const id = Math.random().toString(36).substr(2, 9);
                 let order: number;
-                // console.log('tasks', tasks)
-                // if (tasks.length) {
-                //     order = tasks.reduce((acc, curr) => {
-                //         return acc > curr.order ? acc : curr.order;
-                //     }, 1) + 1;
-                // } else {
-                //     order = 1;
-                // }
+                if (tasks.length) {
+                    order = tasks.reduce((acc, curr) => {
+                        return acc > curr.order ? acc : curr.order;
+                    }, 1) + 1;
+                } else {
+                    order = 1;
+                }
 
-                const task = new Task(id, text, false, order = 3);
-                // console.log('task type', typeof task)
-                // console.log('tasks type', typeof tasks)
+                const task = new Task(id, text, false, order);
                 tasks.push(task);
 
                 resolve(tasks);
@@ -72,7 +69,6 @@ export class InMemoryTasksList extends TasksList {
         const tasks = this.tasks;
         return new Promise<Task[]>((resolve, reject) => {
             try {
-                console.log('I promise', id)
                 const index = tasks.findIndex(el => el.id === id);
                 tasks.splice(index, 1);
 
