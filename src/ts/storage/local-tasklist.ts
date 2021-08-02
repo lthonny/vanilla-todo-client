@@ -1,9 +1,11 @@
-import { TasksList } from './../../index';
 import { Task } from "../Task";
+import { TasksList } from './../types';
 
 export class InMemoryTasksList extends TasksList {
+    key: any;
     constructor() {
         super();
+        this.key = 'tasks';
     }
 
     setItem(data) {
@@ -52,15 +54,13 @@ export class InMemoryTasksList extends TasksList {
             .catch((err: any) => console.log(err));
     }
 
-    editTask(id: number | string, taskData: { text: string, status: boolean }) {
-        const setLocalStorage = this.setItem.bind(this);
-        const { text, status } = taskData;
+    editTask(id: number | string, taskData: { text: string, status: boolean, order: number }) {
+        const { text, status, order } = taskData;
 
         return this.getTasks()
             .then(tasks => {
-                const index = tasks.findIndex(element => {
-                    return element.id === id;
-                })
+
+                const index = tasks.findIndex(el => el.id === id);
 
                 if (text !== undefined && text !== null) {
                     tasks[index].text = text;
@@ -70,7 +70,11 @@ export class InMemoryTasksList extends TasksList {
                     tasks[index].status = !status;
                 }
 
-                setLocalStorage(tasks);
+                if (order !== undefined && order !== null) {
+                    tasks[index].order = order;
+                }
+
+                this.setItem(tasks);
             })
             .catch((err: any) => console.log(err));
     }
@@ -78,9 +82,7 @@ export class InMemoryTasksList extends TasksList {
     deleteTask(id: number | string) {
         return this.getTasks()
             .then(tasks => {
-                const index = tasks.findIndex(element => {
-                    return element.id === id;
-                })
+                const index = tasks.findIndex(el => el.id === id);
 
                 tasks.splice(index, 1);
                 this.setItem(tasks);

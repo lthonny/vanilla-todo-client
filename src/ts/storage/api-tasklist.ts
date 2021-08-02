@@ -1,11 +1,11 @@
-import process from "dotenv/config";
-import { TasksList } from './../../index';
+// import process from "dotenv/config";
 import { Task } from "../Task";
+import { TasksList } from './../types';
 
 export class InMemoryTasksList extends TasksList {
 
   constructor(
-    private baseUrl: process.env.URL
+    private baseUrl: string = 'http://localhost:3000'
   ) {
     super();
   }

@@ -1,5 +1,5 @@
 import { Task } from "../Task";
-import { TasksList } from './../../index';
+import { TasksList } from './../types';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -68,9 +68,9 @@ export class InMemoryTasksList extends TasksList {
             .catch((err: any) => console.log(err));
     }
 
-    editTask(id: number | string, taskData: { text: string, status: boolean }) {
+    editTask(id: number | string, taskData: { text: string, status: boolean, order: number }) {
         const db = firebase.firestore();
-        const { text, status } = taskData;
+        const { text, status, order } = taskData;
 
         return this.getTasks()
             .then(tasks => {
@@ -83,6 +83,11 @@ export class InMemoryTasksList extends TasksList {
                 if (status !== undefined && status !== null) {
                     db.collection('tasks').doc(id).update({
                         status: !status
+                    });
+                }
+                if (order !== undefined && order !== null) {
+                    db.collection('tasks').doc(id).update({
+                        order: order
                     });
                 }
 

@@ -42,8 +42,8 @@ export class InMemoryTasksList extends TasksList {
         })
     }
 
-    editTask(id: number | string, taskData: { text: string, status: boolean }) {
-        const { text, status } = taskData;
+    editTask(id: number | string, taskData: { text: string, status: boolean, order: number }) {
+        const { text, status, order } = taskData;
 
         return new Promise((resolve, reject) => {
             try {
@@ -55,6 +55,10 @@ export class InMemoryTasksList extends TasksList {
 
                 if (status !== undefined && status !== null) {
                     this.tasks[index].status = !status;
+                }
+
+                if (order !== undefined && order !== null) {
+                    this.tasks[index].order = order;
                 }
 
                 resolve(this.tasks);

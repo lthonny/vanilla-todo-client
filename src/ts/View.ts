@@ -24,12 +24,11 @@ export class View {
 
   createNewTaskAction(text: string): void {
     this.handlers.createTask(text)
-      .then(data => console.log(data))
       .then(() => this.render())
       .catch((e: any) => e);
   }
 
-  deleteTask(id: string | number): void {
+  deleteTask(id: string | number): any {
     this.handlers.deleteTask(id)
       .then(() => this.render())
       .catch((e: any) => e);
@@ -138,52 +137,58 @@ export class View {
     return btnDelete;
   }
 
-  // modalWindow(btnDel, currentTask) {
-  //   const modal = document.getElementById("myModal");
-  //   const span = document.querySelector(".close");
-  //   const btnNo = document.querySelector('.btn-delete-no');
-  //   const btnYes = document.querySelector('.btn-delete-yes');
+  modalWindow(btnDel, currentTask) {
+    const modal = document.getElementById("myModal");
+    const span = document.querySelector(".close");
+    const btnNo = document.querySelector('.btn-delete-no');
+    const btnYes = document.querySelector('.btn-delete-yes');
 
-  //   const eventDisplay = (region, display) => {
-  //     return region.addEventListener('click', () => modal.style.display = display);
-  //   }
-  //   eventDisplay(btnDel, "block");
-  //   eventDisplay(btnNo, "none");
-  //   eventDisplay(span, "none");
+    btnDel.addEventListener('click', () => {
+      modal.style.display = "block";
+    })
+    span.addEventListener('click', () => {
+      modal.style.display = "none";
+    })
+    btnNo.addEventListener('click', () => {
+      modal.style.display = "none";
+    })
 
-  //   window.addEventListener('click', (e): void => {
-  //     if (e.target === modal) modal.style.display = "none";
-  //   })
+    // const eventDisplay = (region, display) => {
+    //   return region.addEventListener('click', () => modal.style.display = display);
+    // }
+    // eventDisplay(btnDel, "block");
+    // eventDisplay(btnNo, "none");
+    // eventDisplay(span, "none");
 
-  //   document.addEventListener('keydown', (e): void => {
-  //     if (e.keyCode === 27) modal.style.display = "none";
-  //   })
+    // window.addEventListener('click', (e): void => {
+    //   if (e.target === modal) modal.style.display = "none";
+    // })
 
-  //   btnYes.addEventListener('click', (e): void => {
-  //     this.deleteTask(currentTask.id);
-  //     console.log('id', currentTask.id)
-  //     modal.style.display = "none";
-  //   })
-  // }
+    // document.addEventListener('keydown', (e): void => {
+    //   if (e.keyCode === 27) modal.style.display = "none";
+    // })
+
+    btnYes.addEventListener('click', (e): void => {
+      console.log('delete one');
+      this.deleteTask(currentTask.id);
+      modal.style.display = "none";
+    })
+  }
 
   render() {
     const root = this.rootNode;
     this.handlers
       .getStateFilter()
-      // .then(data => console.log(data))
       .then(({ filter, tasks }) => {
         while (root.lastChild) {
           root.removeChild(root.lastChild);
         }
-        // console.log(filter, tasks);
         const filteredTasks = tasks.sort((a, b) => {
           return a.order - b.order;
         }).filter(task => {
-          console.log(filter)
-          return task;
-          // if (FiltersValues === 'All') return task;
-          // if (FiltersValues === 'Completed') return task.status;
-          // if (FiltersValues === 'InCompleted') return !task.status;
+          if (filter === FiltersValues.All) return task;
+          if (filter === FiltersValues.Completed) return task.status;
+          if (filter === FiltersValues.InCompleted) return !task.status;
         })
 
 
@@ -201,43 +206,43 @@ export class View {
 
   createTaskItem(currentTask, tasks: Task[]): HTMLElement {
     const editTask = this.editTask.bind(this);
-    // const editOrder = this.editOrder.bind(this);
+    const editOrder = this.editOrder.bind(this);
 
     const taskElements = document.createElement('div');
     taskElements.className = 'tasks__item active';
 
-    // taskElements.addEventListener('dragstart', (e: any) => {
-    //   e.dataTransfer.setData('application/todo', currentTask.id);
-    //   e.target.classList.add('selected');
-    // });
+    taskElements.addEventListener('dragstart', (e: any) => {
+      e.dataTransfer.setData('application/todo', currentTask.id);
+      e.target.classList.add('selected');
+    });
 
-    // taskElements.addEventListener('dragover', (e: any): void => {
-    //   e.preventDefault();
-    // });
+    taskElements.addEventListener('dragover', (e: any): void => {
+      e.preventDefault();
+    });
 
-    // taskElements.addEventListener('drop', (e: any): void => {
-    //   const dragId = e.dataTransfer.getData('application/todo');
-    //   e.dataTransfer.clearData('application/todo');
+    taskElements.addEventListener('drop', (e: any): void => {
+      const dragId = e.dataTransfer.getData('application/todo');
+      e.dataTransfer.clearData('application/todo');
 
-    //   const dropId = currentTask.id;
+      const dropId = currentTask.id;
 
-    //   const index = tasks.findIndex(el => el.id === dropId);
-    //   const afterDropIndex = index - 1;
-    //   const beforeDropIndex = index + 1;
+      const index = tasks.findIndex(el => el.id === dropId);
+      const afterDropIndex = index - 1;
+      const beforeDropIndex = index + 1;
 
-    //   let order: number;
-    //   if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
-    //     order = tasks[index].order / 2;
-    //   }
-    //   if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
-    //     order = tasks[index].order + 1;
-    //   }
+      let order: number;
+      if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
+        order = tasks[index].order / 2;
+      }
+      if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
+        order = tasks[index].order + 1;
+      }
 
-    //   if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
-    //     order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
-    //   }
-    //   editOrder(dragId, order);
-    // });
+      if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
+        order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
+      }
+      editOrder(dragId, order);
+    });
 
     taskElements.draggable = true;
 
@@ -262,14 +267,14 @@ export class View {
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
 
-    const deleteTask = this.deleteTask.bind(this);
-    btnDel.addEventListener('click', () => {
-      deleteTask(currentTask.id)
-      // this.modalWindow(btnDel, currentTask);
-    })
-    // if (currentTask.status) {
-    //   taskElements.style.opacity = '0.6';
-    // }
+    // const deleteTask = this.deleteTask.bind(this);
+    // btnDel.addEventListener('click', () => {
+    // deleteTask(currentTask.id);
+    this.modalWindow(btnDel, currentTask);
+    // })
+    if (currentTask.status) {
+      taskElements.style.opacity = '0.6';
+    }
 
     return taskElements;
   }

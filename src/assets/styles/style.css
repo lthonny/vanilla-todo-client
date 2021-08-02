@@ -188,13 +188,7 @@ body {
 }
 
 .btn button {
-  color: #fff;
-  font-size: 17px;
-  font-weight: 800;
-  width: 130px;
-  min-height: 35px;
-  background-color: #1487b3;
-  border-radius: 5px;
+
 }
 
 .btn button:hover {
@@ -301,4 +295,31 @@ body {
 
 .tasks__item:hover {
   opacity: 0.8;
+}
+
+
+.btn-all,
+.btn-completed,
+.incompleted {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  width: 130px;
+  min-height: 35px;
+  background-color: #1487b3;
+  border-radius: 5px;
+}
+
+
+.btn {
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.activeBtn, .btn:hover {
+    background-color: #666;
+    color: white;
 }

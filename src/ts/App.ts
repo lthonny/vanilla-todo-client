@@ -12,19 +12,32 @@ export class App {
     this.taskList = new taskslistConstructor();
     const rootNode: HTMLElement = document.querySelector('.tasks__list');
 
-    const getElemId = (id: string) => document.getElementById(id);
-    const allTasks: HTMLButtonElement = getElemId('btn-all') as HTMLButtonElement;
-    const compTasks: HTMLButtonElement = getElemId('btn-completed') as HTMLButtonElement;
-    const inCompTasks: HTMLButtonElement = getElemId('btn-incompleted') as HTMLButtonElement;
+    const allTasks: HTMLButtonElement = document.querySelector('.btn-all') as HTMLButtonElement;
+    const compTasks: HTMLButtonElement = document.querySelector('.btn-completed') as HTMLButtonElement;
+    const inCompTasks: HTMLButtonElement = document.querySelector('.incompleted') as HTMLButtonElement;
 
-    const handlerFilter = (btn: HTMLButtonElement, statusFilter: FiltersValues) => {
-      return btn.addEventListener('click',
-        () => this.filterTasks(statusFilter));
+    allTasks.addEventListener('click', () => {
+      this.filterTasks(FiltersValues.All);
+    });
+    compTasks.addEventListener('click', () => {
+      this.filterTasks(FiltersValues.Completed);
+    });
+    inCompTasks.addEventListener('click', () => {
+      this.filterTasks(FiltersValues.InCompleted);
+    });
+
+    const menuItems = document.getElementsByClassName('btn');
+    allTasks.classList.add('activeBtn');
+    const onClick = (e: any) => {
+      for (let i = 0; i < menuItems.length; i++) {
+        menuItems[i].classList.remove('activeBtn');
+      }
+      e.currentTarget.classList.add('activeBtn');
+    };
+
+    for (let i = 0; i < menuItems.length; i++) {
+      menuItems[i].addEventListener('click', onClick, false);
     }
-
-    handlerFilter(allTasks, FiltersValues.All);
-    handlerFilter(compTasks, FiltersValues.Completed);
-    handlerFilter(inCompTasks, FiltersValues.InCompleted);
 
     const createTask = this.taskList.createTask.bind(this.taskList);
     const deleteTask = this.taskList.deleteTask.bind(this.taskList);
