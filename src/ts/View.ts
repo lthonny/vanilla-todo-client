@@ -102,7 +102,7 @@ export class View {
     inputDiv.append(inputEdit);
 
     inputEdit.addEventListener('focus', function (e: any): void {
-      e.target.style.background = '#dff2ef'
+      e.target.style.background = '#fff'
     });
     inputEdit.focus();
 
@@ -153,20 +153,13 @@ export class View {
       modal.style.display = "none";
     })
 
-    // const eventDisplay = (region, display) => {
-    //   return region.addEventListener('click', () => modal.style.display = display);
-    // }
-    // eventDisplay(btnDel, "block");
-    // eventDisplay(btnNo, "none");
-    // eventDisplay(span, "none");
+    window.addEventListener('click', (e): void => {
+      if (e.target === modal) modal.style.display = "none";
+    })
 
-    // window.addEventListener('click', (e): void => {
-    //   if (e.target === modal) modal.style.display = "none";
-    // })
-
-    // document.addEventListener('keydown', (e): void => {
-    //   if (e.keyCode === 27) modal.style.display = "none";
-    // })
+    document.addEventListener('keydown', (e): void => {
+      if (e.keyCode === 27) modal.style.display = "none";
+    })
 
     btnYes.addEventListener('click', (e): void => {
       console.log('delete one');
@@ -213,12 +206,30 @@ export class View {
 
     taskElements.addEventListener('dragstart', (e: any) => {
       e.dataTransfer.setData('application/todo', currentTask.id);
-      e.target.classList.add('selected');
+      // e.target.classList.add('selected');
+      e.target.style.opacity = .5;
     });
 
     taskElements.addEventListener('dragover', (e: any): void => {
       e.preventDefault();
     });
+
+    // https://developer.mozilla.org/ru/docs/Web/API/Element/classList
+
+
+    taskElements.addEventListener("dragenter", function (event) {
+      if (this.className === "tasks__item active") {
+        this.style.background = "green";
+      }
+      // console.log(this)
+    }, false);
+
+    taskElements.addEventListener("dragleave", function (event) {
+      if (this.className === "tasks__item active") {
+        this.style.background = "";
+      }
+
+    }, false);
 
     taskElements.addEventListener('drop', (e: any): void => {
       const dragId = e.dataTransfer.getData('application/todo');
@@ -237,14 +248,15 @@ export class View {
       if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
         order = tasks[index].order + 1;
       }
-
       if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
         order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
       }
+
       editOrder(dragId, order);
     });
 
     taskElements.draggable = true;
+    console.log();
 
     // handlers toggle
     const switchTask = this.createTaskSwitch(currentTask);
@@ -267,11 +279,12 @@ export class View {
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
 
-    // const deleteTask = this.deleteTask.bind(this);
-    // btnDel.addEventListener('click', () => {
-    // deleteTask(currentTask.id);
-    this.modalWindow(btnDel, currentTask);
-    // })
+
+    const deleteTask = this.deleteTask.bind(this);
+    btnDel.addEventListener('click', () => {
+      deleteTask(currentTask.id);
+      // this.modalWindow(btnDel, currentTask);
+    })
     if (currentTask.status) {
       taskElements.style.opacity = '0.6';
     }

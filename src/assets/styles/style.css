@@ -306,7 +306,7 @@ body {
   font-weight: 800;
   width: 130px;
   min-height: 35px;
-  background-color: #1487b3;
+      background-color: #666;
   border-radius: 5px;
 }
 
@@ -320,6 +320,18 @@ body {
 }
 
 .activeBtn, .btn:hover {
-    background-color: #666;
+    background-color: #1487b3;
     color: white;
+}
+
+
+
+
+#draggable {
+  text-align: center;
+  background: white;
+}
+
+.dropzone {
+  background: blueviolet;
 }

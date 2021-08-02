@@ -7,10 +7,10 @@ export enum FiltersValues {
 }
 
 export interface IAppHandlers {
-  getStateFilter(): Promise<Task[]>,
-  createTask(text: string): void,
-  editTask(id: number | string, taskData: { text: string, status: boolean, order: number }): void,
-  deleteTask(id: number | string): void,
+  getStateFilter(): Promise<{ filter: FiltersValues, tasks: Task[] }>,
+  createTask(text: string): Promise<Task[]>,
+  editTask(id: number | string, taskData: { text?: string, status?: boolean, order?: number }): Promise<Task[]>,
+  deleteTask(id: number | string): Promise<Task[]>,
 }
 
 export abstract class TasksList {
