@@ -17,7 +17,7 @@ export class InMemoryTasksList extends TasksList {
             appId: "1:853688421023:web:f1d13176b618de532cb0aa",
             measurementId: "G-Y6BX7QZP6V"
         };
-        this.app = firebase.initializeApp(firebaseConfig);
+        const initializeApp = firebase.initializeApp(firebaseConfig);
     }
 
     getTasks(): Promise<Task[]> {
@@ -31,12 +31,14 @@ export class InMemoryTasksList extends TasksList {
                         const data = snapshot.docs.map(doc => ({
                             id: doc.id,
                             ...doc.data(),
-                        }));
+                        })) as { id: string, text: string, status: boolean, order: number }[];
+                        console.log('firebase data -> ', data);
 
-                        const tasks = (data).map(({ id, text, status, order }) => {
+                        const tasks = data.map(({ id, text, status, order }) => {
                             return new Task(id, text, status, order);
                         })
-                        resolve(data);
+
+                        resolve(tasks);
                     })
             } catch (err: any) {
                 reject(err);
@@ -68,7 +70,7 @@ export class InMemoryTasksList extends TasksList {
             .catch((err: any) => console.log(err));
     }
 
-    editTask(id: number | string, taskData: { text: string, status: boolean, order: number }) {
+    editTask(id: string, taskData: { text: string, status: boolean, order: number }) {
         const db = firebase.firestore();
         const { text, status, order } = taskData;
 
@@ -98,7 +100,7 @@ export class InMemoryTasksList extends TasksList {
             .catch((err: any) => console.log(err));
     }
 
-    deleteTask(id: number | string) {
+    deleteTask(id: string) {
         const db = firebase.firestore();
 
         return this.getTasks()

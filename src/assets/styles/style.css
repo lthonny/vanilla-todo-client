@@ -30,7 +30,7 @@ body {
 .circle-toggle-false {
   width: 25px;
   height: 25px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   border: 1px solid #ccc;
 }
 
@@ -54,7 +54,6 @@ body {
 
 .tasks__item {
   transition: background-color 0.5s;
-  margin-bottom: 10px;
   padding: 5px;
 
   text-align: center;
@@ -80,9 +79,12 @@ body {
 
 .selected {
   opacity: 0.6;
+    /* background-color: transparent; */
 }
 
-
+.tasks__item-pointer  * {
+  pointer-events: none;
+}
 
 
 /* style my todo */
@@ -90,6 +92,8 @@ body {
 /* button delete */
 .btn-delete {
   width: 15%;
+  /* pointer-events: auto; */
+  cursor: pointer;
 }
 
 .btn-delete button {
@@ -116,15 +120,18 @@ body {
   justify-content: center;
   text-align: center;
   position: relative;
+
+  /* pointer-events: auto; */
 }
 
 .fa-check {
   font-size: 20px;
   font-weight: 100;
-  color: rgb(129, 201, 67);
+  /* color: rgb(129, 201, 67); */
   text-align: center;
   align-items: center;
   display: flex;
+  /* padding-top: 20px; */
 }
 .fas {
   line-height: 0px;
@@ -187,10 +194,6 @@ body {
   justify-content: space-around;
 }
 
-.btn button {
-
-}
-
 .btn button:hover {
   background-color: rgba(0,0,0,0.4);
 }
@@ -198,6 +201,8 @@ body {
 
 .task-text {
   width: 75%;
+  /* pointer-events: auto; */
+  /* cursor: pointer; */
 }
 .task-text .text {
   display: flex;
@@ -325,13 +330,21 @@ body {
 }
 
 
-
-
 #draggable {
   text-align: center;
   background: white;
 }
 
 .dropzone {
-  background: blueviolet;
+  background: #cfeca9;
+  opacity: 0.6;
 }
+
+
+
+
+
+
+
+
+

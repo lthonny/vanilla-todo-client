@@ -75,7 +75,6 @@ export class InMemoryTasksList extends TasksList {
             try {
                 const index = tasks.findIndex(el => el.id === id);
                 tasks.splice(index, 1);
-
                 resolve(tasks);
             } catch (err: any) {
                 reject(err);

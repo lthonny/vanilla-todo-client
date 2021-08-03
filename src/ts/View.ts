@@ -162,7 +162,7 @@ export class View {
     })
 
     btnYes.addEventListener('click', (e): void => {
-      console.log('delete one');
+      // console.log('delete one');
       this.deleteTask(currentTask.id);
       modal.style.display = "none";
     })
@@ -173,6 +173,7 @@ export class View {
     this.handlers
       .getStateFilter()
       .then(({ filter, tasks }) => {
+        // console.log(tasks);
         while (root.lastChild) {
           root.removeChild(root.lastChild);
         }
@@ -201,43 +202,53 @@ export class View {
     const editTask = this.editTask.bind(this);
     const editOrder = this.editOrder.bind(this);
 
-    const taskElements = document.createElement('div');
-    taskElements.className = 'tasks__item active';
+    // create container
+    const tasksListElement = document.querySelector(`.tasks__list`);
+    const taskElements: any = document.createElement('li');
+    taskElements.className = 'tasks__item';
+    taskElements.draggable = true;
 
-    taskElements.addEventListener('dragstart', (e: any) => {
+    for (const task of taskElements) { task.draggable = true }
+    taskElements.addEventListener(`dragstart`, (e) => {
       e.dataTransfer.setData('application/todo', currentTask.id);
-      // e.target.classList.add('selected');
-      e.target.style.opacity = .5;
+      const element = e.target as HTMLInputElement;
+      element.classList.add(`selected`);
+
+      element.classList.add('tasks__item-pointer');
+    })
+    tasksListElement.addEventListener(`dragend`, (e) => {
+      const element = e.target as HTMLInputElement;
+      element.classList.remove(`selected`);
+
+      element.classList.remove('tasks__item-pointer');
     });
 
-    taskElements.addEventListener('dragover', (e: any): void => {
-      e.preventDefault();
+    document.addEventListener("dragenter", (event) => {
+      const dropzone = event.target as HTMLElement;
+      // console.log('dragenter dropzone', dropzone);
+
+      if (dropzone.classList.contains('tasks__item')) {
+        dropzone.classList.add('dropzone');
+      }
     });
 
-    // https://developer.mozilla.org/ru/docs/Web/API/Element/classList
-
-
-    taskElements.addEventListener("dragenter", function (event) {
-      if (this.className === "tasks__item active") {
-        this.style.background = "green";
+    document.addEventListener("dragleave", (event) => {
+      const dropzone = event.target as HTMLElement;
+      if (dropzone.classList.contains('tasks__item') && dropzone.classList.contains('dropzone')) {
+        // console.log('dragleave dropzone', dropzone);
+        dropzone.classList.remove('dropzone');
       }
-      // console.log(this)
-    }, false);
+    });
 
-    taskElements.addEventListener("dragleave", function (event) {
-      if (this.className === "tasks__item active") {
-        this.style.background = "";
-      }
+    taskElements.addEventListener(`dragover`, (e) => e.preventDefault());
 
-    }, false);
-
-    taskElements.addEventListener('drop', (e: any): void => {
+    taskElements.addEventListener('drop', (e) => {
       const dragId = e.dataTransfer.getData('application/todo');
       e.dataTransfer.clearData('application/todo');
 
-      const dropId = currentTask.id;
+      const dropElementId = currentTask.id;
+      const index = tasks.findIndex(el => el.id === dropElementId);
 
-      const index = tasks.findIndex(el => el.id === dropId);
       const afterDropIndex = index - 1;
       const beforeDropIndex = index + 1;
 
@@ -253,15 +264,13 @@ export class View {
       }
 
       editOrder(dragId, order);
-    });
+    })
 
-    taskElements.draggable = true;
-    console.log();
+
 
     // handlers toggle
     const switchTask = this.createTaskSwitch(currentTask);
     taskElements.append(switchTask);
-
     switchTask.addEventListener('click', (e: any): void => {
       this.toggleStatus(currentTask.id, currentTask.status);
     })
@@ -269,21 +278,17 @@ export class View {
     // handlers edit
     const taskInputText = this.createTaskText(currentTask);
     taskElements.append(taskInputText);
-
     taskInputText.addEventListener('dblclick', (e: any): void => {
       this.createEditText(taskInputText, currentTask, editTask);
     })
 
-
     // handlers delete
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
-
-
     const deleteTask = this.deleteTask.bind(this);
     btnDel.addEventListener('click', () => {
-      deleteTask(currentTask.id);
-      // this.modalWindow(btnDel, currentTask);
+      // deleteTask(currentTask.id);
+      this.modalWindow(btnDel, currentTask);
     })
     if (currentTask.status) {
       taskElements.style.opacity = '0.6';

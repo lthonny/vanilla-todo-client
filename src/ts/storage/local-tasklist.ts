@@ -82,10 +82,8 @@ export class InMemoryTasksList extends TasksList {
     deleteTask(id: number | string) {
         return this.getTasks()
             .then(tasks => {
-                const index = tasks.findIndex(el => el.id === id);
-
-                tasks.splice(index, 1);
-                this.setItem(tasks);
+                const tasksFromRemoteTask = tasks.filter(task => task.id !== id);
+                this.setItem(tasksFromRemoteTask);
             })
             .catch((err: any) => console.log(err));
     }
