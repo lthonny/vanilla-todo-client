@@ -59,7 +59,7 @@ TaskList.prototype.createTask = function (text) {
 
 TaskList.prototype.editTask = function (id, taskData) {
     const setLocalStorage = this.setItem.bind(this);
-    const { text, status } = taskData;
+    const { text, status, order } = taskData;
 
     return this.getTasks()
         .then(function (tasks) {
@@ -75,6 +75,10 @@ TaskList.prototype.editTask = function (id, taskData) {
                 tasks[index].status = !status;
             }
 
+            if (order !== undefined && order !== null) {
+                tasks[index].order = order;
+            }
+
             setLocalStorage(tasks);
         })
         .catch(function (e) {
@@ -86,12 +90,14 @@ TaskList.prototype.editTask = function (id, taskData) {
 TaskList.prototype.deleteTask = function (id) {
     const setLocalStorage = this.setItem.bind(this);
 
+
     return this.getTasks()
         .then(function (tasks) {
             const index = tasks.findIndex(function (element) {
                 return element.id === id;
             })
-
+            console.log('index', index);
+            console.log('tasks', tasks);
             tasks.splice(index, 1);
             setLocalStorage(tasks);
         })

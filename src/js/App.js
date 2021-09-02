@@ -1,10 +1,9 @@
 export function App(taskslist, view) {
   console.log('App init');
 
-  const buttons = document.querySelectorAll('.btn');
-  const allTasks = buttons[0], compTasks = buttons[1], inCompTasks = buttons[2];
-
-  // this.taskslist = taskslist;
+  const allTasks = document.querySelector('#btn-all');
+  const compTasks = document.querySelector('#btn-completed');
+  const inCompTasks = document.querySelector('#btn-incompleted');
 
   const getTasks = taskslist.getTasks.bind(taskslist);
   const createTask = taskslist.createTask.bind(taskslist);
@@ -17,14 +16,25 @@ export function App(taskslist, view) {
     this.view.render();
   }.bind(this);
 
+  function activeColorFilter(button) {
+    const buttons = document.querySelectorAll('.active-filter');
+    [].forEach.call(buttons, function (button) {
+      button.classList.remove('active-filter');
+    });
+    button.classList.add('active-filter');
+  }
+
   allTasks.addEventListener('click', function () {
-    filterTasks('All')
+    activeColorFilter(allTasks);
+    filterTasks('All');
   });
   compTasks.addEventListener('click', function () {
-    filterTasks('Completed')
+    activeColorFilter(compTasks);
+    filterTasks('Completed');
   });
   inCompTasks.addEventListener('click', function () {
-    filterTasks('InCompleted')
+    activeColorFilter(inCompTasks);
+    filterTasks('InCompleted');
   });
 
 

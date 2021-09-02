@@ -1,12 +1,9 @@
 import { Task } from './Task';
 
 export function TaskList() {
-    this.tasks = [
-        // {id: "7wdos7ev1", text: "Angular", status: false, date: "2021-07-15T14:25:20.647Z", order: 1},
-        // {id: "7wdos7ev1", text: "Express js", status: false, date: "2021-07-15T14:25:20.647Z", order: 2},
-        // {id: "7wdos7ev1", text: ".NET", status: false, date: "2021-07-15T14:25:20.647Z", order: 3},
-    ];
+    this.tasks = [];
     this.filter = 'All';
+    this.filterActive = 'red';
 }
 
 
@@ -90,7 +87,6 @@ TaskList.prototype.deleteTask = function (id) {
             })
 
             tasks.splice(elementIndex, 1);
-
             resolve(tasks);
         } catch (e) {
             reject(e);

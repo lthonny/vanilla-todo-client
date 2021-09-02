@@ -1,10 +1,19 @@
-// import './Views';
-
 export function View(rootNode) {
   this.rootNode = rootNode;
   this.handlers = {};
   const message = document.getElementById('message');
   const addBtn = document.querySelector('.message-add');
+
+  // console.log(message.keypress);
+  message.addEventListener('keyup', function () {
+    const max = document.querySelector('.max-characters');
+    if (message.value.length < 200) {
+      max.innerText = `You entered characters ${message.value.length}`;
+    }
+    else if (message.value.length === 200) {
+      max.innerText = `Maximum number of characters ${message.value.length}`;
+    }
+  })
 
   const render = this.render.bind(this);
 
@@ -18,21 +27,31 @@ export function View(rootNode) {
       });
   }.bind(this);
 
+  function checkMessageLength() {
+    const max = document.querySelector('.max-characters');
+    if (message.value.length === 200) {
+      max.style.display = 'block';
+    } else {
+      createNewTaskAction(message.value);
+      max.style.display = 'none';
+      message.value = '';
+    }
+  }
+
   // add new todos
   addBtn.addEventListener('click', function () {
-    createNewTaskAction(message.value);
-    message.value = '';
+    checkMessageLength();
   })
   message.addEventListener('keydown', function (event) {
     if (event.keyCode === 13) {
-      createNewTaskAction(message.value);
-      message.value = '';
+      checkMessageLength();
     }
   })
 }
 
 // delete todos
 View.prototype.deleteTask = function (id) {
+  console.log(id);
   const render = this.render.bind(this);
   this.handlers.deleteTask(id)
     .then(function () {
@@ -85,17 +104,15 @@ View.prototype.createTaskSwitch = function (currentTask) {
   const switchTask = document.createElement('div');
   switchTask.className = 'execute';
 
-  const checkbox = document.createElement('i');
-  checkbox.className = 'fas fa-check';
+  const checkbox = document.createElement('div');
+  checkbox.className = 'check-true';
   switchTask.append(checkbox);
 
-  const task = document.querySelectorAll('.tasks__item');
-
   if (currentTask.status === false) {
-    checkbox.classList.add('circle-toggle-false')
-    checkbox.classList.remove('fa-check')
+    checkbox.classList.add('check-false');
+    checkbox.classList.remove('check-true');
   } else {
-    checkbox.classList.add('circle-toggle-false');
+    checkbox.classList.add('check-false');
   }
 
   return switchTask;
@@ -111,9 +128,9 @@ View.prototype.createTaskText = function (currentTask) {
   const p = document.createTextNode(`${currentTask.text}`)
 
   if (currentTask.status) {
-    text.style.textDecoration = 'line-through';
-    text.style.color = 'green';
+    text.classList.add('text-false');
   }
+
   text.append(p)
   containerTaskText.append(text);
 
@@ -140,16 +157,16 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
   inputEdit.focus();
 
   const handleBlur = function (event) {
-    event.target.style.background = ''
-    inputEdit.removeEventListener('blur', handleBlur)
-    inputEdit.removeEventListener('keydown', handleEnter)
-    editTask(currentTask.id, this.value)
+    event.target.style.background = '';
+    inputEdit.removeEventListener('blur', handleBlur);
+    inputEdit.removeEventListener('keydown', handleEnter);
+    editTask(currentTask.id, this.value);
   };
   const handleEnter = function (event) {
     if (event.keyCode === 13) {
-      inputEdit.removeEventListener('blur', handleBlur)
-      inputEdit.removeEventListener('keydown', handleEnter)
-      editTask(currentTask.id, this.value)
+      inputEdit.removeEventListener('blur', handleBlur);
+      inputEdit.removeEventListener('keydown', handleEnter);
+      editTask(currentTask.id, this.value);
     }
   };
 
@@ -159,32 +176,31 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
 
 // layout delete button
 View.prototype.createDeleteBtn = function () {
-  const btnDelete = document.createElement('div')
-  btnDelete.className = 'btn-delete'
+  const btnDelete = document.createElement('div');
+  btnDelete.className = 'btn-delete';
 
-  const button = document.createElement('button')
-  const icon = document.createElement('i')
-  icon.className = 'fas fa-trash-alt'
-  button.append(icon)
-  btnDelete.append(button)
-  return btnDelete
+  const button = document.createElement('button');
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-trash-alt';
+  button.append(icon);
+  btnDelete.append(button);
+  return btnDelete;
 }
 
-const modalWindow = function (btn, fnDelete, currentTask) {
+View.prototype.modalWindow = function (fnDeleteTask, currentTask) {
   const modal = document.getElementById("myModal");
   const btnNo = document.querySelector('.btn-delete-no');
   const btnYes = document.querySelector('.btn-delete-yes');
   const span = document.getElementsByClassName("close")[0];
 
-  btn.addEventListener('click', () => {
-    modal.style.display = "block";
+  modal.style.display = "block";
+
+  [span, btnNo].forEach(function (el) {
+    el.addEventListener('click', function () {
+      modal.style.display = "none";
+    })
   })
-  span.addEventListener('click', () => {
-    modal.style.display = "none";
-  })
-  btnNo.addEventListener('click', () => {
-    modal.style.display = "none";
-  })
+
   window.onclick = function (event) {
     if (event.target == modal) {
       modal.style.display = "none";
@@ -197,15 +213,14 @@ const modalWindow = function (btn, fnDelete, currentTask) {
     }
   })
 
-  btnYes.addEventListener('click', () => {
-    // console.log('yes')
-    fnDelete(currentTask.id);
+  btnYes.addEventListener('click', function () {
+    fnDeleteTask(currentTask.id);
     modal.style.display = "none";
-  })
+  }, { once: true })
 }
 
 
-// render layout
+// RENDER layout
 View.prototype.render = function () {
   const createTaskItem = this.createTaskItem.bind(this);
   const root = this.rootNode;
@@ -218,9 +233,15 @@ View.prototype.render = function () {
       const filteredTasks = tasks.sort(function (a, b) {
         return a.order - b.order;
       }).filter(function (task) {
-        if (filter === 'All') return task
-        if (filter === 'Completed') return task.status
-        if (filter === 'InCompleted') return !task.status
+        if (filter === 'All') {
+          return task;
+        }
+        else if (filter === 'Completed') {
+          return task.status;
+        }
+        else if (filter === 'InCompleted') {
+          return !task.status;
+        }
       })
 
 
@@ -245,25 +266,52 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
   const editTask = this.editTask.bind(this);
   const editOrder = this.editOrder.bind(this);
 
-  const taskElements = document.createElement('div');
-  taskElements.className = 'tasks__item active';
+  const tasksListElement = document.querySelector(`.tasks__list`);
+  const taskElements = document.createElement('li');
+  taskElements.className = 'tasks__item';
+  taskElements.draggable = true;
 
-  taskElements.addEventListener('dragstart', function (event) {
-    event.dataTransfer.setData('application/todo', currentTask.id);
-    event.target.classList.add('selected');
+  taskElements.addEventListener(`dragstart`, (e) => {
+    e.dataTransfer.setData('application/todo', currentTask.id);
+    const element = e.target;
+    element.classList.add(`selected`);
+
+    element.classList.add('tasks__item-pointer');
+
+    console.log('currentTask.id', currentTask.id);
+  })
+  tasksListElement.addEventListener(`dragend`, (e) => {
+    const element = e.target;
+    element.classList.remove(`selected`);
+
+    element.classList.remove('tasks__item-pointer');
   });
 
-  taskElements.addEventListener('dragover', function (event) {
-    event.preventDefault();
+
+  document.addEventListener("dragenter", (event) => {
+    const dropzone = event.target;
+
+    if (dropzone.classList.contains('tasks__item')) {
+      dropzone.classList.add('dropzone');
+    }
   });
 
-  taskElements.addEventListener('drop', function (event) {
-    const dragId = event.dataTransfer.getData('application/todo');
-    event.dataTransfer.clearData('application/todo');
+  document.addEventListener("dragleave", (event) => {
+    const dropzone = event.target;
+    if (dropzone.classList.contains('tasks__item') && dropzone.classList.contains('dropzone')) {
+      dropzone.classList.remove('dropzone');
+    }
+  });
 
-    const dropId = currentTask.id;
+  taskElements.addEventListener(`dragover`, (e) => e.preventDefault());
 
-    const index = tasks.findIndex(el => el.id === dropId);
+  taskElements.addEventListener('drop', (e) => {
+    const dragId = e.dataTransfer.getData('application/todo');
+    e.dataTransfer.clearData('application/todo');
+
+    const dropElementId = currentTask.id;
+    const index = tasks.findIndex(el => el.id === dropElementId);
+
     const afterDropIndex = index - 1;
     const beforeDropIndex = index + 1;
 
@@ -274,21 +322,16 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
       order = tasks[index].order + 1;
     }
-
     if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
       order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
     }
+    console.log('order', order)
 
     editOrder(dragId, order);
-  });
-
-
-  // dragenter
-  // event.target.classList.remove('selected');
-  taskElements.draggable = true;
-  // taskElements.dropzone = true;
+  })
 
   // handlers toggle
+
   const switchTask = this.createTaskSwitch(currentTask);
   taskElements.append(switchTask)
 
@@ -308,10 +351,11 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
 
   // handlers delete
-  const btnDeleteTask = this.createDeleteBtn()
-  taskElements.append(btnDeleteTask)
-  btnDeleteTask.addEventListener('click', () => {
-    modalWindow(btnDeleteTask, deleteTask, currentTask);
+  const btnDel = this.createDeleteBtn();
+  taskElements.append(btnDel);
+  const modalWindow = this.modalWindow;
+  btnDel.addEventListener('click', function () {
+    modalWindow(deleteTask, currentTask);
   })
   if (currentTask.status) {
     taskElements.style.opacity = '0.6';

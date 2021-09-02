@@ -20,20 +20,6 @@ body {
 }
 
 
-.circle-toggle-false {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-}
-
-.circle-toggle-false {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-}
-
 .tasks {
   margin-top: 60px;
 }
@@ -83,9 +69,10 @@ body {
 }
 
 
-
-
 /* style my todo */
+
+
+
 
 /* button delete */
 .btn-delete {
@@ -93,7 +80,6 @@ body {
 }
 
 .btn-delete button {
-  /* display: none; */
   width: 100%;
   height: 100%;
   color: #ec4f43;
@@ -114,21 +100,29 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  position: relative;
 }
 
-.fa-check {
-  font-size: 20px;
-  font-weight: 100;
-  color: rgb(129, 201, 67);
-  text-align: center;
-  align-items: center;
-  display: flex;
+.check-true,
+.check-false {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
 }
-.fas {
-  line-height: 0px;
+
+.check-true {
+  border: 1px solid rgb(129, 201, 67);
+  background-color: rgb(129, 201, 67);
 }
+
+.check-false {
+  border: 1px solid rgb(182, 194, 171);
+}
+
+.text-false {
+  color: green;
+  text-decoration: line-through;
+}
+
 
 
 /* add task */
@@ -136,7 +130,14 @@ body {
 .add-task {
   display: flex;
   align-items: center;
+  position: relative;
 }
+
+.max-characters {
+  /* display: none; */
+  margin-left: 35px;
+  color: rgb(156, 96, 96);
+} 
 
 .input-task {
   overflow-wrap: break-word;
@@ -187,7 +188,7 @@ body {
   justify-content: space-around;
 }
 
-.btn button {
+.btn {
   color: #fff;
   font-size: 17px;
   font-weight: 800;
@@ -253,6 +254,8 @@ body {
   height: 15%;
   max-width: 500px;
   border-radius: 5px;
+
+  position: relative;
 }
 
 .close {
@@ -271,9 +274,12 @@ body {
 
 .selection-by-buttons {
   width: 100%;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   display: flex;
   justify-content: flex-end;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 
 .removebtn {
@@ -298,7 +304,11 @@ body {
   background-color: #0269d9;
 }
 
-
 .tasks__item:hover {
   opacity: 0.8;
+}
+
+
+.active-filter {
+  background-color:rgb(182, 194, 171);
 }
