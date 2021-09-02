@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import { Task } from './Task';
+import { Task } from '../Task';
 
 export function TaskList() {
     const firebaseConfig = {

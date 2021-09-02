@@ -4,18 +4,7 @@ export function View(rootNode) {
   const message = document.getElementById('message');
   const addBtn = document.querySelector('.message-add');
 
-  // console.log(message.keypress);
-  message.addEventListener('keyup', function () {
-    const max = document.querySelector('.max-characters');
-    if (message.value.length < 200) {
-      max.innerText = `You entered characters ${message.value.length}`;
-    }
-    else if (message.value.length === 200) {
-      max.innerText = `Maximum number of characters ${message.value.length}`;
-    }
-  })
-
-  const render = this.render.bind(this);
+  this.messageCharacters();
 
   const createNewTaskAction = function (text) {
     this.handlers.createTask(text)
@@ -48,6 +37,20 @@ export function View(rootNode) {
     }
   })
 }
+
+//
+View.prototype.messageCharacters = function () {
+  message.addEventListener('keyup', function (event) {
+    const max = document.querySelector('.max-characters');
+    if (message.value.length < 200) {
+      max.innerText = `You entered characters ${message.value.length}`;
+    }
+    else if (message.value.length === 200) {
+      max.innerText = `Maximum number of characters ${message.value.length}`;
+    }
+  })
+}
+
 
 // delete todos
 View.prototype.deleteTask = function (id) {
@@ -188,10 +191,10 @@ View.prototype.createDeleteBtn = function () {
 }
 
 View.prototype.modalWindow = function (fnDeleteTask, currentTask) {
-  const modal = document.getElementById("myModal");
+  const modal = document.getElementById('myModal');
   const btnNo = document.querySelector('.btn-delete-no');
   const btnYes = document.querySelector('.btn-delete-yes');
-  const span = document.getElementsByClassName("close")[0];
+  const span = document.querySelector('.close');
 
   modal.style.display = "block";
 
@@ -201,19 +204,19 @@ View.prototype.modalWindow = function (fnDeleteTask, currentTask) {
     })
   })
 
-  window.onclick = function (event) {
-    if (event.target == modal) {
+  window.addEventListener('click', function (event) {
+    if (event.target === modal) {
       modal.style.display = "none";
     }
-  }
+  });
 
   document.addEventListener('keydown', function (event) {
     if (event.keyCode === 27) {
       modal.style.display = "none";
     }
-  })
+  });
 
-  btnYes.addEventListener('click', function () {
+  btnYes.addEventListener('click', function (event) {
     fnDeleteTask(currentTask.id);
     modal.style.display = "none";
   }, { once: true })
@@ -222,6 +225,8 @@ View.prototype.modalWindow = function (fnDeleteTask, currentTask) {
 
 // RENDER layout
 View.prototype.render = function () {
+  this.messageCharacters();
+
   const createTaskItem = this.createTaskItem.bind(this);
   const root = this.rootNode;
   this.handlers
@@ -261,6 +266,8 @@ View.prototype.render = function () {
 
 // alignment components
 View.prototype.createTaskItem = function (currentTask, tasks) {
+  this.messageCharacters();
+
   const deleteTask = this.deleteTask.bind(this);
   const toggleStatus = this.toggleStatus.bind(this);
   const editTask = this.editTask.bind(this);
@@ -330,8 +337,8 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     editOrder(dragId, order);
   })
 
-  // handlers toggle
 
+  // handlers toggle
   const switchTask = this.createTaskSwitch(currentTask);
   taskElements.append(switchTask)
 

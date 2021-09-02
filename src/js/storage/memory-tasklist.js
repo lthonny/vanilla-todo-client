@@ -1,28 +1,20 @@
-import { Task } from './Task';
+import { Task } from '../Task';
 
-export function TaskList(baseUrl) {
+export function TaskList() {
+    this.tasks = [];
     this.filter = 'All';
-    this.key = 'tasks' || '[]';
-}
-
-TaskList.prototype.setItem = function (data) {
-    localStorage.setItem(this.key, JSON.stringify(data));
-    return this;
-}
-
-TaskList.prototype.getItem = function () {
-    return JSON.parse(localStorage.getItem(this.key));
+    this.filterActive = 'red';
 }
 
 
 TaskList.prototype.getTasks = function () {
-    const tasksItem = this.getItem();
+    const tasks = this.tasks;
     return new Promise(function (resolve, reject) {
         try {
-            const tasks = (tasksItem || []).map(function ({ id, text, status, date, order }) {
+            const drawingTasks = (tasks || []).map(function ({ id, text, status, date, order }) {
                 return new Task(id, text, status, date, order);
             })
-            resolve(tasks);
+            resolve(drawingTasks)
         } catch (e) {
             reject(e);
         }
@@ -31,11 +23,12 @@ TaskList.prototype.getTasks = function () {
 
 
 TaskList.prototype.createTask = function (text) {
-    const setLocalStorage = this.setItem.bind(this);
+    const tasks = this.tasks;
 
-    return this.getTasks()
-        .then(function (tasks) {
+    return new Promise(function (resolve, reject) {
+        try {
             const date = new Date();
+
             const id = Math.random().toString(36).substr(2, 9);
             let order;
             if (tasks.length) {
@@ -47,22 +40,22 @@ TaskList.prototype.createTask = function (text) {
             }
 
             const task = new Task(id, text, false, date.toLocaleString(), order);
-
             tasks.push(task);
-            setLocalStorage(tasks);
-        })
-        .catch(function (e) {
-            console.log(e);
-        })
+
+            resolve(tasks);
+        } catch (e) {
+            reject(e);
+        }
+    })
 }
 
 
 TaskList.prototype.editTask = function (id, taskData) {
-    const setLocalStorage = this.setItem.bind(this);
-    const { text, status, order } = taskData;
+    const { text, status } = taskData;
+    const tasks = this.tasks;
 
-    return this.getTasks()
-        .then(function (tasks) {
+    return new Promise(function (resolve, reject) {
+        try {
             const index = tasks.findIndex(function (element) {
                 return element.id === id;
             })
@@ -75,35 +68,30 @@ TaskList.prototype.editTask = function (id, taskData) {
                 tasks[index].status = !status;
             }
 
-            if (order !== undefined && order !== null) {
-                tasks[index].order = order;
-            }
+            resolve(tasks);
+        } catch (e) {
+            reject(e);
+        }
+    })
 
-            setLocalStorage(tasks);
-        })
-        .catch(function (e) {
-            console.log(e);
-        })
 }
 
 
 TaskList.prototype.deleteTask = function (id) {
-    const setLocalStorage = this.setItem.bind(this);
+    const tasks = this.tasks;
 
-
-    return this.getTasks()
-        .then(function (tasks) {
-            const index = tasks.findIndex(function (element) {
+    return new Promise(function (resolve, reject) {
+        try {
+            const elementIndex = tasks.findIndex(function (element) {
                 return element.id === id;
             })
-            console.log('index', index);
-            console.log('tasks', tasks);
-            tasks.splice(index, 1);
-            setLocalStorage(tasks);
-        })
-        .catch(function (e) {
-            console.log(e);
-        })
+
+            tasks.splice(elementIndex, 1);
+            resolve(tasks);
+        } catch (e) {
+            reject(e);
+        }
+    })
 }
 
 
