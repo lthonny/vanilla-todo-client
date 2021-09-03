@@ -6,6 +6,7 @@ const Dotenv = require('dotenv-webpack');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
+  target: 'node',
   mode: "development",
   entry: [
     './src/index.js',
@@ -19,16 +20,19 @@ module.exports = {
   module: {
     rules: [
       // {
-      //   enforce: 'pre',
+      //   // enforce: 'pre',
       //   test: /\.js$/,
-      //   loader: 'eslint-loader',
-      //   exclude: '/node_modules/'
+      //   // loader: 'eslint-loader',
+      //   exclude: '/node_modules/',
+      //   loader: "babel-loader"
       // },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: '/node_modules/'
-      },
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
+      // {
+      //   test: /\.js$/,
+      //   loader: 'babel-loader',
+      //   // exclude: '/node_modules/',
+      //   query: {compact: false}
+      // },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
@@ -44,7 +48,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
   },
   plugins: [
     new MiniCssExtractPlugin({
