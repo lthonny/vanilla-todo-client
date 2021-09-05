@@ -142,6 +142,7 @@ export class View {
     const span = document.querySelector(".close");
     const btnNo = document.querySelector('.btn-delete-no');
     const btnYes = document.querySelector('.btn-delete-yes');
+    modal.style.display = "block";
 
     btnDel.addEventListener('click', () => {
       modal.style.display = "block";
@@ -162,7 +163,6 @@ export class View {
     })
 
     btnYes.addEventListener('click', (e): void => {
-      // console.log('delete one');
       this.deleteTask(currentTask.id);
       modal.style.display = "none";
     })
@@ -173,7 +173,6 @@ export class View {
     this.handlers
       .getStateFilter()
       .then(({ filter, tasks }) => {
-        // console.log(tasks);
         while (root.lastChild) {
           root.removeChild(root.lastChild);
         }
@@ -287,7 +286,6 @@ export class View {
     taskElements.append(btnDel);
     const deleteTask = this.deleteTask.bind(this);
     btnDel.addEventListener('click', () => {
-      // deleteTask(currentTask.id);
       this.modalWindow(btnDel, currentTask);
     })
     if (currentTask.status) {
