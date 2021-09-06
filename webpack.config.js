@@ -3,31 +3,24 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
-// const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   mode: "development",
   entry: "./src/index.ts",
-  // entry: [
-  //   './src/index.js',
-  //   '@babel/polyfill'
-  // ],
   output: {
     filename: './dist/bundle.js'
-    // path: path.resolve(__dirname, 'dist'),
-    // filename: 'bundle.js',
-    // assetModuleFilename: 'assets/[hash][ext]',
   },
   devtool: "source-map",
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
-      { test: /\.js$/, loader: "source-map-loader" },
-      // {
-      //   test: /\.js$/,
-      //   loader: 'babel-loader',
-      //   exclude: '/node_modules/'
-      // },
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader"
+      },
+      {
+        test: /\.js$/,
+        loader: "source-map-loader"
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']

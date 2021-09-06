@@ -11,14 +11,43 @@ export class View {
     const message: HTMLInputElement = document.getElementById('message') as HTMLInputElement;
     const addBtn: HTMLButtonElement = document.querySelector('.message-add');
 
-    const crearMessage = () => {
-      this.createNewTaskAction(message.value);
-      message.value = '';
-    }
+    this.messageCharacters();
 
-    addBtn.addEventListener('click', (e: any): void => crearMessage());
-    message.addEventListener('keydown', (e: any): void => {
-      if (e.keyCode === 13) crearMessage();
+    addBtn.addEventListener('click', (e: any): void => {
+      const max: HTMLElement = document.querySelector('.max-characters');
+      if (message.value.length < 200) {
+        this.createNewTaskAction(message.value);
+        message.value = '';
+        max.innerText = `You entered characters ${message.value.length}`;
+      } else if (message.value.length === 200) {
+        max.innerText = `Maximum number of characters ${message.value.length}`;
+      }
+    });
+
+    message.addEventListener('keydown', (event) => {
+      if (event.keyCode === 13) {
+        const max: HTMLElement = document.querySelector('.max-characters');
+        if (message.value.length < 200) {
+          this.createNewTaskAction(message.value);
+          message.value = '';
+          event.preventDefault();
+          max.innerText = `You entered characters ${message.value.length}`;
+        } else if (message.value.length === 200) {
+          max.innerText = `Maximum number of characters ${message.value.length}`;
+        }
+      }
+    })
+  }
+
+  messageCharacters() {
+    // console.log(message);
+    message.addEventListener('keyup', (event: KeyboardEvent) => {
+      const max: HTMLElement = document.querySelector('.max-characters');
+      if (message.value.length < 200) {
+        max.innerText = `You entered characters ${message.value.length}`;
+      } else if (message.value.length === 200) {
+        max.innerText = `Maximum number of characters ${message.value.length}`;
+      }
     })
   }
 
@@ -56,15 +85,15 @@ export class View {
     const switchTask = document.createElement('div');
     switchTask.className = 'execute';
 
-    const checkbox = document.createElement('i');
-    checkbox.className = 'fas fa-check';
+    const checkbox = document.createElement('div');
+    checkbox.className = 'check-true';
     switchTask.append(checkbox);
 
     if (currentTask.status === false) {
-      checkbox.classList.add('circle-toggle-false');
-      checkbox.classList.remove('fa-check');
+      checkbox.classList.add('check-false');
+      checkbox.classList.remove('check-true');
     } else {
-      checkbox.classList.add('circle-toggle-false');
+      checkbox.classList.add('check-false');
     }
 
     return switchTask;

@@ -114,27 +114,30 @@ body {
 .execute {
   cursor: pointer;
   width: 10%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  position: relative;
-
-  /* pointer-events: auto; */
 }
 
-.fa-check {
-  font-size: 20px;
-  font-weight: 100;
-  /* color: rgb(129, 201, 67); */
-  text-align: center;
-  align-items: center;
-  display: flex;
-  /* padding-top: 20px; */
+.check-true,
+.check-false {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
 }
-.fas {
-  line-height: 0px;
+
+.check-true {
+  border: 1px solid rgb(129, 201, 67);
+  background-color: rgb(129, 201, 67);
+}
+
+.check-false {
+  border: 1px solid rgb(182, 194, 171);
+}
+
+.text-false {
+  color: green;
+  text-decoration: line-through;
 }
 
 
@@ -340,10 +343,11 @@ body {
   opacity: 0.6;
 }
 
-
-
-
-
+.max-characters {
+  /* display: none; */
+  margin-left: 35px;
+  color: rgb(156, 96, 96);
+}
 
 
 
