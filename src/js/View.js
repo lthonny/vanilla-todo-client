@@ -175,9 +175,17 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
             editTask(currentTask.id, this.value);
         }
     };
+    const handleTouch = function (event) {
+        inputEdit.removeEventListener('blur', handleBlur);
+        inputEdit.removeEventListener('keydown', handleEnter);
+        inputEdit.removeEventListener('touchend', handleTouch);
+        editTask(currentTask.id, this.value);
+    }
 
     inputEdit.addEventListener('blur', handleBlur);
     inputEdit.addEventListener('keydown', handleEnter);
+
+    inputEdit.addEventListener('touchend', handleTouch);
 }
 
 // layout delete button
@@ -354,13 +362,18 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
 
     // handlers edit
-    const taskInputText = this.createTaskText(currentTask)
-    taskElements.append(taskInputText)
+    const taskInputText = this.createTaskText(currentTask);
+    taskElements.append(taskInputText);
 
     const createEdit = this.createEditText;
     taskInputText.addEventListener('dblclick', function (event) {
+        // event.preventDefault();
         createEdit(taskInputText, currentTask, editTask);
-    })
+    });
+    taskInputText.addEventListener('touchstart', function (event) {
+        // event.preventDefault();
+        createEdit(taskInputText, currentTask, editTask);
+    });
 
 
     // handlers delete
