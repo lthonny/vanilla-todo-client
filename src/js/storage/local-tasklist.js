@@ -88,18 +88,12 @@ TaskList.prototype.editTask = function (id, taskData) {
 
 
 TaskList.prototype.deleteTask = function (id) {
-    const setLocalStorage = this.setItem.bind(this);
-
+    const setItem = this.setItem.bind(this);
 
     return this.getTasks()
         .then(function (tasks) {
-            const index = tasks.findIndex(function (element) {
-                return element.id === id;
-            })
-            console.log('index', index);
-            console.log('tasks', tasks);
-            tasks.splice(index, 1);
-            setLocalStorage(tasks);
+            const tasksFromRemoteTask = tasks.filter(task => task.id !== id);
+            setItem(tasksFromRemoteTask);
         })
         .catch(function (e) {
             console.log(e);

@@ -1,5 +1,3 @@
-import {resolve} from "../../webpack.config";
-
 export function View(rootNode) {
     this.rootNode = rootNode;
     this.handlers = {};
@@ -18,17 +16,6 @@ export function View(rootNode) {
                 console.log(e);
             });
     }.bind(this);
-
-    function checkMessageLength() {
-        const max = document.querySelector('.max-characters');
-        if (message.value.length === 200) {
-            max.style.display = 'block';
-        } else {
-            createNewTaskAction(message.value);
-            max.style.display = 'none';
-            message.value = '';
-        }
-    }
 
     // add new todos
     addBtn.addEventListener('click', function () {
@@ -221,28 +208,31 @@ View.prototype.modalWindow = function () {
     })
 
     window.addEventListener('click', function (event) {
+        event.preventDefault();
         if (event.target === modal) {
             modal.style.display = "none";
         }
     });
 
     document.addEventListener('keydown', function (event) {
+        event.preventDefault();
         if (event.keyCode === 27) {
             modal.style.display = "none";
         }
     });
 
-
-    // return new Promise((res, rej) => {
-    //     btnYes.addEventListener('click', function () {
-    //         modal.style.display = 'none';
-    //         res('YES');
-    //     });
-    //     btnNo.addEventListener('click', () => {
-    //         modal.style.display = "none";
-    //         rej('NO');
-    //     });
-    // })
+    return new Promise((res, rej) => {
+        btnYes.addEventListener('click', function () {
+            event.preventDefault();
+            modal.style.display = 'none';
+            res('YES');
+        });
+        btnNo.addEventListener('click', () => {
+            event.preventDefault();
+            modal.style.display = "none";
+            rej('NO');
+        });
+    })
 }
 
 
@@ -269,7 +259,6 @@ View.prototype.render = function () {
                     return !task.status;
                 }
             })
-
 
             const taskContainer = document.createDocumentFragment();
             for (let i = 0; i < filteredTasks.length; i++) {
@@ -305,7 +294,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
         element.classList.add(`selected`);
         element.classList.add('tasks__item-pointer');
 
-    })
+    });
     tasksListElement.addEventListener(`dragend`, (e) => {
         const element = e.target;
         element.classList.remove(`selected`);
@@ -352,12 +341,12 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
             order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
         }
         editOrder(dragId, order);
-    })
+    });
 
 
     // handlers toggle
     const switchTask = this.createTaskSwitch(currentTask);
-    taskElements.append(switchTask)
+    taskElements.append(switchTask);
 
     switchTask.addEventListener('click', function (event) {
         toggleStatus(currentTask.id, currentTask.status);
@@ -379,18 +368,17 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.append(btnDel);
 
     const modalWindow = this.modalWindow;
-    // btnDel.addEventListener('click', function () {
-    //     modalWindow()
-    //         .then(function (btn) {
-    //             if (btn === 'YES') {
-    //                 // deleteTask(currentTask.id);
-    //             console.log(btn);
-    //             }
-    //         })
-    //         .catch(function (e) {
-    //             console.log(e);
-    //         })
-    // })
+    btnDel.addEventListener('click', function () {
+        modalWindow()
+            .then(function (btn) {
+                if (btn === 'YES') {
+                    deleteTask(currentTask.id);
+                }
+            })
+            .catch(function (e) {
+                console.log(e);
+            })
+    })
 
 
     if (currentTask.status) {

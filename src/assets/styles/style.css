@@ -312,3 +312,17 @@ body {
 .active-filter {
   background-color:rgb(182, 194, 171);
 }
+
+
+
+/* drag and drop */
+
+#draggable {
+  text-align: center;
+  background: white;
+}
+
+.dropzone {
+  background: #eee;
+  opacity: 0.6;
+}

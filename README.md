@@ -27,15 +27,4 @@ The program is implemented in pure javascript programming language using:
 Eventually:
 As a result of completing my entire work plan, you will end up with a fully functional application (TO DO LIST) written in pure JavaScript.
 
-# Desctop: 
-
-
-
-# Mobile
-
-
-
-
-**Link to github pages:** 
-<https://lthonny.github.io/vanillaToDo/>
 
