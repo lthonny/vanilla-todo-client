@@ -1,10 +1,12 @@
 export function View(rootNode) {
     this.rootNode = rootNode;
     this.handlers = {};
+    
+    const characters = document.querySelector('.max-characters');
     const message = document.getElementById('message');
     const addBtn = document.querySelector('.message-add');
 
-    this.messageCharacters();
+    this.messageCharacters(characters);
 
     const render = this.render.bind(this);
     const createNewTaskAction = function (text) {
@@ -19,38 +21,38 @@ export function View(rootNode) {
 
     // add new todos
     addBtn.addEventListener('click', function () {
-        const max = document.querySelector('.max-characters');
         if (message.value.length < 200) {
             createNewTaskAction(message.value);
             message.value = '';
-            max.innerText = `You entered characters ${message.value.length}`;
-        } else if (message.value.length === 200) {
-            max.innerText = `Maximum number of characters ${message.value.length}`;
+            characters.innerText = `You entered characters ${message.value.length}`;
+        } 
+        else {
+            characters.innerText = `Maximum number of characters ${message.value.length}`;
         }
     })
     message.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
-            const max = document.querySelector('.max-characters');
             if (message.value.length < 200) {
                 createNewTaskAction(message.value);
                 message.value = '';
                 event.preventDefault();
-                max.innerText = `You entered characters ${message.value.length}`;
-            } else if (message.value.length === 200) {
-                max.innerText = `Maximum number of characters ${message.value.length}`;
+                characters.innerText = `You entered characters ${message.value.length}`;
+            } 
+            else {
+                characters.innerText = `Maximum number of characters ${message.value.length}`;
             }
         }
     })
 }
 
 //
-View.prototype.messageCharacters = function () {
+View.prototype.messageCharacters = function (quantity) {
     message.addEventListener('keyup', function (event) {
-        const max = document.querySelector('.max-characters');
         if (message.value.length < 200) {
-            max.innerText = `You entered characters ${message.value.length}`;
-        } else if (message.value.length === 200) {
-            max.innerText = `Maximum number of characters ${message.value.length}`;
+            quantity.innerText = `You entered characters ${message.value.length}`;
+        } 
+        else {
+            quantity.innerText = `Maximum number of characters ${message.value.length}`;
         }
     })
 }
@@ -164,21 +166,14 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
 
     const handleBlur = function (event) {
         event.target.style.background = '';
-        // inputEdit.removeEventListener('blur', handleBlur);
-        // inputEdit.removeEventListener('keydown', handleEnter);
         editTask(currentTask.id, this.value);
     };
     const handleEnter = function (event) {
         if (event.keyCode === 13) {
-            // inputEdit.removeEventListener('blur', handleBlur);
-            // inputEdit.removeEventListener('keydown', handleEnter);
             editTask(currentTask.id, this.value);
         }
     };
     const handleTouch = function (event) {
-        // inputEdit.removeEventListener('blur', handleBlur);
-        // inputEdit.removeEventListener('keydown', handleEnter);
-        // inputEdit.removeEventListener('touchend', handleTouch);
         editTask(currentTask.id, this.value);
     }
 
@@ -245,8 +240,6 @@ View.prototype.modalWindow = function () {
 
 // RENDER layout
 View.prototype.render = function () {
-    // this.messageCharacters();
-
     const createTaskItem = this.createTaskItem.bind(this);
     const root = this.rootNode;
     this.handlers

@@ -18,7 +18,7 @@ export function App(taskslist, view) {
 
   function activeColorFilter(button) {
     const buttons = document.querySelectorAll('.active-filter');
-    [].forEach.call(buttons, function (button) {
+    buttons.forEach(function (button) {
       button.classList.remove('active-filter');
     });
     button.classList.add('active-filter');

@@ -69,7 +69,7 @@ TaskList.prototype.editTask = function (id, taskData) {
             }
 
             if (order !== undefined && order !== null) {
-                tasks[index].order = !order;
+                tasks[index].order = order;
             }
 
             resolve(tasks);
