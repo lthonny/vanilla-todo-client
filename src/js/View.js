@@ -6,9 +6,9 @@ export function View(rootNode) {
     const message = document.getElementById('message');
     const addBtn = document.querySelector('.message-add');
 
-    this.messageCharacters(characters);
-
     const render = this.render.bind(this);
+    this.thinkLetters(characters);
+
     const createNewTaskAction = function (text) {
         this.handlers.createTask(text)
             .then(function () {
@@ -19,25 +19,23 @@ export function View(rootNode) {
             });
     }.bind(this);
 
-    // add new todos
+    function handlerCreateTask() {
+        createNewTaskAction(message.value);
+        message.value = '';
+        characters.innerText = `You entered characters ${message.value.length}`;
+    }
+
+    // event add new todos
     addBtn.addEventListener('click', function () {
-        if (message.value.length < 200) {
-            createNewTaskAction(message.value);
-            message.value = '';
-            characters.innerText = `You entered characters ${message.value.length}`;
-        } 
-        else {
+        message.value.length < 200 ? handlerCreateTask() :
             characters.innerText = `Maximum number of characters ${message.value.length}`;
-        }
     })
     message.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             if (message.value.length < 200) {
-                createNewTaskAction(message.value);
-                message.value = '';
+                handlerCreateTask();
                 event.preventDefault();
-                characters.innerText = `You entered characters ${message.value.length}`;
-            } 
+            }
             else {
                 characters.innerText = `Maximum number of characters ${message.value.length}`;
             }
@@ -45,8 +43,9 @@ export function View(rootNode) {
     })
 }
 
-//
-View.prototype.messageCharacters = function (quantity) {
+// think Letters
+View.prototype.thinkLetters = function (quantity) {
+    const message = document.getElementById('message');
     message.addEventListener('keyup', function (event) {
         if (message.value.length < 200) {
             quantity.innerText = `You entered characters ${message.value.length}`;
@@ -128,17 +127,12 @@ View.prototype.createTaskSwitch = function (currentTask) {
 
 // layout messages
 View.prototype.createTaskText = function (currentTask) {
-    const containerTaskText = document.createElement('div')
-    containerTaskText.className = 'task-text'
+    const containerTaskText = document.createElement('div');
+    containerTaskText.className = 'task-text';
 
     const text = document.createElement('div')
-    text.className = 'text'
+    text.className = 'text';
     const p = document.createTextNode(`${currentTask.text}`)
-
-    if (currentTask.status) {
-        text.classList.add('text-false');
-    }
-
     text.append(p)
     containerTaskText.append(text);
 
@@ -160,7 +154,7 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
     inputDiv.append(inputEdit);
 
     inputEdit.addEventListener('focus', function (event) {
-        event.target.style.background = '#dff2ef'
+        event.target.style.background = '#dff2ef';
     });
     inputEdit.focus();
 
@@ -169,12 +163,10 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
         editTask(currentTask.id, this.value);
     };
     const handleEnter = function (event) {
-        if (event.keyCode === 13) {
-            editTask(currentTask.id, this.value);
-        }
+        event.keyCode === 13 ? editTask(currentTask.id, this.value) : null;
     };
     const handleTouch = function (event) {
-        editTask(currentTask.id, this.value);
+        event.target.style.background = '' ? editTask(currentTask.id, this.value) : null;
     }
 
     inputEdit.addEventListener('blur', handleBlur);
@@ -211,25 +203,21 @@ View.prototype.modalWindow = function () {
 
     window.addEventListener('click', function (event) {
         event.preventDefault();
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
+        event.target === modal ? modal.style.display = "none" : null;
     });
 
     document.addEventListener('keydown', function (event) {
         event.preventDefault();
-        if (event.keyCode === 27) {
-            modal.style.display = "none";
-        }
+        event.keyCode === 27 ? modal.style.display = "none" : null;
     });
 
-    return new Promise((res, rej) => {
+    return new Promise(function (res, rej) {
         btnYes.addEventListener('click', function () {
             event.preventDefault();
             modal.style.display = 'none';
             res('YES');
         });
-        btnNo.addEventListener('click', () => {
+        btnNo.addEventListener('click', function() {
             event.preventDefault();
             modal.style.display = "none";
             rej('NO');
@@ -276,69 +264,67 @@ View.prototype.render = function () {
 
 // alignment components
 View.prototype.createTaskItem = function (currentTask, tasks) {
-    this.messageCharacters();
+    this.thinkLetters();
 
     const deleteTask = this.deleteTask.bind(this);
     const toggleStatus = this.toggleStatus.bind(this);
     const editTask = this.editTask.bind(this);
     const editOrder = this.editOrder.bind(this);
 
+    const modalWindow = this.modalWindow;
+    const createEdit = this.createEditText;
+
     const tasksListElement = document.querySelector(`.tasks__list`);
     const taskElements = document.createElement('li');
     taskElements.className = 'tasks__item';
     taskElements.draggable = true;
 
-    taskElements.addEventListener(`dragstart`, (e) => {
-        e.dataTransfer.setData('application/todo', currentTask.id);
-        const element = e.target;
-        element.classList.add(`selected`);
-        element.classList.add('tasks__item-pointer');
-
+    taskElements.addEventListener(`dragstart`, function (event)  {
+        event.dataTransfer.setData('application/todo', currentTask.id);
+        event.target.classList.add(`selected`);
+        event.target.classList.add('tasks__item-pointer');
     });
-    tasksListElement.addEventListener(`dragend`, (e) => {
-        const element = e.target;
-        element.classList.remove(`selected`);
 
-        element.classList.remove('tasks__item-pointer');
+    tasksListElement.addEventListener(`dragend`, function(event) {
+        event.target.classList.remove(`selected`);
+        event.target.classList.remove('tasks__item-pointer');
     });
 
 
-    document.addEventListener("dragenter", (event) => {
+    document.addEventListener("dragenter", function (event) {
+        const dropzone = event.target;
+        event.target.classList.contains('tasks__item') ? dropzone.classList.add('dropzone') : null;
+    });
+
+    document.addEventListener("dragleave", function (event) {
         const dropzone = event.target;
 
-        if (dropzone.classList.contains('tasks__item')) {
-            dropzone.classList.add('dropzone');
-        }
-    });
-
-    document.addEventListener("dragleave", (event) => {
-        const dropzone = event.target;
         if (dropzone.classList.contains('tasks__item') && dropzone.classList.contains('dropzone')) {
             dropzone.classList.remove('dropzone');
         }
     });
 
-    taskElements.addEventListener(`dragover`, (e) => e.preventDefault());
+    taskElements.addEventListener(`dragover`, function (event)  {
+        event.preventDefault();
+    });
 
-    taskElements.addEventListener('drop', (e) => {
-        const dragId = e.dataTransfer.getData('application/todo');
-        e.dataTransfer.clearData('application/todo');
+    taskElements.addEventListener('drop', function (event) {
+        const dragId = event.dataTransfer.getData('application/todo');
+        event.dataTransfer.clearData('application/todo');
 
-        const dropElementId = currentTask.id;
-        const index = tasks.findIndex(el => el.id === dropElementId);
-
-        const afterDropIndex = index - 1;
-        const beforeDropIndex = index + 1;
+        const index = tasks.findIndex(function (el)  {
+            return el.id === currentTask.id;
+        });
 
         let order;
-        if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
+        if (tasks[index - 1] === undefined && tasks[index + 1] !== undefined) {
             order = tasks[index].order / 2;
         }
-        if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
+        if (tasks[index + 1] === undefined && tasks[index - 1] !== undefined) {
             order = tasks[index].order + 1;
         }
-        if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
-            order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
+        if (tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
+            order = (tasks[index - 1].order + tasks[index].order) / 2;
         }
         editOrder(dragId, order);
     });
@@ -357,13 +343,10 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     const taskInputText = this.createTaskText(currentTask);
     taskElements.append(taskInputText);
 
-    const createEdit = this.createEditText;
     taskInputText.addEventListener('dblclick', function (event) {
-        // event.preventDefault();
         createEdit(taskInputText, currentTask, editTask);
     });
     taskInputText.addEventListener('touchstart', function (event) {
-        // event.preventDefault();
         createEdit(taskInputText, currentTask, editTask);
     });
 
@@ -372,7 +355,6 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
 
-    const modalWindow = this.modalWindow;
     btnDel.addEventListener('click', function () {
         modalWindow()
             .then(function (btn) {
@@ -384,11 +366,6 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
                 console.log(e);
             })
     })
-
-
-    if (currentTask.status) {
-        taskElements.style.opacity = '0.6';
-    }
 
     return taskElements;
 }
