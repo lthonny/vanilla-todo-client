@@ -51,7 +51,7 @@ TaskList.prototype.createTask = function (text) {
 
 
 TaskList.prototype.editTask = function (id, taskData) {
-    const { text, status } = taskData;
+    const { text, status, order } = taskData;
     const tasks = this.tasks;
 
     return new Promise(function (resolve, reject) {
@@ -66,6 +66,10 @@ TaskList.prototype.editTask = function (id, taskData) {
 
             if (status !== undefined && status !== null) {
                 tasks[index].status = !status;
+            }
+
+            if (order !== undefined && order !== null) {
+                tasks[index].order = !order;
             }
 
             resolve(tasks);

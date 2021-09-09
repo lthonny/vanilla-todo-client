@@ -164,27 +164,26 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
 
     const handleBlur = function (event) {
         event.target.style.background = '';
-        inputEdit.removeEventListener('blur', handleBlur);
-        inputEdit.removeEventListener('keydown', handleEnter);
+        // inputEdit.removeEventListener('blur', handleBlur);
+        // inputEdit.removeEventListener('keydown', handleEnter);
         editTask(currentTask.id, this.value);
     };
     const handleEnter = function (event) {
         if (event.keyCode === 13) {
-            inputEdit.removeEventListener('blur', handleBlur);
-            inputEdit.removeEventListener('keydown', handleEnter);
+            // inputEdit.removeEventListener('blur', handleBlur);
+            // inputEdit.removeEventListener('keydown', handleEnter);
             editTask(currentTask.id, this.value);
         }
     };
     const handleTouch = function (event) {
-        inputEdit.removeEventListener('blur', handleBlur);
-        inputEdit.removeEventListener('keydown', handleEnter);
-        inputEdit.removeEventListener('touchend', handleTouch);
+        // inputEdit.removeEventListener('blur', handleBlur);
+        // inputEdit.removeEventListener('keydown', handleEnter);
+        // inputEdit.removeEventListener('touchend', handleTouch);
         editTask(currentTask.id, this.value);
     }
 
     inputEdit.addEventListener('blur', handleBlur);
     inputEdit.addEventListener('keydown', handleEnter);
-
     inputEdit.addEventListener('touchend', handleTouch);
 }
 
@@ -246,7 +245,7 @@ View.prototype.modalWindow = function () {
 
 // RENDER layout
 View.prototype.render = function () {
-    this.messageCharacters();
+    // this.messageCharacters();
 
     const createTaskItem = this.createTaskItem.bind(this);
     const root = this.rootNode;
