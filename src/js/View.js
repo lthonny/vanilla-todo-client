@@ -1,13 +1,21 @@
 export function View(rootNode) {
     this.rootNode = rootNode;
     this.handlers = {};
-    
-    const characters = document.querySelector('.max-characters');
-    const message = document.getElementById('message');
-    const addBtn = document.querySelector('.message-add');
 
     const render = this.render.bind(this);
-    this.thinkLetters(characters);
+
+    const addBtn = document.querySelector('.message-add');
+    const characters = document.querySelector('.max-characters');
+
+    const message = document.getElementById('message');
+    message.addEventListener('keyup', function (event) {
+        if(message.value.length < 200) {
+            characters.innerText = `You entered characters ${message.value.length}`
+        }
+        else {
+            characters.innerText = `Maximum number of characters ${message.value.length}`;
+        }
+    })
 
     const createNewTaskAction = function (text) {
         this.handlers.createTask(text)
@@ -19,39 +27,21 @@ export function View(rootNode) {
             });
     }.bind(this);
 
-    function handlerCreateTask() {
-        createNewTaskAction(message.value);
-        message.value = '';
-        characters.innerText = `You entered characters ${message.value.length}`;
-    }
-
-    // event add new todos
+    // add new todos
     addBtn.addEventListener('click', function () {
-        message.value.length < 200 ? handlerCreateTask() :
-            characters.innerText = `Maximum number of characters ${message.value.length}`;
+        if (message.value.length < 200) {
+            createNewTaskAction(message.value);
+            message.value = '';
+            characters.innerText = `You entered characters ${message.value.length}`;
+        }
     })
     message.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             if (message.value.length < 200) {
-                handlerCreateTask();
+                createNewTaskAction(message.value);
+                message.value = '';
                 event.preventDefault();
             }
-            else {
-                characters.innerText = `Maximum number of characters ${message.value.length}`;
-            }
-        }
-    })
-}
-
-// think Letters
-View.prototype.thinkLetters = function (quantity) {
-    const message = document.getElementById('message');
-    message.addEventListener('keyup', function (event) {
-        if (message.value.length < 200) {
-            quantity.innerText = `You entered characters ${message.value.length}`;
-        } 
-        else {
-            quantity.innerText = `Maximum number of characters ${message.value.length}`;
         }
     })
 }
@@ -154,7 +144,7 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
     inputDiv.append(inputEdit);
 
     inputEdit.addEventListener('focus', function (event) {
-        event.target.style.background = '#dff2ef';
+        event.target.style.background = '#dff2ef'
     });
     inputEdit.focus();
 
@@ -163,10 +153,13 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
         editTask(currentTask.id, this.value);
     };
     const handleEnter = function (event) {
-        event.keyCode === 13 ? editTask(currentTask.id, this.value) : null;
+        if (event.keyCode === 13) {
+            editTask(currentTask.id, this.value);
+        }
     };
     const handleTouch = function (event) {
-        event.target.style.background = '' ? editTask(currentTask.id, this.value) : null;
+        event.target.style.background = '';
+        editTask(currentTask.id, this.value);
     }
 
     inputEdit.addEventListener('blur', handleBlur);
@@ -195,32 +188,28 @@ View.prototype.modalWindow = function () {
 
     modal.style.display = "block";
 
-    [span, btnNo].forEach(function (el) {
-        el.addEventListener('click', function () {
-            modal.style.display = "none";
-        })
-    })
-
-    window.addEventListener('click', function (event) {
-        event.preventDefault();
-        event.target === modal ? modal.style.display = "none" : null;
-    });
-
-    document.addEventListener('keydown', function (event) {
-        event.preventDefault();
-        event.keyCode === 27 ? modal.style.display = "none" : null;
-    });
-
     return new Promise(function (res, rej) {
         btnYes.addEventListener('click', function () {
-            event.preventDefault();
             modal.style.display = 'none';
             res('YES');
         });
-        btnNo.addEventListener('click', function() {
-            event.preventDefault();
-            modal.style.display = "none";
-            rej('NO');
+        [span, btnNo].forEach(function (el) {
+            el.addEventListener('click', function() {
+                modal.style.display = "none";
+                rej('NO');
+            });
+        })
+        document.addEventListener('keydown', function (event) {
+            if(event.keyCode === 27) {
+                modal.style.display = "none";
+                rej('NO');
+            }
+        });
+        window.addEventListener('click', function (event) {
+            if(event.target === modal) {
+                modal.style.display = "none"
+                rej('NO');
+            };
         });
     })
 }
@@ -236,6 +225,7 @@ View.prototype.render = function () {
             while (root.lastChild) {
                 root.removeChild(root.lastChild);
             }
+            console.log(tasks);
             const filteredTasks = tasks.sort(function (a, b) {
                 return a.order - b.order;
             }).filter(function (task) {
@@ -262,10 +252,9 @@ View.prototype.render = function () {
         });
 }
 
+
 // alignment components
 View.prototype.createTaskItem = function (currentTask, tasks) {
-    this.thinkLetters();
-
     const deleteTask = this.deleteTask.bind(this);
     const toggleStatus = this.toggleStatus.bind(this);
     const editTask = this.editTask.bind(this);
@@ -280,6 +269,9 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.draggable = true;
 
     taskElements.addEventListener(`dragstart`, function (event)  {
+        let yDrag = event.pageY;
+        event.dataTransfer.setData('yDrag', yDrag);
+
         event.dataTransfer.setData('application/todo', currentTask.id);
         event.target.classList.add(`selected`);
         event.target.classList.add('tasks__item-pointer');
@@ -309,8 +301,13 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     });
 
     taskElements.addEventListener('drop', function (event) {
+        const yDrag = event.dataTransfer.getData('yDrag');
+        event.dataTransfer.clearData('yDrag');
+
         const dragId = event.dataTransfer.getData('application/todo');
         event.dataTransfer.clearData('application/todo');
+
+        let yDrop = event.pageY;
 
         const index = tasks.findIndex(function (el)  {
             return el.id === currentTask.id;
@@ -323,9 +320,13 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
         if (tasks[index + 1] === undefined && tasks[index - 1] !== undefined) {
             order = tasks[index].order + 1;
         }
-        if (tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
+        if (yDrag < yDrop && tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
+            order = (tasks[index + 1].order + tasks[index].order) / 2;
+        }
+        if (yDrag > yDrop && tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
             order = (tasks[index - 1].order + tasks[index].order) / 2;
         }
+
         editOrder(dragId, order);
     });
 
@@ -362,9 +363,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
                     deleteTask(currentTask.id);
                 }
             })
-            .catch(function (e) {
-                console.log(e);
-            })
+            .catch(function (e) {})
     })
 
     return taskElements;

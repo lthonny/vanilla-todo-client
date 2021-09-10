@@ -3,7 +3,6 @@ import { Task } from '../Task';
 export function TaskList() {
     this.tasks = [];
     this.filter = 'All';
-    this.filterActive = 'red';
 }
 
 
