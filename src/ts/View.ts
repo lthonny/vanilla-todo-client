@@ -8,45 +8,34 @@ export class View {
     public handlers: IAppHandlers
   ) {
 
-    const message: HTMLInputElement = document.getElementById('message') as HTMLInputElement;
     const addBtn: HTMLButtonElement = document.querySelector('.message-add');
+    const characters: HTMLElement = document.querySelector('.max-characters');
 
-    this.messageCharacters();
+    const message: HTMLInputElement = document.getElementById('message') as HTMLInputElement;
+    message.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (message.value.length < 200) {
+        characters.innerText = `You entered characters ${message.value.length}`;
+      }
+      else {
+        characters.innerText = `Maximum number of characters ${message.value.length}`;
+      }
+    })
 
     addBtn.addEventListener('click', (e: any): void => {
-      const max: HTMLElement = document.querySelector('.max-characters');
       if (message.value.length < 200) {
         this.createNewTaskAction(message.value);
         message.value = '';
-        max.innerText = `You entered characters ${message.value.length}`;
-      } else if (message.value.length === 200) {
-        max.innerText = `Maximum number of characters ${message.value.length}`;
+        characters.innerText = `You entered characters ${message.value.length}`;
       }
     });
 
     message.addEventListener('keydown', (event) => {
       if (event.keyCode === 13) {
-        const max: HTMLElement = document.querySelector('.max-characters');
         if (message.value.length < 200) {
           this.createNewTaskAction(message.value);
           message.value = '';
           event.preventDefault();
-          max.innerText = `You entered characters ${message.value.length}`;
-        } else if (message.value.length === 200) {
-          max.innerText = `Maximum number of characters ${message.value.length}`;
         }
-      }
-    })
-  }
-
-  messageCharacters() {
-    // console.log(message);
-    message.addEventListener('keyup', (event: KeyboardEvent) => {
-      const max: HTMLElement = document.querySelector('.max-characters');
-      if (message.value.length < 200) {
-        max.innerText = `You entered characters ${message.value.length}`;
-      } else if (message.value.length === 200) {
-        max.innerText = `Maximum number of characters ${message.value.length}`;
       }
     })
   }
@@ -57,7 +46,7 @@ export class View {
       .catch((e: any) => e);
   }
 
-  deleteTask(id: string | number): any {
+  deleteTask(id: string | number): void {
     this.handlers.deleteTask(id)
       .then(() => this.render())
       .catch((e: any) => e);
@@ -137,20 +126,21 @@ export class View {
 
     const handleBlur = function (e: any) {
       e.target.style.background = ''
-      inputEdit.removeEventListener('blur', handleBlur)
-      inputEdit.removeEventListener('keydown', handleEnter)
       editTask(currentTask.id, this.value)
     };
     const handleEnter = function (e: any): void {
       if (e.keyCode === 13) {
-        inputEdit.removeEventListener('blur', handleBlur)
-        inputEdit.removeEventListener('keydown', handleEnter)
         editTask(currentTask.id, this.value)
       }
     };
+    const handleTouch = function (event) {
+      event.target.style.background = '';
+      editTask(currentTask.id, this.value);
+    }
 
     inputEdit.addEventListener('blur', handleBlur);
     inputEdit.addEventListener('keydown', handleEnter);
+    inputEdit.addEventListener('touchend', handleTouch);
   }
 
   createDeleteBtn(): HTMLElement {
@@ -236,25 +226,23 @@ export class View {
     taskElements.className = 'tasks__item';
     taskElements.draggable = true;
 
-    for (const task of taskElements) { task.draggable = true }
-    taskElements.addEventListener(`dragstart`, (e) => {
-      e.dataTransfer.setData('application/todo', currentTask.id);
-      const element = e.target as HTMLInputElement;
-      element.classList.add(`selected`);
 
-      element.classList.add('tasks__item-pointer');
+    taskElements.addEventListener(`dragstart`, (event: any) => {
+      let yDrag = event.pageY;
+      event.dataTransfer.setData('yDrag', yDrag);
+
+      event.dataTransfer.setData('application/todo', currentTask.id);
+      event.target.classList.add(`selected`);
+      event.target.classList.add('tasks__item-pointer');
     })
-    tasksListElement.addEventListener(`dragend`, (e) => {
-      const element = e.target as HTMLInputElement;
-      element.classList.remove(`selected`);
 
-      element.classList.remove('tasks__item-pointer');
+    tasksListElement.addEventListener(`dragend`, (event: any) => {
+      event.target.classList.remove(`selected`);
+      event.target.classList.remove('tasks__item-pointer');
     });
 
     document.addEventListener("dragenter", (event) => {
       const dropzone = event.target as HTMLElement;
-      // console.log('dragenter dropzone', dropzone);
-
       if (dropzone.classList.contains('tasks__item')) {
         dropzone.classList.add('dropzone');
       }
@@ -263,38 +251,41 @@ export class View {
     document.addEventListener("dragleave", (event) => {
       const dropzone = event.target as HTMLElement;
       if (dropzone.classList.contains('tasks__item') && dropzone.classList.contains('dropzone')) {
-        // console.log('dragleave dropzone', dropzone);
         dropzone.classList.remove('dropzone');
       }
     });
 
     taskElements.addEventListener(`dragover`, (e) => e.preventDefault());
 
-    taskElements.addEventListener('drop', (e) => {
-      const dragId = e.dataTransfer.getData('application/todo');
-      e.dataTransfer.clearData('application/todo');
+    taskElements.addEventListener('drop', function (event) {
+      const yDrag = event.dataTransfer.getData('yDrag');
+      event.dataTransfer.clearData('yDrag');
 
-      const dropElementId = currentTask.id;
-      const index = tasks.findIndex(el => el.id === dropElementId);
+      const dragId = event.dataTransfer.getData('application/todo');
+      event.dataTransfer.clearData('application/todo');
 
-      const afterDropIndex = index - 1;
-      const beforeDropIndex = index + 1;
+      let yDrop = event.pageY;
 
-      let order: number;
-      if (tasks[afterDropIndex] === undefined && tasks[beforeDropIndex] !== undefined) {
+      const index = tasks.findIndex(function (el)  {
+        return el.id === currentTask.id;
+      });
+
+      let order;
+      if (tasks[index - 1] === undefined && tasks[index + 1] !== undefined) {
         order = tasks[index].order / 2;
       }
-      if (tasks[beforeDropIndex] === undefined && tasks[afterDropIndex] !== undefined) {
+      if (tasks[index + 1] === undefined && tasks[index - 1] !== undefined) {
         order = tasks[index].order + 1;
       }
-      if (tasks[afterDropIndex] !== undefined && tasks[beforeDropIndex] !== undefined) {
-        order = (tasks[afterDropIndex].order + tasks[index].order) / 2;
+      if (yDrag < yDrop && tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
+        order = (tasks[index + 1].order + tasks[index].order) / 2;
+      }
+      if (yDrag > yDrop && tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
+        order = (tasks[index - 1].order + tasks[index].order) / 2;
       }
 
       editOrder(dragId, order);
-    })
-
-
+    });
 
     // handlers toggle
     const switchTask = this.createTaskSwitch(currentTask);
@@ -309,6 +300,9 @@ export class View {
     taskInputText.addEventListener('dblclick', (e: any): void => {
       this.createEditText(taskInputText, currentTask, editTask);
     })
+    taskInputText.addEventListener('touchstart',  (e: any): void => {
+      this.createEditText(taskInputText, currentTask, editTask);
+    });
 
     // handlers delete
     const btnDel = this.createDeleteBtn();
@@ -317,9 +311,6 @@ export class View {
     btnDel.addEventListener('click', () => {
       this.modalWindow(btnDel, currentTask);
     })
-    if (currentTask.status) {
-      taskElements.style.opacity = '0.6';
-    }
 
     return taskElements;
   }
