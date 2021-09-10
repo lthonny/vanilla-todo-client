@@ -89,18 +89,18 @@ export class View {
   }
 
   createTaskText(currentTask: any): HTMLElement {
-    const containerTaskText = document.createElement('div')
-    containerTaskText.className = 'task-text'
+    const containerTaskText = document.createElement('div');
+    containerTaskText.className = 'task-text';
 
-    const text = document.createElement('div')
-    text.className = 'text'
-    const p = document.createTextNode(`${currentTask.text}`)
+    const text = document.createElement('div');
+    text.className = 'text';
+    const p = document.createTextNode(`${currentTask.text}`);
 
     if (currentTask.status) {
       text.style.textDecoration = 'line-through';
       text.style.color = 'green';
     }
-    text.append(p)
+    text.append(p);
     containerTaskText.append(text);
 
     return containerTaskText;
@@ -120,17 +120,17 @@ export class View {
     inputDiv.append(inputEdit);
 
     inputEdit.addEventListener('focus', function (e: any): void {
-      e.target.style.background = '#fff'
+      e.target.style.background = '#fff';
     });
     inputEdit.focus();
 
     const handleBlur = function (e: any) {
-      e.target.style.background = ''
-      editTask(currentTask.id, this.value)
+      e.target.style.background = '';
+      editTask(currentTask.id, this.value);
     };
     const handleEnter = function (e: any): void {
       if (e.keyCode === 13) {
-        editTask(currentTask.id, this.value)
+        editTask(currentTask.id, this.value);
       }
     };
     const handleTouch = function (event) {
@@ -145,32 +145,28 @@ export class View {
 
   createDeleteBtn(): HTMLElement {
     const btnDelete = document.createElement('div')
-    btnDelete.className = 'btn-delete'
+    btnDelete.className = 'btn-delete';
 
     const button = document.createElement('button')
     const icon = document.createElement('i')
-    icon.className = 'fas fa-trash-alt'
-    button.append(icon)
-    btnDelete.append(button)
+    icon.className = 'fas fa-trash-alt';
+    button.append(icon);
+    btnDelete.append(button);
 
     return btnDelete;
   }
 
-  modalWindow(btnDel, currentTask) {
+  modalWindow(id) {
     const modal = document.getElementById("myModal");
     const span = document.querySelector(".close");
     const btnNo = document.querySelector('.btn-delete-no');
     const btnYes = document.querySelector('.btn-delete-yes');
     modal.style.display = "block";
 
-    btnDel.addEventListener('click', () => {
-      modal.style.display = "block";
-    })
-    span.addEventListener('click', () => {
-      modal.style.display = "none";
-    })
-    btnNo.addEventListener('click', () => {
-      modal.style.display = "none";
+    [btnNo, span].forEach((el) => {
+      el.addEventListener('click', () => {
+        modal.style.display = "none";
+      })
     })
 
     window.addEventListener('click', (e): void => {
@@ -182,7 +178,7 @@ export class View {
     })
 
     btnYes.addEventListener('click', (e): void => {
-      this.deleteTask(currentTask.id);
+      this.deleteTask(id);
       modal.style.display = "none";
     })
   }
@@ -202,7 +198,6 @@ export class View {
           if (filter === FiltersValues.Completed) return task.status;
           if (filter === FiltersValues.InCompleted) return !task.status;
         })
-
 
         const taskContainer = document.createDocumentFragment();
         for (let i = 0; i < filteredTasks.length; i++) {
@@ -307,9 +302,8 @@ export class View {
     // handlers delete
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
-    const deleteTask = this.deleteTask.bind(this);
     btnDel.addEventListener('click', () => {
-      this.modalWindow(btnDel, currentTask);
+      this.modalWindow(currentTask.id);
     })
 
     return taskElements;
