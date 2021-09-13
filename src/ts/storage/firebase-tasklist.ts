@@ -3,19 +3,17 @@ import { TasksList } from './../types';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-export class InMemoryTasksList extends TasksList {
+export class TaskList extends TasksList {
 
     constructor() {
         super();
         const firebaseConfig = {
-            apiKey: "AIzaSyCi-UOx-5q3TGuwm463fqEWHAPOCk7cqpQ",
-            authDomain: "todo-9dbb4.firebaseapp.com",
-            databaseURL: "https://todo-9dbb4-default-rtdb.firebaseio.com",
-            projectId: "todo-9dbb4",
-            storageBucket: "todo-9dbb4.appspot.com",
-            messagingSenderId: "853688421023",
-            appId: "1:853688421023:web:f1d13176b618de532cb0aa",
-            measurementId: "G-Y6BX7QZP6V"
+            apiKey: "AIzaSyC72RD4e1VUXl4GGej74vEAVWiJdjAooFI",
+            authDomain: "tasks-33805.firebaseapp.com",
+            projectId: "tasks-33805",
+            storageBucket: "tasks-33805.appspot.com",
+            messagingSenderId: "862718649801",
+            appId: "1:862718649801:web:71ca436be025c0b2d0b418"
         };
         const initializeApp = firebase.initializeApp(firebaseConfig);
     }

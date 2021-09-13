@@ -1,7 +1,7 @@
 import { Task } from "../Task";
 import { TasksList } from './../types';
 
-export class InMemoryTasksList extends TasksList {
+export class TaskList extends TasksList {
     key: any;
     constructor() {
         super();

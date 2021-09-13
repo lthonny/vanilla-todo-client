@@ -13,7 +13,7 @@ export class View {
 
     const message: HTMLInputElement = document.getElementById('message') as HTMLInputElement;
     message.addEventListener('keyup', (event: KeyboardEvent) => {
-      if (message.value.length < 200) {
+      if (message.value.length <= 200) {
         characters.innerText = `You entered characters ${message.value.length}`;
       }
       else {
@@ -22,7 +22,7 @@ export class View {
     })
 
     addBtn.addEventListener('click', (e: any): void => {
-      if (message.value.length < 200) {
+      if (message.value.length <= 200) {
         this.createNewTaskAction(message.value);
         message.value = '';
         characters.innerText = `You entered characters ${message.value.length}`;
@@ -31,7 +31,7 @@ export class View {
 
     message.addEventListener('keydown', (event) => {
       if (event.keyCode === 13) {
-        if (message.value.length < 200) {
+        if (message.value.length <= 200) {
           this.createNewTaskAction(message.value);
           message.value = '';
           event.preventDefault();
@@ -156,30 +156,37 @@ export class View {
     return btnDelete;
   }
 
-  modalWindow(id) {
-    const modal = document.getElementById("myModal");
-    const span = document.querySelector(".close");
+  modalWindow() {
+    const modal = document.getElementById('myModal');
     const btnNo = document.querySelector('.btn-delete-no');
     const btnYes = document.querySelector('.btn-delete-yes');
+    const span = document.querySelector('.close');
+
     modal.style.display = "block";
 
-    [btnNo, span].forEach((el) => {
-      el.addEventListener('click', () => {
-        modal.style.display = "none";
+    return new Promise(function (res, rej) {
+      btnYes.addEventListener('click', function () {
+        modal.style.display = 'none';
+        res('YES');
+      });
+      [span, btnNo].forEach(function (el) {
+        el.addEventListener('click', function() {
+          modal.style.display = "none";
+          rej('NO');
+        });
       })
-    })
-
-    window.addEventListener('click', (e): void => {
-      if (e.target === modal) modal.style.display = "none";
-    })
-
-    document.addEventListener('keydown', (e): void => {
-      if (e.keyCode === 27) modal.style.display = "none";
-    })
-
-    btnYes.addEventListener('click', (e): void => {
-      this.deleteTask(id);
-      modal.style.display = "none";
+      document.addEventListener('keydown', function (event) {
+        if(event.keyCode === 27) {
+          modal.style.display = "none";
+          rej('NO');
+        }
+      });
+      window.addEventListener('click', function (event) {
+        if(event.target === modal) {
+          modal.style.display = "none"
+          rej('NO');
+        };
+      });
     })
   }
 
@@ -302,8 +309,14 @@ export class View {
     // handlers delete
     const btnDel = this.createDeleteBtn();
     taskElements.append(btnDel);
-    btnDel.addEventListener('click', () => {
-      this.modalWindow(currentTask.id);
+    btnDel.addEventListener('click',  () => {
+      this.modalWindow()
+          .then((btn) => {
+            if (btn === 'YES') {
+              this.deleteTask(currentTask.id);
+            }
+          })
+          .catch(function (e) {})
     })
 
     return taskElements;

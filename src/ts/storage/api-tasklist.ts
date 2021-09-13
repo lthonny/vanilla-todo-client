@@ -2,7 +2,7 @@
 import { Task } from "../Task";
 import { TasksList } from './../types';
 
-export class InMemoryTasksList extends TasksList {
+export class TaskList extends TasksList {
 
   constructor(
     private baseUrl: string = 'http://localhost:3000'
