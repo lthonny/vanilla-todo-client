@@ -123,6 +123,11 @@ View.prototype.createTaskText = function (currentTask) {
     const text = document.createElement('div')
     text.className = 'text';
     const p = document.createTextNode(`${currentTask.text}`)
+
+    if (currentTask.status) {
+        text.classList.add('text-false');
+    }
+
     text.append(p)
     containerTaskText.append(text);
 
@@ -144,8 +149,9 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
     inputDiv.append(inputEdit);
 
     inputEdit.addEventListener('focus', function (event) {
-        event.target.style.background = '#dff2ef'
+        event.target.background = '#fff';
     });
+
     inputEdit.focus();
 
     const handleBlur = function (event) {
@@ -225,7 +231,7 @@ View.prototype.render = function () {
             while (root.lastChild) {
                 root.removeChild(root.lastChild);
             }
-            console.log(tasks);
+
             const filteredTasks = tasks.sort(function (a, b) {
                 return a.order - b.order;
             }).filter(function (task) {

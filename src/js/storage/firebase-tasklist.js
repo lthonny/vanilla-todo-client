@@ -5,14 +5,12 @@ import { Task } from '../Task';
 
 export function TaskList() {
     const firebaseConfig = {
-        apiKey: "AIzaSyCi-UOx-5q3TGuwm463fqEWHAPOCk7cqpQ",
-        authDomain: "todo-9dbb4.firebaseapp.com",
-        databaseURL: "https://todo-9dbb4-default-rtdb.firebaseio.com",
-        projectId: "todo-9dbb4",
-        storageBucket: "todo-9dbb4.appspot.com",
-        messagingSenderId: "853688421023",
-        appId: "1:853688421023:web:f1d13176b618de532cb0aa",
-        measurementId: "G-Y6BX7QZP6V"
+        apiKey: "AIzaSyC72RD4e1VUXl4GGej74vEAVWiJdjAooFI",
+        authDomain: "tasks-33805.firebaseapp.com",
+        projectId: "tasks-33805",
+        storageBucket: "tasks-33805.appspot.com",
+        messagingSenderId: "862718649801",
+        appId: "1:862718649801:web:71ca436be025c0b2d0b418"
     };
     this.app = firebase.initializeApp(firebaseConfig);
     this.filter = 'All';
@@ -51,7 +49,6 @@ TaskList.prototype.createTask = function (text) {
     return this.getTasks()
         .then(function (tasks) {
             const date = new Date();
-            // const id = Math.random().toString(36).substr(2, 9);
             let order;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
@@ -77,7 +74,7 @@ TaskList.prototype.createTask = function (text) {
 
 TaskList.prototype.editTask = function (id, taskData) {
     const db = firebase.firestore();
-    const { text, status } = taskData;
+    const { text, status, order } = taskData;
 
     return this.getTasks()
         .then(function (tasks) {
@@ -92,10 +89,11 @@ TaskList.prototype.editTask = function (id, taskData) {
                     status: !status
                 });
             }
-
-            db.collection('tasks').doc(id).update({
-                taskData
-            });
+            if (order !== undefined && order !== null) {
+                db.collection('tasks').doc(id).update({
+                    order: order
+                });
+            }
         })
         .catch(function (e) {
             console.log(e);
