@@ -90,10 +90,6 @@ export class TaskList extends TasksList {
                         order: order
                     });
                 }
-
-                db.collection('tasks').doc(id).update({
-                    taskData
-                });
             })
             .catch((err: any) => console.log(err));
     }
