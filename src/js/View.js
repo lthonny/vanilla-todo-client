@@ -9,11 +9,12 @@ export function View(rootNode) {
 
     const message = document.getElementById('message');
     message.addEventListener('keyup', function (event) {
-        if(message.value.length < 200) {
+        if (message.value.length <= 200 && message.value.length > 0) {
             characters.innerText = `You entered characters ${message.value.length}`
-        }
-        else {
+        } else if (message.value.length === 200) {
             characters.innerText = `Maximum number of characters ${message.value.length}`;
+        } else {
+            characters.innerText = '';
         }
     })
 
@@ -29,15 +30,15 @@ export function View(rootNode) {
 
     // add new todos
     addBtn.addEventListener('click', function () {
-        if (message.value.length < 200) {
+        if (message.value.length <= 200 && message.value.length > 0) {
             createNewTaskAction(message.value);
             message.value = '';
-            characters.innerText = `You entered characters ${message.value.length}`;
+            characters.innerText = '';
         }
     })
     message.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
-            if (message.value.length < 200) {
+            if (message.value.length <= 200 && message.value.length > 0) {
                 createNewTaskAction(message.value);
                 message.value = '';
                 event.preventDefault();
@@ -135,8 +136,10 @@ View.prototype.createTaskText = function (currentTask) {
 }
 
 // layout edit messages
-View.prototype.createEditText = function (inputDiv, currentTask, editTask) {
+View.prototype.createEditText = function (inputDiv, currentTask, editTask, taskElements) {
     inputDiv.style.backgroundColor = '#fff';
+
+    taskElements.draggable = false;
 
     const childNode = inputDiv.firstChild;
     inputDiv.removeChild(childNode);
@@ -200,22 +203,23 @@ View.prototype.modalWindow = function () {
             res('YES');
         });
         [span, btnNo].forEach(function (el) {
-            el.addEventListener('click', function() {
+            el.addEventListener('click', function () {
                 modal.style.display = "none";
                 rej('NO');
             });
         })
         document.addEventListener('keydown', function (event) {
-            if(event.keyCode === 27) {
+            if (event.keyCode === 27) {
                 modal.style.display = "none";
                 rej('NO');
             }
         });
         window.addEventListener('click', function (event) {
-            if(event.target === modal) {
+            if (event.target === modal) {
                 modal.style.display = "none"
                 rej('NO');
-            };
+            }
+            ;
         });
     })
 }
@@ -274,7 +278,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.className = 'tasks__item';
     taskElements.draggable = true;
 
-    taskElements.addEventListener(`dragstart`, function (event)  {
+    taskElements.addEventListener(`dragstart`, function (event) {
         let yDrag = event.pageY;
         event.dataTransfer.setData('yDrag', yDrag);
 
@@ -283,7 +287,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
         event.target.classList.add('tasks__item-pointer');
     });
 
-    tasksListElement.addEventListener(`dragend`, function(event) {
+    tasksListElement.addEventListener(`dragend`, function (event) {
         event.target.classList.remove(`selected`);
         event.target.classList.remove('tasks__item-pointer');
     });
@@ -302,7 +306,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
         }
     });
 
-    taskElements.addEventListener(`dragover`, function (event)  {
+    taskElements.addEventListener(`dragover`, function (event) {
         event.preventDefault();
     });
 
@@ -315,7 +319,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
         let yDrop = event.pageY;
 
-        const index = tasks.findIndex(function (el)  {
+        const index = tasks.findIndex(function (el) {
             return el.id === currentTask.id;
         });
 
@@ -351,7 +355,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.append(taskInputText);
 
     taskInputText.addEventListener('dblclick', function (event) {
-        createEdit(taskInputText, currentTask, editTask);
+        createEdit(taskInputText, currentTask, editTask, taskElements);
     });
     taskInputText.addEventListener('touchstart', function (event) {
         createEdit(taskInputText, currentTask, editTask);
@@ -369,7 +373,8 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
                     deleteTask(currentTask.id);
                 }
             })
-            .catch(function (e) {})
+            .catch(function (e) {
+            })
     })
 
     return taskElements;
