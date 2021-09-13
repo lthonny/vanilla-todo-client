@@ -12,26 +12,26 @@ export class View {
     const characters: HTMLElement = document.querySelector('.max-characters');
 
     const message: HTMLInputElement = document.getElementById('message') as HTMLInputElement;
-    message.addEventListener('keyup', (event: KeyboardEvent) => {
-      if (message.value.length <= 200) {
-        characters.innerText = `You entered characters ${message.value.length}`;
-      }
-      else {
+    message.addEventListener('keyup',(event) => {
+      if (message.value.length <= 200 && message.value.length > 0) {
+        characters.innerText = `You entered characters ${message.value.length}`
+      } else if (message.value.length === 200) {
         characters.innerText = `Maximum number of characters ${message.value.length}`;
+      } else {
+        characters.innerText = '';
       }
     })
 
-    addBtn.addEventListener('click', (e: any): void => {
-      if (message.value.length <= 200) {
+    addBtn.addEventListener('click', () => {
+      if (message.value.length <= 200 && message.value.length > 0) {
         this.createNewTaskAction(message.value);
         message.value = '';
-        characters.innerText = `You entered characters ${message.value.length}`;
+        characters.innerText = '';
       }
-    });
-
+    })
     message.addEventListener('keydown', (event) => {
       if (event.keyCode === 13) {
-        if (message.value.length <= 200) {
+        if (message.value.length <= 200 && message.value.length > 0) {
           this.createNewTaskAction(message.value);
           message.value = '';
           event.preventDefault();
@@ -106,7 +106,8 @@ export class View {
     return containerTaskText;
   }
 
-  createEditText(inputDiv: HTMLElement, currentTask: any, editTask: any): void {
+  createEditText(inputDiv: HTMLElement, currentTask: any, editTask: any, taskElements): void {
+    taskElements.draggable = false;
     inputDiv.style.backgroundColor = '#fff';
 
     const childNode = inputDiv.firstChild;
@@ -300,10 +301,10 @@ export class View {
     const taskInputText = this.createTaskText(currentTask);
     taskElements.append(taskInputText);
     taskInputText.addEventListener('dblclick', (e: any): void => {
-      this.createEditText(taskInputText, currentTask, editTask);
+      this.createEditText(taskInputText, currentTask, editTask, taskElements);
     })
     taskInputText.addEventListener('touchstart',  (e: any): void => {
-      this.createEditText(taskInputText, currentTask, editTask);
+      this.createEditText(taskInputText, currentTask, editTask, taskElements);
     });
 
     // handlers delete
