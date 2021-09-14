@@ -18,11 +18,13 @@ TaskList.prototype.getItem = function () {
 
 TaskList.prototype.getTasks = function () {
     const getItem = this.getItem();
+
     return new Promise(function (resolve, reject) {
         try {
             const tasks = (getItem || []).map(function ({ id, text, status, date, order }) { ///
                 return new Task(id, text, status, date, order);
             })
+
             resolve(tasks);
         } catch (e) {
             reject(e);
@@ -30,12 +32,13 @@ TaskList.prototype.getTasks = function () {
     })
 }
 
-// consistent interface
+
 TaskList.prototype.createTask = function (text) {
     const setItem = this.setItem.bind(this);
 
     return this.getTasks()
         .then(function (tasks) {
+            const id = generateId();
             const date = new Date().toLocaleString();
 
             let order;
@@ -47,8 +50,7 @@ TaskList.prototype.createTask = function (text) {
                 order = 1;
             }
 
-            const id = generateId();
-            const task = new Task(id, text, date, date, order);
+            const task = new Task(id, text, false, date, order);
 
             tasks.push(task);
             setItem(tasks);
@@ -61,9 +63,6 @@ TaskList.prototype.createTask = function (text) {
 
 TaskList.prototype.editTask = function (id, {text, status, order}) {
     const setItem = this.setItem.bind(this);
-    // const { text, status, order } = taskData;
-
-    // console.log('taskData', taskData);
 
     return this.getTasks()
         .then(function (tasks) {
@@ -96,8 +95,8 @@ TaskList.prototype.deleteTask = function (id) {
 
     return this.getTasks()
         .then(function (tasks) {
-            const tasksFromRemoteTask = tasks.filter(task => task.id !== id);
-            setItem(tasksFromRemoteTask);
+            const arrTasks = tasks.filter(task => task.id !== id);
+            setItem(arrTasks);
         })
         .catch(function (e) {
             console.log(e);

@@ -11,10 +11,11 @@ TaskList.prototype.getTasks = function () {
     const tasks = this.tasks;
     return new Promise(function (resolve, reject) {
         try {
-            const drawingTasks = (tasks || []).map(function ({ id, text, status, date, order }) {
+            const arrTasks = (tasks || []).map(function ({ id, text, status, date, order }) {
                 return new Task(id, text, status, date, order);
             })
-            resolve(drawingTasks)
+
+            resolve(arrTasks)
         } catch (e) {
             reject(e);
         }
@@ -27,6 +28,7 @@ TaskList.prototype.createTask = function (text) {
 
     return new Promise(function (resolve, reject) {
         try {
+            const id = generateId();
             const date = new Date().toLocaleString();
 
             let order;
@@ -38,11 +40,10 @@ TaskList.prototype.createTask = function (text) {
                 order = 1;
             }
 
-            const task = new Task(generateId(), text, false, date, order);
-            console.log(task);
+            const task = new Task(id, text, false, date, order);
             tasks.push(task);
 
-            resolve(tasks);
+            resolve();
         } catch (e) {
             reject(e);
         }
@@ -50,8 +51,7 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, taskData) {
-    const { text, status, order } = taskData;
+TaskList.prototype.editTask = function (id, {text, status, order}) {
     const tasks = this.tasks;
 
     return new Promise(function (resolve, reject) {
@@ -72,7 +72,7 @@ TaskList.prototype.editTask = function (id, taskData) {
                 tasks[index].order = order;
             }
 
-            resolve(tasks);
+            resolve();
         } catch (e) {
             reject(e);
         }
@@ -86,12 +86,12 @@ TaskList.prototype.deleteTask = function (id) {
 
     return new Promise(function (resolve, reject) {
         try {
-            const elementIndex = tasks.findIndex(function (element) {
+            const index = tasks.findIndex(function (element) {
                 return element.id === id;
             })
 
-            tasks.splice(elementIndex, 1);
-            resolve(tasks);
+            tasks.splice(index, 1);
+            resolve();
         } catch (e) {
             reject(e);
         }

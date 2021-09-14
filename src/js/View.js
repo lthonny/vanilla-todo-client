@@ -112,8 +112,6 @@ View.prototype.createTaskText = function (currentTask) {
 
 // layout edit messages
 View.prototype.createEditText = function (inputDiv, currentTask, editTask, taskElements) {
-    inputDiv.style.backgroundColor = '#fff';
-
     taskElements.draggable = false;
 
     const childNode = inputDiv.firstChild;
@@ -125,10 +123,6 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask, taskE
 
     inputEdit.value = currentTask.text;
     inputDiv.append(inputEdit);
-
-    inputEdit.addEventListener('focus', function (event) {
-        event.target.background = '#fff';
-    });
 
     inputEdit.focus();
 
