@@ -24,7 +24,7 @@ TaskList.prototype.getTasks = function () {
         try {
 
             db.collection("tasks")
-                .onSnapshot((snapshot) => {
+                .onSnapshot(function (snapshot) { // remove arrow functions
                     const data = snapshot.docs.map((doc) => ({
                         id: doc.id,
                         ...doc.data(),
@@ -32,8 +32,9 @@ TaskList.prototype.getTasks = function () {
 
                     const tasks = (data).map(function ({ id, text, status, date, order }) {
                         return new Task(id, text, status, date, order);
-                    })
-                    resolve(data);
+                    });
+
+                    resolve(tasks);
                 })
         } catch (e) {
             reject(e);
@@ -58,8 +59,8 @@ TaskList.prototype.createTask = function (text) {
                 order = 1;
             }
 
+            // not waiting promise
             db.collection("tasks").add({
-                //     id: id,
                 text: text,
                 status: false,
                 date: date.toLocaleString(),
@@ -78,21 +79,33 @@ TaskList.prototype.editTask = function (id, taskData) {
 
     return this.getTasks()
         .then(function (tasks) {
-
+            const data = {};
             if (text !== undefined && text !== null) {
                 db.collection('tasks').doc(id).update({
                     text: text
-                });
+                }).then(function () {
+                    console.log();
+                }).catch(function (e) {
+                    console.log(e);
+                })
             }
             if (status !== undefined && status !== null) {
                 db.collection('tasks').doc(id).update({
                     status: !status
-                });
+                }).then(function () {
+                    console.log();
+                }).catch(function (e) {
+                    console.log(e);
+                })
             }
             if (order !== undefined && order !== null) {
                 db.collection('tasks').doc(id).update({
                     order: order
-                });
+                }).then(function () {
+                    console.log();
+                }).catch(function (e) {
+                    console.log(e);
+                })
             }
         })
         .catch(function (e) {
@@ -104,7 +117,7 @@ TaskList.prototype.editTask = function (id, taskData) {
 TaskList.prototype.deleteTask = function (id) {
     const db = firebase.firestore();
 
-    return this.getTasks()
+    return this.getTasks() // rework
         .then(function (tasks) {
             db.collection('tasks').doc(id).delete();
         })

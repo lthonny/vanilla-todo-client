@@ -1,8 +1,9 @@
 import { Task } from '../Task';
+import {generateId} from '../utils';
 
-export function TaskList(baseUrl) {
+export function TaskList() {
     this.filter = 'All';
-    this.key = 'tasks' || '[]';
+    this.key = 'tasks';
 }
 
 TaskList.prototype.setItem = function (data) {
@@ -11,15 +12,15 @@ TaskList.prototype.setItem = function (data) {
 }
 
 TaskList.prototype.getItem = function () {
-    return JSON.parse(localStorage.getItem(this.key));
+    return JSON.parse(localStorage.getItem(this.key) || '[]');
 }
 
 
 TaskList.prototype.getTasks = function () {
-    const tasksItem = this.getItem();
+    const getItem = this.getItem();
     return new Promise(function (resolve, reject) {
         try {
-            const tasks = (tasksItem || []).map(function ({ id, text, status, date, order }) {
+            const tasks = (getItem || []).map(function ({ id, text, status, date, order }) { ///
                 return new Task(id, text, status, date, order);
             })
             resolve(tasks);
@@ -29,14 +30,14 @@ TaskList.prototype.getTasks = function () {
     })
 }
 
-
+// consistent interface
 TaskList.prototype.createTask = function (text) {
-    const setLocalStorage = this.setItem.bind(this);
+    const setItem = this.setItem.bind(this);
 
     return this.getTasks()
         .then(function (tasks) {
-            const date = new Date();
-            const id = Math.random().toString(36).substr(2, 9);
+            const date = new Date().toLocaleString();
+
             let order;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
@@ -46,10 +47,11 @@ TaskList.prototype.createTask = function (text) {
                 order = 1;
             }
 
-            const task = new Task(id, text, false, date.toLocaleString(), order);
+            const id = generateId();
+            const task = new Task(id, text, date, date, order);
 
             tasks.push(task);
-            setLocalStorage(tasks);
+            setItem(tasks);
         })
         .catch(function (e) {
             console.log(e);
@@ -57,9 +59,11 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, taskData) {
-    const setLocalStorage = this.setItem.bind(this);
-    const { text, status, order } = taskData;
+TaskList.prototype.editTask = function (id, {text, status, order}) {
+    const setItem = this.setItem.bind(this);
+    // const { text, status, order } = taskData;
+
+    // console.log('taskData', taskData);
 
     return this.getTasks()
         .then(function (tasks) {
@@ -79,7 +83,7 @@ TaskList.prototype.editTask = function (id, taskData) {
                 tasks[index].order = order;
             }
 
-            setLocalStorage(tasks);
+            setItem(tasks);
         })
         .catch(function (e) {
             console.log(e);

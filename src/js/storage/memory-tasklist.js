@@ -1,4 +1,5 @@
 import { Task } from '../Task';
+import { generateId } from '../utils';
 
 export function TaskList() {
     this.tasks = [];
@@ -26,9 +27,8 @@ TaskList.prototype.createTask = function (text) {
 
     return new Promise(function (resolve, reject) {
         try {
-            const date = new Date();
+            const date = new Date().toLocaleString();
 
-            const id = Math.random().toString(36).substr(2, 9);
             let order;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
@@ -38,7 +38,8 @@ TaskList.prototype.createTask = function (text) {
                 order = 1;
             }
 
-            const task = new Task(id, text, false, date.toLocaleString(), order);
+            const task = new Task(generateId(), text, false, date, order);
+            console.log(task);
             tasks.push(task);
 
             resolve(tasks);

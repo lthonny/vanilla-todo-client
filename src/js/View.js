@@ -60,39 +60,16 @@ View.prototype.deleteTask = function (id) {
         })
 }
 
-// toggle todos
-View.prototype.toggleStatus = function (id, status) {
+// edit task
+View.prototype.edit = function (id, data) {
+    const {text, status, order} = data;
     const render = this.render.bind(this);
-    this.handlers.editTask(id, {status})
+    this.handlers.editTask(id, {text, status, order})
         .then(function () {
             render();
         })
         .catch(function (e) {
-            console.log('error edit status: ', e);
-        })
-}
-
-// edit order
-View.prototype.editOrder = function (id, order) {
-    const render = this.render.bind(this);
-    this.handlers.editTask(id, {order})
-        .then(function () {
-            render();
-        })
-        .catch(function (e) {
-            console.log('error edit order: ', e);
-        })
-}
-
-// edit todos
-View.prototype.editTask = function (id, text) {
-    const render = this.render.bind(this);
-    this.handlers.editTask(id, {text})
-        .then(function () {
-            render();
-        })
-        .catch(function (e) {
-            console.log('error edit text: ', e);
+            console.log('error: ', e);
         })
 }
 
@@ -105,12 +82,10 @@ View.prototype.createTaskSwitch = function (currentTask) {
     const checkbox = document.createElement('div');
     checkbox.className = 'check-true';
     switchTask.append(checkbox);
+    checkbox.classList.add('check-false');
 
-    if (currentTask.status === false) {
-        checkbox.classList.add('check-false');
+    if (!currentTask.status) {
         checkbox.classList.remove('check-true');
-    } else {
-        checkbox.classList.add('check-false');
     }
 
     return switchTask;
@@ -157,23 +132,19 @@ View.prototype.createEditText = function (inputDiv, currentTask, editTask, taskE
 
     inputEdit.focus();
 
-    const handleBlur = function (event) {
+    inputEdit.addEventListener('blur', function (event) {
         event.target.style.background = '';
-        editTask(currentTask.id, this.value);
-    };
-    const handleEnter = function (event) {
+        editTask(currentTask.id, {text: this.value});
+    });
+    inputEdit.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
-            editTask(currentTask.id, this.value);
+            editTask(currentTask.id, {text: this.value});
         }
-    };
-    const handleTouch = function (event) {
+    });
+    inputEdit.addEventListener('touchend', function (event) {
         event.target.style.background = '';
-        editTask(currentTask.id, this.value);
-    }
-
-    inputEdit.addEventListener('blur', handleBlur);
-    inputEdit.addEventListener('keydown', handleEnter);
-    inputEdit.addEventListener('touchend', handleTouch);
+        editTask(currentTask.id, {text: this.value});
+    });
 }
 
 // layout delete button
@@ -246,7 +217,7 @@ View.prototype.render = function () {
                 } else if (filter === 'InCompleted') {
                     return !task.status;
                 }
-            })
+            });
 
             const taskContainer = document.createDocumentFragment();
             for (let i = 0; i < filteredTasks.length; i++) {
@@ -266,9 +237,7 @@ View.prototype.render = function () {
 // alignment components
 View.prototype.createTaskItem = function (currentTask, tasks) {
     const deleteTask = this.deleteTask.bind(this);
-    const toggleStatus = this.toggleStatus.bind(this);
-    const editTask = this.editTask.bind(this);
-    const editOrder = this.editOrder.bind(this);
+    const edit = this.edit.bind(this);
 
     const modalWindow = this.modalWindow;
     const createEdit = this.createEditText;
@@ -337,7 +306,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
             order = (tasks[index - 1].order + tasks[index].order) / 2;
         }
 
-        editOrder(dragId, order);
+        edit(dragId, {order: order});
     });
 
 
@@ -346,7 +315,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.append(switchTask);
 
     switchTask.addEventListener('click', function (event) {
-        toggleStatus(currentTask.id, currentTask.status);
+        edit(currentTask.id, {status: currentTask.status});
     })
 
 
@@ -355,10 +324,10 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.append(taskInputText);
 
     taskInputText.addEventListener('dblclick', function (event) {
-        createEdit(taskInputText, currentTask, editTask, taskElements);
+        createEdit(taskInputText, currentTask, edit, taskElements);
     });
     taskInputText.addEventListener('touchstart', function (event) {
-        createEdit(taskInputText, currentTask, editTask);
+        createEdit(taskInputText, currentTask, edit);
     });
 
 

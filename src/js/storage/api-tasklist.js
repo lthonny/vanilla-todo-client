@@ -1,5 +1,5 @@
-export function TaskList(baseUrl) {
-    this.baseUrl = baseUrl;
+export function TaskList() {
+    this.baseUrl = 'http://localhost:3000';
     this.filter = 'All'
 }
 
