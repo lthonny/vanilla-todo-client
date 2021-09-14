@@ -62,7 +62,7 @@ TaskList.prototype.createTask = function (text) {
                 //     id: id,
                 text: text,
                 status: false,
-                data: date.toLocaleString(),
+                date: date.toLocaleString(),
                 order: order
             })
         })
