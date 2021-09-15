@@ -277,9 +277,7 @@ export class View {
     const editedText = this.createTaskText(currentTask);
     taskItem.append(editedText);
 
-    const handlerEdit = () => {
-      return this.createEditText(editedText, currentTask, taskItem);
-    }
+    const handlerEdit = () => this.createEditText(editedText, currentTask, taskItem);
     editedText.addEventListener('dblclick', handlerEdit);
     editedText.addEventListener('touchstart', handlerEdit);
 
