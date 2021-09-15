@@ -1,85 +1,55 @@
-import { Task } from "../Task";
-import { TasksList } from './../types';
+import {Task} from "../Task";
+import {TasksList} from './../types';
+import {generateId} from '../utils';
 
 export class TaskList extends TasksList {
+    private tasks: Task[] = [];
+
     constructor() {
         super();
     }
-    getTasks(): Promise<Task[]> {
-        return new Promise((resolve, reject) => {
-            try {
-                const drawingTasks = (this.tasks || []).map(({ id, text, status, order }) => {
-                    return new Task(id, text, status, order);
-                })
-                resolve(drawingTasks);
-            } catch (err: any) {
-                reject(err);
-            }
-        })
+
+    async getTasks(): Promise<Task[]> {
+        return this.tasks;
     }
 
-    createTask(text: string) {
-        const { tasks } = this;
-        return new Promise<Task[]>((resolve, reject) => {
-            try {
-                const id = Math.random().toString(36).substr(2, 9);
-                let order: number;
-                if (tasks.length) {
-                    order = tasks.reduce((acc, curr) => {
-                        return acc > curr.order ? acc : curr.order;
-                    }, 1) + 1;
-                } else {
-                    order = 1;
-                }
+    async createTask(text: string): Promise<undefined> {
+        const {tasks} = this;
+        const id: string  = generateId();
 
-                const task = new Task(id, text, false, order);
-                tasks.push(task);
-
-                resolve(tasks);
-            } catch (err: any) {
-                reject(err);
-            }
-        })
+        let order: number = 1;
+        if (tasks.length) {
+            order = tasks.reduce((acc, curr) => {
+                return acc > curr.order ? acc : curr.order;
+            }, 1) + 1;
+        }
+        const task = new Task(id, text, false, order);
+        tasks.push(task);
+        return;
     }
 
-    editTask(id: number | string, taskData: { text: string, status: boolean, order: number }) {
-        const { text, status, order } = taskData;
+    async editTask(id: string, taskData: { text: string, status: boolean, order: number }): Promise<undefined> {
+        const {tasks} = this;
+        const index = tasks.findIndex(el => el.id === id);
 
-        return new Promise((resolve, reject) => {
-            try {
-                const index = this.tasks.findIndex(el => el.id === id);
-
-                if (text !== undefined && text !== null) {
-                    this.tasks[index].text = text;
+        if (index) {
+            Object.entries(taskData).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    tasks[index][key] = value;
                 }
-
-                if (status !== undefined && status !== null) {
-                    this.tasks[index].status = !status;
-                }
-
-                if (order !== undefined && order !== null) {
-                    this.tasks[index].order = order;
-                }
-
-                resolve(this.tasks);
-            } catch (err: any) {
-                reject(err);
-            }
-        })
-
+            })
+        }
+        return;
     }
 
-    deleteTask(id: number | string) {
-        const tasks = this.tasks;
-        return new Promise<Task[]>((resolve, reject) => {
-            try {
-                const index = tasks.findIndex(el => el.id === id);
-                tasks.splice(index, 1);
-                resolve(tasks);
-            } catch (err: any) {
-                reject(err);
-            }
-        })
+    async deleteTask(id: string): Promise<undefined> {
+        const {tasks} = this;
+        const index = this.tasks.findIndex(el => el.id === id);
+
+        if (index) {
+            tasks.splice(index, 1);
+        }
+        return;
     }
 }
 

@@ -46,29 +46,19 @@ export class View {
       .catch((e: any) => e);
   }
 
-  deleteTask(id: string | number): void {
+  deleteTask(id: string): void {
     this.handlers.deleteTask(id)
       .then(() => this.render())
       .catch((e: any) => e);
   }
 
-  toggleStatus(id: string | number, status: boolean): void {
-    this.handlers.editTask(id, { status })
-      .then(() => this.render())
-      .catch((e: any) => e);
+  edit(id, data) {
+    const {text, status, order} = data;
+    this.handlers.editTask(id, {text, status, order})
+        .then(() => this.render())
+        .catch((e: any) => e);
   }
 
-  editOrder(id: string | number, order: number): void {
-    this.handlers.editTask(id, { order })
-      .then(() => this.render())
-      .catch((e: any) => e);
-  }
-
-  editTask(id: string | number, text: string): void {
-    this.handlers.editTask(id, { text })
-      .then(() => this.render())
-      .catch((e: any) => e);
-  }
 
   createTaskSwitch(currentTask: any): HTMLElement {
     const switchTask = document.createElement('div');
@@ -78,11 +68,10 @@ export class View {
     checkbox.className = 'check-true';
     switchTask.append(checkbox);
 
-    if (currentTask.status === false) {
-      checkbox.classList.add('check-false');
+    checkbox.classList.add('check-false');
+
+    if (!currentTask.status) {
       checkbox.classList.remove('check-true');
-    } else {
-      checkbox.classList.add('check-false');
     }
 
     return switchTask;
@@ -97,18 +86,17 @@ export class View {
     const p = document.createTextNode(`${currentTask.text}`);
 
     if (currentTask.status) {
-      text.style.textDecoration = 'line-through';
-      text.style.color = 'green';
+      text.classList.add('text-false');
     }
+
     text.append(p);
     containerTaskText.append(text);
 
     return containerTaskText;
   }
 
-  createEditText(inputDiv: HTMLElement, currentTask: any, editTask: any, taskElements): void {
+  createEditText(inputDiv: HTMLElement, currentTask: any, taskElements): void {
     taskElements.draggable = false;
-    inputDiv.style.backgroundColor = '#fff';
 
     const childNode = inputDiv.firstChild;
     inputDiv.removeChild(childNode);
@@ -120,28 +108,23 @@ export class View {
     inputEdit.value = currentTask.text;
     inputDiv.append(inputEdit);
 
-    inputEdit.addEventListener('focus', function (e: any): void {
-      e.target.style.background = '#fff';
-    });
     inputEdit.focus();
 
-    const handleBlur = function (e: any) {
+    inputEdit.addEventListener('blur', (e: any) => {
       e.target.style.background = '';
-      editTask(currentTask.id, this.value);
-    };
-    const handleEnter = function (e: any): void {
-      if (e.keyCode === 13) {
-        editTask(currentTask.id, this.value);
-      }
-    };
-    const handleTouch = function (event) {
-      event.target.style.background = '';
-      editTask(currentTask.id, this.value);
-    }
+      this.edit(currentTask.id, {text: inputEdit.value});
+    });
 
-    inputEdit.addEventListener('blur', handleBlur);
-    inputEdit.addEventListener('keydown', handleEnter);
-    inputEdit.addEventListener('touchend', handleTouch);
+    inputEdit.addEventListener('keydown', (e: any) => {
+      if (e.keyCode === 13) {
+        this.edit(currentTask.id,{text: inputEdit.value});
+      }
+    });
+
+    inputEdit.addEventListener('touchend',  (e: any) => {
+      e.target.style.background = '';
+      this.edit(currentTask.id, {text: inputEdit.value});
+    });
   }
 
   createDeleteBtn(): HTMLElement {
@@ -166,26 +149,26 @@ export class View {
     modal.style.display = "block";
 
     return new Promise(function (res, rej) {
-      btnYes.addEventListener('click', function () {
+      btnYes.addEventListener('click', () => {
         modal.style.display = 'none';
-        res('YES');
+        res(true);
       });
       [span, btnNo].forEach(function (el) {
-        el.addEventListener('click', function() {
+        el.addEventListener('click', () => {
           modal.style.display = "none";
-          rej('NO');
+          rej(false);
         });
       })
-      document.addEventListener('keydown', function (event) {
+      document.addEventListener('keydown', (event) => {
         if(event.keyCode === 27) {
           modal.style.display = "none";
-          rej('NO');
+          rej(false);
         }
       });
-      window.addEventListener('click', function (event) {
+      window.addEventListener('click',  (event) => {
         if(event.target === modal) {
           modal.style.display = "none"
-          rej('NO');
+          rej(false);
         };
       });
     })
@@ -220,17 +203,12 @@ export class View {
 
 
   createTaskItem(currentTask, tasks: Task[]): HTMLElement {
-    const editTask = this.editTask.bind(this);
-    const editOrder = this.editOrder.bind(this);
-
-    // create container
     const tasksListElement = document.querySelector(`.tasks__list`);
-    const taskElements: any = document.createElement('li');
-    taskElements.className = 'tasks__item';
-    taskElements.draggable = true;
+    const taskItem: any = document.createElement('li');
+    taskItem.className = 'tasks__item';
+    taskItem.draggable = true;
 
-
-    taskElements.addEventListener(`dragstart`, (event: any) => {
+    taskItem.addEventListener(`dragstart`, (event: any) => {
       let yDrag = event.pageY;
       event.dataTransfer.setData('yDrag', yDrag);
 
@@ -258,9 +236,9 @@ export class View {
       }
     });
 
-    taskElements.addEventListener(`dragover`, (e) => e.preventDefault());
+    taskItem.addEventListener(`dragover`, (e) => e.preventDefault());
 
-    taskElements.addEventListener('drop', function (event) {
+    taskItem.addEventListener('drop', (event) => {
       const yDrag = event.dataTransfer.getData('yDrag');
       event.dataTransfer.clearData('yDrag');
 
@@ -269,9 +247,7 @@ export class View {
 
       let yDrop = event.pageY;
 
-      const index = tasks.findIndex(function (el)  {
-        return el.id === currentTask.id;
-      });
+      const index = tasks.findIndex((el) => el.id === currentTask.id);
 
       let order;
       if (tasks[index - 1] === undefined && tasks[index + 1] !== undefined) {
@@ -287,39 +263,35 @@ export class View {
         order = (tasks[index - 1].order + tasks[index].order) / 2;
       }
 
-      editOrder(dragId, order);
+      this.edit(dragId, {order: order});
     });
 
     // handlers toggle
     const switchTask = this.createTaskSwitch(currentTask);
-    taskElements.append(switchTask);
+    taskItem.append(switchTask);
     switchTask.addEventListener('click', (e: any): void => {
-      this.toggleStatus(currentTask.id, currentTask.status);
+      this.edit(currentTask.id, {status: !currentTask.status});
     })
 
     // handlers edit
-    const taskInputText = this.createTaskText(currentTask);
-    taskElements.append(taskInputText);
-    taskInputText.addEventListener('dblclick', (e: any): void => {
-      this.createEditText(taskInputText, currentTask, editTask, taskElements);
-    })
-    taskInputText.addEventListener('touchstart',  (e: any): void => {
-      this.createEditText(taskInputText, currentTask, editTask, taskElements);
-    });
+    const editedText = this.createTaskText(currentTask);
+    taskItem.append(editedText);
+
+    const handlerEdit = () => {
+      return this.createEditText(editedText, currentTask, taskItem);
+    }
+    editedText.addEventListener('dblclick', handlerEdit);
+    editedText.addEventListener('touchstart', handlerEdit);
 
     // handlers delete
     const btnDel = this.createDeleteBtn();
-    taskElements.append(btnDel);
+    taskItem.append(btnDel);
     btnDel.addEventListener('click',  () => {
       this.modalWindow()
-          .then((btn) => {
-            if (btn === 'YES') {
-              this.deleteTask(currentTask.id);
-            }
-          })
-          .catch(function (e) {})
+          .then(() => this.deleteTask(currentTask.id))
+          .catch((e) => console.log(e));
     })
 
-    return taskElements;
+    return taskItem;
   }
 }

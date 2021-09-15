@@ -1,91 +1,72 @@
-import { Task } from "../Task";
-import { TasksList } from './../types';
+import {Task} from "../Task";
+import {TasksList} from './../types';
+import {generateId} from '../utils';
 
 export class TaskList extends TasksList {
-    key: any;
+    private readonly key: string = 'tasks';
+
     constructor() {
         super();
-        this.key = 'tasks';
     }
 
-    setItem(data) {
+    private setItem(data) {
         localStorage.setItem(this.key, JSON.stringify(data));
         return this;
     }
 
-    getItem() {
-        return JSON.parse(localStorage.getItem(this.key));
+    private getItem() {
+        return JSON.parse(localStorage.getItem(this.key) || '[]');
     }
 
-    getTasks(): Promise<Task[]> {
-        const tasksItem = this.getItem();
-        return new Promise((resolve, reject) => {
-            try {
-                const tasks = (tasksItem || []).map(({ id, text, status, order }) => {
-                    return new Task(id, text, status, order);
-                })
-                resolve(tasks);
-            } catch (err: any) {
-                reject(err);
-            }
-        })
+    async getTasks(): Promise<Task[]> {
+        const tasks = await (this.getItem() || []).map(({id, text, status, order}) => {
+            return new Task(id, text, status, order);
+        });
+
+        return tasks;
     }
 
-    createTask(text: string) {
-        const setLocalStorage = this.setItem.bind(this);
+    async createTask(text: string): Promise<undefined> {
+        const tasks = await this.getTasks();
+        const id: string = generateId();
 
-        return this.getTasks()
-            .then(tasks => {
-                const id = Math.random().toString(36).substr(2, 9);
-                let order: number;
-                if (tasks.length) {
-                    order = tasks.reduce((acc, curr) => {
-                        return acc > curr.order ? acc : curr.order;
-                    }, 1) + 1;
-                } else {
-                    order = 1;
+        let order: number = 1;
+        if (tasks.length) {
+            order = tasks.reduce((acc, curr) => {
+                return acc > curr.order ? acc : curr.order;
+            }, 1) + 1;
+        }
+
+        const task = new Task(id, text, false, order);
+
+        tasks.push(task);
+        this.setItem(tasks);
+
+        return;
+    }
+
+    async editTask(id: string, taskData: { text?: string, status?: boolean, order?: number }): Promise<undefined> {
+        const tasks = await this.getTasks();
+        const index = tasks.findIndex(el => el.id === id);
+
+        if (index !== -1) {
+            Object.entries(taskData).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    tasks[index][key] = value;
                 }
-
-                const task = new Task(id, text, false, order);
-
-                tasks.push(task);
-                setLocalStorage(tasks);
             })
-            .catch((err: any) => console.log(err));
+        }
+
+        this.setItem(tasks);
+        return;
     }
 
-    editTask(id: number | string, taskData: { text: string, status: boolean, order: number }) {
-        const { text, status, order } = taskData;
+    async deleteTask(id: string): Promise<undefined> {
+        const tasks = await this.getTasks();
+        const newArrTasks = tasks.filter(task => task.id !== id);
+        this.setItem(newArrTasks);
 
-        return this.getTasks()
-            .then(tasks => {
-
-                const index = tasks.findIndex(el => el.id === id);
-
-                if (text !== undefined && text !== null) {
-                    tasks[index].text = text;
-                }
-
-                if (status !== undefined && status !== null) {
-                    tasks[index].status = !status;
-                }
-
-                if (order !== undefined && order !== null) {
-                    tasks[index].order = order;
-                }
-
-                this.setItem(tasks);
-            })
-            .catch((err: any) => console.log(err));
-    }
-
-    deleteTask(id: number | string) {
-        return this.getTasks()
-            .then(tasks => {
-                const tasksFromRemoteTask = tasks.filter(task => task.id !== id);
-                this.setItem(tasksFromRemoteTask);
-            })
-            .catch((err: any) => console.log(err));
+        return;
     }
 }
 

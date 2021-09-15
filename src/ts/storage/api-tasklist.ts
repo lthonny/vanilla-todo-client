@@ -1,12 +1,10 @@
-// import process from "dotenv/config";
 import { Task } from "../Task";
 import { TasksList } from './../types';
 
 export class TaskList extends TasksList {
+  private readonly baseUrl: string = 'http://localhost:3000';
 
-  constructor(
-    private baseUrl: string = 'http://localhost:3000'
-  ) {
+  constructor() {
     super();
   }
 
@@ -38,7 +36,7 @@ export class TaskList extends TasksList {
   }
 
 
-  editTask(id: number | string, taskData: { text: string, status: boolean }) {
+  editTask(id: string, taskData: { text: string, status: boolean }) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
       method: 'PUT',
@@ -52,7 +50,7 @@ export class TaskList extends TasksList {
   }
 
 
-  deleteTask(id: number | string) {
+  deleteTask(id: string) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
       method: 'DELETE',

@@ -1,107 +1,101 @@
-import { Task } from "../Task";
-import { TasksList } from './../types';
+import {Task} from "../Task";
+import {TasksList} from './../types';
+
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 export class TaskList extends TasksList {
+    private db: firebase.firestore.Firestore;
 
     constructor() {
         super();
-        const firebaseConfig = {
+
+        firebase.initializeApp({
             apiKey: "AIzaSyC72RD4e1VUXl4GGej74vEAVWiJdjAooFI",
             authDomain: "tasks-33805.firebaseapp.com",
             projectId: "tasks-33805",
             storageBucket: "tasks-33805.appspot.com",
             messagingSenderId: "862718649801",
             appId: "1:862718649801:web:71ca436be025c0b2d0b418"
-        };
-        const initializeApp = firebase.initializeApp(firebaseConfig);
+        });
+
+        this.db = firebase.firestore();
     }
 
+
     getTasks(): Promise<Task[]> {
-        const db = firebase.firestore();
+        //   await this.db.collection("tasks")
+        //     .onSnapshot(snapshot => {
+        //         const data = snapshot.docs.map(doc => ({
+        //             id: doc.id,
+        //             ...doc.data(),
+        //         })) as { id: string, text: string, status: boolean, order: number }[];
+        //
+        //         const tasks = data.map(({id, text, status, order}) => {
+        //             return new Task(id, text, status, order);
+        //         })
+        //
+        //         // console.log('tasks', tasks);
+        //     })
+        //
+        // // console.log('tasks', tasks);
+        //
+        // return tasks;
 
         return new Promise((resolve, reject) => {
-            try {
+                try {
 
-                db.collection("tasks")
-                    .onSnapshot(snapshot => {
-                        const data = snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            ...doc.data(),
-                        })) as { id: string, text: string, status: boolean, order: number }[];
-                        console.log('firebase data -> ', data);
+                    this.db.collection("tasks")
+                        .onSnapshot(snapshot => {
+                            const data = snapshot.docs.map(doc => ({
+                                id: doc.id,
+                                ...doc.data(),
+                            })) as { id: string, text: string, status: boolean, order: number }[];
 
-                        const tasks = data.map(({ id, text, status, order }) => {
-                            return new Task(id, text, status, order);
+                            const tasks = data.map(({id, text, status, order}) => {
+                                return new Task(id, text, status, order);
+                            })
+
+                            resolve(tasks);
                         })
-
-                        resolve(tasks);
-                    })
-            } catch (err: any) {
-                reject(err);
+                } catch (err: any) {
+                    reject(err);
+                }
             }
-        }
         )
     }
 
-    createTask(text: string) {
-        const db = firebase.firestore();
+    async createTask(text: string): Promise<undefined> {
+        const tasks = await this.getTasks();
 
-        return this.getTasks()
-            .then(tasks => {
-                let order: number;
-                if (tasks.length) {
-                    order = tasks.reduce((acc, curr) => {
-                        return acc > curr.order ? acc : curr.order;
-                    }, 1) + 1;
-                } else {
-                    order = 1;
-                }
+        let order: number = 1;
+        if (tasks.length) {
+            order = tasks.reduce((acc, curr) => {
+                return acc > curr.order ? acc : curr.order;
+            }, 1) + 1;
+        }
 
-                db.collection("tasks").add({
-                    text: text,
-                    status: false,
-                    order: order
-                })
-            })
+        this.db.collection("tasks")
+            .add({text: text, status: false, order: order})
             .catch((err: any) => console.log(err));
+        return;
     }
 
-    editTask(id: string, taskData: { text: string, status: boolean, order: number }) {
-        const db = firebase.firestore();
-        const { text, status, order } = taskData;
-
-        return this.getTasks()
-            .then(tasks => {
-
-                if (text !== undefined && text !== null) {
-                    db.collection('tasks').doc(id).update({
-                        text: text
-                    });
-                }
-                if (status !== undefined && status !== null) {
-                    db.collection('tasks').doc(id).update({
-                        status: !status
-                    });
-                }
-                if (order !== undefined && order !== null) {
-                    db.collection('tasks').doc(id).update({
-                        order: order
-                    });
-                }
-            })
-            .catch((err: any) => console.log(err));
+    async editTask(id: string, taskData: { text: string, status: boolean, order: number }): Promise<undefined> {
+        Object.entries(taskData).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                this.db.collection('tasks').doc(id).update({
+                    [key]: value
+                }).catch(e => console.log(e));
+            }
+        })
+        return;
     }
 
-    deleteTask(id: string) {
-        const db = firebase.firestore();
-
-        return this.getTasks()
-            .then(tasks => {
-                db.collection('tasks').doc(id).delete();
-            })
-            .catch((err: any) => console.log(err));
+    async deleteTask(id: string): Promise<undefined> {
+        await this.db.collection('tasks').doc(id).delete()
+            .catch((e) => console.log(e));
+        return;
     }
 }
 

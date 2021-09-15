@@ -9,20 +9,19 @@ export enum FiltersValues {
 export interface IAppHandlers {
   getStateFilter(): Promise<{ filter: FiltersValues, tasks: Task[] }>,
   createTask(text: string): Promise<Task[]>,
-  editTask(id: number | string, taskData: { text?: string, status?: boolean, order?: number }): Promise<Task[]>,
-  deleteTask(id: number | string): Promise<Task[]>,
+  editTask(id: string, taskData: { text?: string, status?: boolean, order?: number }): Promise<Task[]>,
+  deleteTask(id: string): Promise<Task[]>,
 }
 
 export abstract class TasksList {
-  public tasks: Task[] = [];
   public filter = FiltersValues.All;
 
   abstract getTasks(): Promise<Task[]>;
-  abstract createTask(text: string): void;
-  abstract editTask(id: number | string, taskData: { text: string, status: boolean, order: number }): void;
-  abstract deleteTask(id: number | string): void;
+  abstract createTask(text: string): Promise<undefined>;
+  abstract editTask(id: string, taskData: { text: string, status: boolean, order: number }): Promise<undefined>;
+  abstract deleteTask(id: string): Promise<undefined>;
 
-  setFilter(filter: string): void {
+  setFilter(filter: string): undefined {
     if (
       filter === FiltersValues.All ||
       filter === FiltersValues.InCompleted ||
@@ -30,5 +29,6 @@ export abstract class TasksList {
     ) {
       this.filter = filter;
     }
+    return;
   }
 }
