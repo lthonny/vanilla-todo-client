@@ -36,7 +36,7 @@ export class TaskList extends TasksList {
   }
 
 
-  editTask(id: string, taskData: { text: string, status: boolean }) {
+  editTask(id: string, taskData: { text: string, status: boolean, order: number }) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
       method: 'PUT',
