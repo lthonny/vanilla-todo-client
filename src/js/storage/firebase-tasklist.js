@@ -98,14 +98,13 @@ TaskList.prototype.deleteTask = function (id) {
 }
 
 
+
 TaskList.prototype.setFilter = function (filter) {
-    if (filter === 'All') {
-        this.filter = 'All';
-    }
-    if (filter === 'Completed') {
-        this.filter = 'Completed';
-    }
-    if (filter === 'InCompleted') {
-        this.filter = 'InCompleted';
+    if(
+        filter === 'All' ||
+        filter === 'Completed' ||
+        filter === 'InCompleted'
+    ) {
+        this.filter = filter;
     }
 }
