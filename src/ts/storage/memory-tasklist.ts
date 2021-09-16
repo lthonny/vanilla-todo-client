@@ -32,7 +32,7 @@ export class TaskList extends TasksList {
         const {tasks} = this;
         const index = tasks.findIndex(el => el.id === id);
 
-        if (index) {
+        if (index > -1) {
             Object.entries(taskData).forEach(([key, value]) => {
                 if (value !== undefined && value !== null) {
                     tasks[index][key] = value;
@@ -46,7 +46,7 @@ export class TaskList extends TasksList {
         const {tasks} = this;
         const index = this.tasks.findIndex(el => el.id === id);
 
-        if (index) {
+        if (index > -1) {
             tasks.splice(index, 1);
         }
         return;

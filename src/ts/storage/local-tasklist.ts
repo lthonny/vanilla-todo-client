@@ -19,11 +19,9 @@ export class TaskList extends TasksList {
     }
 
     async getTasks(): Promise<Task[]> {
-        const tasks = await (this.getItem() || []).map(({id, text, status, order}) => {
-            return new Task(id, text, status, order);
-        });
-
-        return tasks;
+        return this.getItem().map(
+            ({id, text, status, order}) => new Task(id, text, status, order)
+        );
     }
 
     async createTask(text: string): Promise<undefined> {
@@ -38,18 +36,20 @@ export class TaskList extends TasksList {
         }
 
         const task = new Task(id, text, false, order);
-
         tasks.push(task);
         this.setItem(tasks);
 
         return;
     }
 
-    async editTask(id: string, taskData: { text?: string, status?: boolean, order?: number }): Promise<undefined> {
+    async editTask(
+        id: string,
+        taskData: { text?: string, status?: boolean, order?: number }
+    ): Promise<undefined> {
         const tasks = await this.getTasks();
         const index = tasks.findIndex(el => el.id === id);
 
-        if (index !== -1) {
+        if (index > -1) {
             Object.entries(taskData).forEach(([key, value]) => {
                 if (value !== undefined && value !== null) {
                     tasks[index][key] = value;
@@ -63,8 +63,8 @@ export class TaskList extends TasksList {
 
     async deleteTask(id: string): Promise<undefined> {
         const tasks = await this.getTasks();
-        const newArrTasks = tasks.filter(task => task.id !== id);
-        this.setItem(newArrTasks);
+        const newTasks = tasks.filter(task => task.id !== id);
+        this.setItem(newTasks);
 
         return;
     }

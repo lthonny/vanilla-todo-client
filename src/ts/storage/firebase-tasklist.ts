@@ -44,9 +44,11 @@ export class TaskList extends TasksList {
 
         return new Promise((resolve, reject) => {
                 try {
-
                     this.db.collection("tasks")
                         .onSnapshot(snapshot => {
+                            // if(err){
+                            //     reject(err);
+                            // }
                             const data = snapshot.docs.map(doc => ({
                                 id: doc.id,
                                 ...doc.data(),
@@ -75,20 +77,39 @@ export class TaskList extends TasksList {
             }, 1) + 1;
         }
 
-        this.db.collection("tasks")
-            .add({text: text, status: false, order: order})
-            .catch((err: any) => console.log(err));
+        try{
+            await this.db.collection("tasks").add({text, status: false, order});
+        }
+        catch(e){
+            console.log(e);
+        }
+        // this.db.collection("tasks")
+        //     .add({text, status: false, order})
+        //     .catch((err: any) => console.log(err));
         return;
     }
 
     async editTask(id: string, taskData: { text: string, status: boolean, order: number }): Promise<undefined> {
-        Object.entries(taskData).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                this.db.collection('tasks').doc(id).update({
-                    [key]: value
-                }).catch(e => console.log(e));
-            }
-        })
+        // const payload = {};
+        // Object.entries(taskData).forEach(([key, value]) => {
+        //     if (value !== undefined && value !== null) {
+        //         payload[key] = value;
+        //     }
+        // })
+        try{
+            await this.db.collection('tasks').doc(id).update({...taskData});
+        } catch (e){
+            console.log(e);
+        }
+
+        //
+        // Object.entries(taskData).forEach(([key, value]) => {
+        //     if (value !== undefined && value !== null) {
+        //         this.db.collection('tasks').doc(id).update({
+        //             [key]: value
+        //         }).catch(e => console.log(e));
+        //     }
+        // })
         return;
     }
 

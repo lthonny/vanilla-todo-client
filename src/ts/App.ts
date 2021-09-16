@@ -38,7 +38,7 @@ export class App {
         const deleteTask = this.taskList.deleteTask.bind(this.taskList);
         const editTask = this.taskList.editTask.bind(this.taskList);
 
-        const getStateFilter: any = this.getStateFilter.bind(this);
+        const getStateFilter = this.getStateFilter.bind(this);
 
         const handlers: IAppHandlers = {
             getStateFilter,
@@ -55,12 +55,10 @@ export class App {
         this.render();
     }
 
-    getStateFilter(): Promise<{ filter: FiltersValues, tasks: Task[] }> {
+    async getStateFilter(): Promise<{ filter: FiltersValues, tasks: Task[] }> {
         const {filter} = this.taskList;
-        return this.taskList.getTasks()
-            .then(tasks => {
-                return {filter, tasks};
-            })
+        const tasks = await this.taskList.getTasks();
+        return {filter, tasks};
     }
 
     render(): void {
