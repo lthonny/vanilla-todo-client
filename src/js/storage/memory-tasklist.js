@@ -1,5 +1,5 @@
-import { Task } from '../Task';
-import { generateId } from '../utils';
+import {Task} from '../Task';
+import {generateId} from '../utils';
 
 export function TaskList() {
     this.tasks = [];
@@ -8,11 +8,12 @@ export function TaskList() {
 
 
 TaskList.prototype.getTasks = function () {
-    const tasks = this.tasks;
+    const {tasks} = this;
+
     return new Promise(function (resolve, reject) {
         try {
-            const arrTasks = (tasks || []).map(function ({ id, text, status, date, order }) {
-                return new Task(id, text, status, date, order);
+            const arrTasks = (tasks || []).map(function ({id, text, status, order}) {
+                return new Task(id, text, status, order);
             })
 
             resolve(arrTasks)
@@ -24,23 +25,20 @@ TaskList.prototype.getTasks = function () {
 
 
 TaskList.prototype.createTask = function (text) {
-    const tasks = this.tasks;
+    const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
         try {
             const id = generateId();
-            const date = new Date().toLocaleString();
 
-            let order;
+            let order = 1;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
                     return acc > curr.order ? acc : curr.order;
                 }, 1) + 1;
-            } else {
-                order = 1;
             }
 
-            const task = new Task(id, text, false, date, order);
+            const task = new Task(id, text, false, order);
             tasks.push(task);
 
             resolve();
@@ -51,8 +49,8 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, {text, status, order}) {
-    const tasks = this.tasks;
+TaskList.prototype.editTask = function (id, data) {
+    const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
         try {
@@ -60,16 +58,12 @@ TaskList.prototype.editTask = function (id, {text, status, order}) {
                 return element.id === id;
             })
 
-            if (text !== undefined && text !== null) {
-                tasks[index].text = text;
-            }
-
-            if (status !== undefined && status !== null) {
-                tasks[index].status = !status;
-            }
-
-            if (order !== undefined && order !== null) {
-                tasks[index].order = order;
+            if (index !== -1) {
+                Object.entries(data).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null) {
+                        tasks[index][key] = value;
+                    }
+                })
             }
 
             resolve();
@@ -82,7 +76,7 @@ TaskList.prototype.editTask = function (id, {text, status, order}) {
 
 
 TaskList.prototype.deleteTask = function (id) {
-    const tasks = this.tasks;
+    const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
         try {

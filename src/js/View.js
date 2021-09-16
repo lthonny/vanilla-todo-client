@@ -309,7 +309,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.append(switchTask);
 
     switchTask.addEventListener('click', function (event) {
-        edit(currentTask.id, {status: currentTask.status});
+        edit(currentTask.id, {status: !currentTask.status});
     })
 
 

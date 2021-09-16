@@ -13,12 +13,14 @@ export function TaskList() {
         appId: "1:862718649801:web:71ca436be025c0b2d0b418"
     };
     this.app = firebase.initializeApp(firebaseConfig);
+    this.db = firebase.firestore();
+
     this.filter = 'All';
 }
 
 
 TaskList.prototype.getTasks = function () {
-    const db = firebase.firestore();
+    const {db} = this;
 
     return new Promise(function (resolve, reject) {
             try {
@@ -45,27 +47,18 @@ TaskList.prototype.getTasks = function () {
 
 
 TaskList.prototype.createTask = function (text) {
-    const db = firebase.firestore();
+    const {db} = this;
 
     return this.getTasks()
         .then(function (tasks) {
-            const date = new Date();
-            let order;
+            let order = 1;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
                     return acc > curr.order ? acc : curr.order;
                 }, 1) + 1;
-            } else {
-                order = 1;
             }
 
-            db.collection("tasks").add({
-                text: text,
-                status: false,
-                date: date.toLocaleString(),
-                order: order
-            })
-                .then()
+            db.collection("tasks").add({text, status: false, order})
                 .catch(function (e) {
                     console.log(e);
                 })
@@ -76,53 +69,18 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, {text, status, order}) {
-    const db = firebase.firestore();
+TaskList.prototype.editTask = function (id, data) {
+    const {db} = this;
 
     return this.getTasks()
-        .then(function (tasks) {
-            const data = {
-                text: text,
-                status: status,
-                order: order
-            };
-
-            console.log('data', data);
-
-            if (
-                data.text !== undefined && data.text !== null ||
-                data.status !== undefined && data.status !== null ||
-                data.order !== undefined && data.order !== null
-            ) {
-                console.log(data);
-                db.collection('tasks').doc(id).update({
-                //     date : data,
-                    text: data.text,
-                    status: !data.status
-                })
-            }
-
-
-            // if (text !== undefined && text !== null) {
-            //     db.collection('tasks').doc(id).update({
-            //         text: text
-            //     })
-            // }
-            // if (status !== undefined && status !== null) {
-            //     db.collection('tasks').doc(id).update({
-            //         status: !status
-            //     })
-            // }
-            // if (order !== undefined && order !== null) {
-            //     db.collection('tasks').doc(id).update({
-            //         order: order
-            //     })
-            //     .then(function () {
-            //     console.log();
-            // }).catch(function (e) {
-            //     console.log(e);
-            // })
-            // }
+        .then(function () {
+            Object.entries(data).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    db.collection('tasks').doc(id).update({
+                        [key]: value
+                    }).catch(e => console.log(e));
+                }
+            })
         })
         .catch(function (e) {
             console.log(e);
@@ -131,10 +89,9 @@ TaskList.prototype.editTask = function (id, {text, status, order}) {
 
 
 TaskList.prototype.deleteTask = function (id) {
-    const db = firebase.firestore();
+    const {db} = this;
 
     return db.collection('tasks').doc(id).delete()
-        .then()
         .catch(function (e) {
             console.log(e)
         });
