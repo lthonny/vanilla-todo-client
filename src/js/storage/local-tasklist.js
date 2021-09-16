@@ -21,8 +21,8 @@ TaskList.prototype.getTasks = function () {
 
     return new Promise(function (resolve, reject) {
         try {
-            const tasks = (getItem || []).map(function ({ id, text, status, date, order }) { ///
-                return new Task(id, text, status, date, order);
+            const tasks = (getItem || []).map(function ({ id, text, status, order }) {
+                return new Task(id, text, status, order);
             })
 
             resolve(tasks);
@@ -39,18 +39,15 @@ TaskList.prototype.createTask = function (text) {
     return this.getTasks()
         .then(function (tasks) {
             const id = generateId();
-            const date = new Date().toLocaleString();
 
-            let order;
+            let order = 1;
             if (tasks.length) {
                 order = tasks.reduce(function (acc, curr) {
                     return acc > curr.order ? acc : curr.order;
                 }, 1) + 1;
-            } else {
-                order = 1;
             }
 
-            const task = new Task(id, text, false, date, order);
+            const task = new Task(id, text, false, order);
 
             tasks.push(task);
             setItem(tasks);
@@ -61,7 +58,7 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, {text, status, order}) {
+TaskList.prototype.editTask = function (id, data) {
     const setItem = this.setItem.bind(this);
 
     return this.getTasks()
@@ -70,16 +67,12 @@ TaskList.prototype.editTask = function (id, {text, status, order}) {
                 return element.id === id;
             })
 
-            if (text !== undefined && text !== null) {
-                tasks[index].text = text;
-            }
-
-            if (status !== undefined && status !== null) {
-                tasks[index].status = !status;
-            }
-
-            if (order !== undefined && order !== null) {
-                tasks[index].order = order;
+            if (index !== -1) {
+                Object.entries(data).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null) {
+                        tasks[index][key] = value;
+                    }
+                })
             }
 
             setItem(tasks);
@@ -95,7 +88,10 @@ TaskList.prototype.deleteTask = function (id) {
 
     return this.getTasks()
         .then(function (tasks) {
-            const arrTasks = tasks.filter(task => task.id !== id);
+            const arrTasks = tasks.filter(function(task) {
+                return task.id !== id;
+            });
+
             setItem(arrTasks);
         })
         .catch(function (e) {
