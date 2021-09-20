@@ -2,7 +2,12 @@
 
 Project "to do list" - designed to create a list of tasks. The program helps to manage to-do lists, implement planned tasks and not forget anything. The user has the ability to create a list of tasks, in the process of their execution, can change delete, complete, sort, search by name.
 
-## Task list functionality:
+## 1) To download all project dependencies, write:
+
+`npm ci`
+
+## 2) Task list functionality
+
 ### Adding a task 
 To add a task of the day, you need to click on the input fields (Enter the task...), enter your text, confirm our input with the add button.
 
@@ -19,7 +24,7 @@ To display specific records, we use the filter buttons [ all ], [ completed ], [
 <!-- ![image](https://user-images.githubusercontent.com/58366884/121872743-4e30f680-cd0e-11eb-8e86-def4d245909f.png) -->
 
 
-## Run npm start
+## 3) Run npm start
 
 `npm run start`
 
