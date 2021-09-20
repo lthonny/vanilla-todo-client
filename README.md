@@ -19,10 +19,8 @@ To display specific records, we use the filter buttons [ all ], [ completed ], [
 <!-- ![image](https://user-images.githubusercontent.com/58366884/121872743-4e30f680-cd0e-11eb-8e86-def4d245909f.png) -->
 
 
-The program is implemented in pure javascript programming language using:
-- 
-- 
-
+Run npm start
+`npm run start`
 
 Eventually:
 As a result of completing my entire work plan, you will end up with a fully functional application (TO DO LIST) written in pure JavaScript.
