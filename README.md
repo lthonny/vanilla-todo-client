@@ -21,7 +21,7 @@ After clicking on the [ Add to ] button, the task gets into the Daily tasks: whe
 ### Filtering tasks 
 To display specific records, we use the filter buttons [ all ], [ completed ], [ in completed]. Thanks to them, our Daily tasks will change according to the condition on which button we clicked the output of all records, completed and not completed.
 
-<!-- ![image](https://user-images.githubusercontent.com/58366884/121872743-4e30f680-cd0e-11eb-8e86-def4d245909f.png) -->
+![image](https://user-images.githubusercontent.com/58366884/133989195-7cd1c283-deb8-4615-ae32-12c7b3948e09.png)
 
 
 ## 3) Run npm start
