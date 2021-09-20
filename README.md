@@ -19,7 +19,8 @@ To display specific records, we use the filter buttons [ all ], [ completed ], [
 <!-- ![image](https://user-images.githubusercontent.com/58366884/121872743-4e30f680-cd0e-11eb-8e86-def4d245909f.png) -->
 
 
-Run npm start
+## Run npm start
+
 `npm run start`
 
 Eventually:
