@@ -23,7 +23,3 @@ To display specific records, we use the filter buttons [ all ], [ completed ], [
 
 `npm run start`
 
-Eventually:
-As a result of completing my entire work plan, you will end up with a fully functional application (TO DO LIST) written in pure JavaScript.
-
-
