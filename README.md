@@ -2,6 +2,11 @@
 
 Project "to do list" - designed to create a list of tasks. The program helps to manage to-do lists, implement planned tasks and not forget anything. The user has the ability to create a list of tasks, in the process of their execution, can change delete, complete, sort, search by name.
 
+ENV file:
+Rename .env.example to .env
+
+In .env specify the database('api-tasklist', 'local-tasklist', 'firebase-tasklist')
+
 ## 1) To download all project dependencies, write:
 
 `npm ci`
