@@ -7,8 +7,8 @@ export class App {
     private taskList: TasksList;
 
     constructor(
-        protected taskslistConstructor: new () => TasksList,
-        protected viewConstructor: new (rootNode: HTMLElement, handlers: IAppHandlers) => View
+        public taskslistConstructor: new () => TasksList,
+        public viewConstructor: new (rootNode: HTMLElement, handlers: IAppHandlers) => View
     ) {
         this.taskList = new taskslistConstructor();
         const rootNode: HTMLElement = document.querySelector('.tasks__list');

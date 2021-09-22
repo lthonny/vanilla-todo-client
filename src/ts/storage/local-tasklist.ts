@@ -2,7 +2,7 @@ import {Task} from "../Task";
 import {TasksList} from './../types';
 import {generateId} from '../utils';
 
-export class TaskList extends TasksList {
+export class LocalTaskList extends TasksList {
     private readonly key: string = 'tasks';
 
     constructor() {

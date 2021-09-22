@@ -4,7 +4,7 @@ import {TasksList} from './../types';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-export class TaskList extends TasksList {
+export class FirebaseTaskList extends TasksList {
     private db: firebase.firestore.Firestore;
 
     constructor() {

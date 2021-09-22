@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve",
-    "dev": "webpack --mode development --watch",
+    "dev": "webpack --env --mode development --watch",
     "build": "webpack --mode production"
   },
   "browserslist": "> 0.25%, not dead",

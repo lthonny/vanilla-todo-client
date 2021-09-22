@@ -1,8 +1,8 @@
 import { Task } from "../Task";
 import { TasksList } from './../types';
 
-export class TaskList extends TasksList {
-  private readonly baseUrl: string = 'http://localhost:3000';
+export class ApiTasklist extends TasksList {
+  private baseUrl: string = `http://localhost:${process.env.SERVER_HOST}`;
 
   constructor() {
     super();
@@ -45,7 +45,6 @@ export class TaskList extends TasksList {
         'Content-type': 'application/json; charset=UTF-8',
       },
     });
-    // try
 
     return;
   }
