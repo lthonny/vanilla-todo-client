@@ -1,22 +1,22 @@
 import { Task } from '../Task';
 import {generateId} from '../utils';
 
-export function TaskList() {
+export function LocalTaskList() {
     this.filter = 'All';
     this.key = 'tasks';
 }
 
-TaskList.prototype.setItem = function (data) {
+LocalTaskList.prototype.setItem = function (data) {
     localStorage.setItem(this.key, JSON.stringify(data));
     return this;
 }
 
-TaskList.prototype.getItem = function () {
+LocalTaskList.prototype.getItem = function () {
     return JSON.parse(localStorage.getItem(this.key) || '[]');
 }
 
 
-TaskList.prototype.getTasks = function () {
+LocalTaskList.prototype.getTasks = function () {
     const getItem = this.getItem();
 
     return new Promise(function (resolve, reject) {
@@ -33,7 +33,7 @@ TaskList.prototype.getTasks = function () {
 }
 
 
-TaskList.prototype.createTask = function (text) {
+LocalTaskList.prototype.createTask = function (text) {
     const setItem = this.setItem.bind(this);
 
     return this.getTasks()
@@ -58,7 +58,7 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, data) {
+LocalTaskList.prototype.editTask = function (id, data) {
     const setItem = this.setItem.bind(this);
 
     return this.getTasks()
@@ -83,7 +83,7 @@ TaskList.prototype.editTask = function (id, data) {
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+LocalTaskList.prototype.deleteTask = function (id) {
     const setItem = this.setItem.bind(this);
 
     return this.getTasks()
@@ -100,7 +100,7 @@ TaskList.prototype.deleteTask = function (id) {
 }
 
 
-TaskList.prototype.setFilter = function (filter) {
+LocalTaskList.prototype.setFilter = function (filter) {
     if(
         filter === 'All' ||
         filter === 'Completed' ||

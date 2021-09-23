@@ -1,9 +1,9 @@
-export function TaskList() {
-    this.baseUrl = 'http://localhost:3000';
+export function ApiTasklist() {
+    this.baseUrl = `http://localhost:${process.env.SERVER_HOST}`;
     this.filter = 'All'
 }
 
-TaskList.prototype.getTasks = function () {
+ApiTasklist.prototype.getTasks = function () {
     const endpoint = `${this.baseUrl}/tasks`;
     const response = fetch(endpoint, {
         method: 'GET',
@@ -18,7 +18,7 @@ TaskList.prototype.getTasks = function () {
 }
 
 
-TaskList.prototype.createTask = function (text) {
+ApiTasklist.prototype.createTask = function (text) {
     const endpoint = `${this.baseUrl}/tasks`;
     const response = fetch(endpoint, {
         method: 'POST',
@@ -34,7 +34,7 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, taskData) {
+ApiTasklist.prototype.editTask = function (id, taskData) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
         method: 'PUT',
@@ -50,7 +50,7 @@ TaskList.prototype.editTask = function (id, taskData) {
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+ApiTasklist.prototype.deleteTask = function (id) {
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
         method: 'DELETE',
@@ -62,7 +62,7 @@ TaskList.prototype.deleteTask = function (id) {
 }
 
 
-TaskList.prototype.setFilter = function (filter) {
+ApiTasklist.prototype.setFilter = function (filter) {
     if(
         filter === 'All' ||
         filter === 'Completed' ||

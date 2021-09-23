@@ -3,7 +3,7 @@ import 'firebase/firestore';
 
 import {Task} from '../Task';
 
-export function TaskList() {
+export function FirebaseTaskList() {
     const firebaseConfig = {
         apiKey: "AIzaSyC72RD4e1VUXl4GGej74vEAVWiJdjAooFI",
         authDomain: "tasks-33805.firebaseapp.com",
@@ -19,7 +19,7 @@ export function TaskList() {
 }
 
 
-TaskList.prototype.getTasks = function () {
+FirebaseTaskList.prototype.getTasks = function () {
     const {db} = this;
 
     return new Promise(function (resolve, reject) {
@@ -46,7 +46,7 @@ TaskList.prototype.getTasks = function () {
 }
 
 
-TaskList.prototype.createTask = function (text) {
+FirebaseTaskList.prototype.createTask = function (text) {
     const {db} = this;
 
     return this.getTasks()
@@ -69,7 +69,7 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, data) {
+FirebaseTaskList.prototype.editTask = function (id, data) {
     const {db} = this;
 
     return this.getTasks()
@@ -88,7 +88,7 @@ TaskList.prototype.editTask = function (id, data) {
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+FirebaseTaskList.prototype.deleteTask = function (id) {
     const {db} = this;
 
     return db.collection('tasks').doc(id).delete()
@@ -99,7 +99,7 @@ TaskList.prototype.deleteTask = function (id) {
 
 
 
-TaskList.prototype.setFilter = function (filter) {
+FirebaseTaskList.prototype.setFilter = function (filter) {
     if(
         filter === 'All' ||
         filter === 'Completed' ||

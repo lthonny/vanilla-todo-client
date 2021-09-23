@@ -1,13 +1,13 @@
 import {Task} from '../Task';
 import {generateId} from '../utils';
 
-export function TaskList() {
+export function MemoryTaskList() {
     this.tasks = [];
     this.filter = 'All';
 }
 
 
-TaskList.prototype.getTasks = function () {
+MemoryTaskList.prototype.getTasks = function () {
     const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
@@ -24,7 +24,7 @@ TaskList.prototype.getTasks = function () {
 }
 
 
-TaskList.prototype.createTask = function (text) {
+MemoryTaskList.prototype.createTask = function (text) {
     const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
@@ -49,7 +49,7 @@ TaskList.prototype.createTask = function (text) {
 }
 
 
-TaskList.prototype.editTask = function (id, data) {
+MemoryTaskList.prototype.editTask = function (id, data) {
     const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
@@ -75,7 +75,7 @@ TaskList.prototype.editTask = function (id, data) {
 }
 
 
-TaskList.prototype.deleteTask = function (id) {
+MemoryTaskList.prototype.deleteTask = function (id) {
     const {tasks} = this;
 
     return new Promise(function (resolve, reject) {
@@ -93,7 +93,7 @@ TaskList.prototype.deleteTask = function (id) {
 }
 
 
-TaskList.prototype.setFilter = function (filter) {
+MemoryTaskList.prototype.setFilter = function (filter) {
     if(
         filter === 'All' ||
         filter === 'Completed' ||
