@@ -1,6 +1,6 @@
-import {Task} from './Task';
-import {FiltersValues, TasksList, IAppHandlers} from './types';
-import {View} from './View';
+import { Task } from './Task';
+import { FiltersValues, TasksList, IAppHandlers } from './types';
+import { View } from './View';
 
 export class App {
     private view: View;
@@ -8,18 +8,33 @@ export class App {
 
     constructor(
         public taskslistConstructor: new () => TasksList,
-        public viewConstructor: new (rootNode: HTMLElement, handlers: IAppHandlers) => View
+        public viewConstructor: new (
+            rootNode: HTMLElement,
+            handlers: IAppHandlers,
+        ) => View,
     ) {
         this.taskList = new taskslistConstructor();
         const rootNode: HTMLElement = document.querySelector('.tasks__list');
 
-        const allTasks: HTMLButtonElement = document.querySelector('.btn-all') as HTMLButtonElement;
-        const compTasks: HTMLButtonElement = document.querySelector('.btn-completed') as HTMLButtonElement;
-        const inCompTasks: HTMLButtonElement = document.querySelector('.incompleted') as HTMLButtonElement;
+        const allTasks: HTMLButtonElement = document.querySelector(
+            '.btn-all',
+        ) as HTMLButtonElement;
+        const compTasks: HTMLButtonElement = document.querySelector(
+            '.btn-completed',
+        ) as HTMLButtonElement;
+        const inCompTasks: HTMLButtonElement = document.querySelector(
+            '.incompleted',
+        ) as HTMLButtonElement;
 
-        allTasks.addEventListener('click', () => this.filterTasks(FiltersValues.All));
-        compTasks.addEventListener('click', () => this.filterTasks(FiltersValues.Completed));
-        inCompTasks.addEventListener('click', () => this.filterTasks(FiltersValues.InCompleted));
+        allTasks.addEventListener('click', () =>
+            this.filterTasks(FiltersValues.All),
+        );
+        compTasks.addEventListener('click', () =>
+            this.filterTasks(FiltersValues.Completed),
+        );
+        inCompTasks.addEventListener('click', () =>
+            this.filterTasks(FiltersValues.InCompleted),
+        );
 
         const menuItems = document.getElementsByClassName('btn');
         allTasks.classList.add('activeBtn');
@@ -44,7 +59,7 @@ export class App {
             getStateFilter,
             createTask,
             editTask,
-            deleteTask
+            deleteTask,
         };
 
         this.view = new viewConstructor(rootNode, handlers);
@@ -55,17 +70,13 @@ export class App {
         this.render();
     }
 
-    async getStateFilter(): Promise<{ filter: FiltersValues, tasks: Task[] }> {
-        const {filter} = this.taskList;
+    async getStateFilter(): Promise<{ filter: FiltersValues; tasks: Task[] }> {
+        const { filter } = this.taskList;
         const tasks = await this.taskList.getTasks();
-        return {filter, tasks};
+        return { filter, tasks };
     }
 
     render(): void {
         this.view.render();
     }
 }
-
-
-
-

@@ -1,61 +1,60 @@
-import { Task } from "../Task";
+import { Task } from '../Task';
 import { TasksList } from './../types';
 
 export class ApiTasklist extends TasksList {
-  private baseUrl: string = `http://localhost:${process.env.SERVER_HOST}`;
+    private baseUrl: string = `http://localhost:${process.env.SERVER_HOST}`;
 
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
+    async getTasks(): Promise<Task[]> {
+        const endpoint = `${this.baseUrl}/tasks`;
+        const response = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
 
-  async getTasks(): Promise<Task[]> {
-    const endpoint = `${this.baseUrl}/tasks`;
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    });
+        return response.json();
+    }
 
-    return response.json();
-  }
+    async createTask(text: string): Promise<undefined> {
+        const endpoint = `${this.baseUrl}/tasks`;
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            body: JSON.stringify({ text }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
 
+        return;
+    }
 
-  async createTask(text: string): Promise<undefined>  {
-    const endpoint = `${this.baseUrl}/tasks`;
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      body: JSON.stringify({ text }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    });
+    async editTask(
+        id: string,
+        taskData: { text: string; status: boolean; order: number },
+    ): Promise<undefined> {
+        const endpoint = `${this.baseUrl}/tasks/${id}`;
+        const response = await fetch(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(taskData),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
 
-    return;
-  }
+        return;
+    }
 
+    async deleteTask(id: string): Promise<undefined> {
+        const endpoint = `${this.baseUrl}/tasks/${id}`;
+        const response = await fetch(endpoint, {
+            method: 'DELETE',
+        });
 
-  async editTask(id: string, taskData: { text: string, status: boolean, order: number }): Promise<undefined> {
-    const endpoint = `${this.baseUrl}/tasks/${id}`;
-    const response = await fetch(endpoint, {
-      method: 'PUT',
-      body: JSON.stringify(taskData),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    });
-
-    return;
-  }
-
-
-  async deleteTask(id: string): Promise<undefined> {
-    const endpoint = `${this.baseUrl}/tasks/${id}`;
-    const response = await fetch(endpoint, {
-      method: 'DELETE',
-    });
-
-    return;
-  }
+        return;
+    }
 }

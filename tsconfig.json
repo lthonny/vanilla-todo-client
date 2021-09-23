@@ -1,26 +1,20 @@
 {
-  "compilerOptions": {
-    "alwaysStrict": true,
-    "outDir": "./dist",
-    "allowJs": true,
-    "target": "es5",
-    "esModuleInterop": true,
-    "strict": false,
-    "sourceMap": true,
-    "module": "commonjs",
-    "removeComments": true,
-    "noUnusedLocals": false,
-    "baseUrl": "src",
-    "paths": {
-      "@interfaces": [
-        "ts/*"
-      ]
-    }
-  },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "outDir": "./dist",
+        "allowJs": true,
+        "target": "es5",
+        "esModuleInterop": true,
+        "strict": false,
+        "sourceMap": true,
+        "module": "commonjs",
+        "removeComments": true,
+        "noUnusedLocals": false,
+        "baseUrl": "src",
+        "paths": {
+            "@interfaces": ["ts/*"]
+        }
+    },
+    "include": ["./src/**/*"],
+    "exclude": ["node_modules"]
 }
