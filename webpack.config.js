@@ -75,7 +75,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'src/index.html'),
-            // favicon: './src/img/favicon.svg',
+            favicon: './src/img/favicon.svg',
             filename: 'index.html',
             minify: {
                 collapseWhitespace: isProd,
