@@ -28,9 +28,7 @@ ApiTasklist.prototype.createTask = function (text) {
         },
     });
 
-    return response.then(function (response) {
-        return response.json();
-    })
+    return response;
 }
 
 
@@ -44,9 +42,7 @@ ApiTasklist.prototype.editTask = function (id, taskData) {
         },
     });
 
-    return response.then(function (response) {
-        return response.json();
-    })
+    return response;
 }
 
 
@@ -56,9 +52,7 @@ ApiTasklist.prototype.deleteTask = function (id) {
         method: 'DELETE',
     });
 
-    return response.then(function (response) {
-        return response.json();
-    })
+    return response;
 }
 
 

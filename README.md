@@ -6,7 +6,9 @@ Project "to do list" - designed to create a list of tasks. The program helps to 
 
 Rename .env.example to .env
 
-In .env specify the database('postgresqldb', 'mongodb')
+In .env specify the database('api-tasklist', 'local-tasklist', 'firebase-tasklist')
+
+Rebuild the project every time you change the configuration of the .env file
 
 ## 1) To download all project dependencies, write:
 
