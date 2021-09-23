@@ -43,7 +43,10 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "dotenv": "^10.0.0",
     "firebase": "^8.7.1",
-    "node-polyfill-webpack-plugin": "^1.1.4",
-    "normalize.css": "^8.0.1"
+    "node-polyfill-webpack-plugin": "^1.1.4"
+  },
+  "engines": {
+    "node": ">=16.8.0 <16.9.0",
+    "npm": ">=7.21.0 <7.22.0"
   }
 }
