@@ -8,23 +8,34 @@ import { ApiTasklist } from './ts/storage/api-tasklist';
 import { FirebaseTaskList } from './ts/storage/firebase-tasklist';
 
 class FactoryTaskList {
+  tasklist;
+
+  constructor(){
+    this.tasklist;
+  }
+
   create(type) {
-    let tasklist;
+    if (this.tasklist) {
+      return this.tasklist;
+    }
 
     if(type === 'api-tasklist') {
-      tasklist = ApiTasklist;
+      this.tasklist = ApiTasklist;
+      console.log('1');
     }
     else if(type === 'local-tasklist') {
-      tasklist = LocalTaskList;
+      this.tasklist = LocalTaskList;
+      console.log('2');
     }
     else if(type === 'firebase-tasklist') {
-      tasklist = FirebaseTaskList;
+      this.tasklist = FirebaseTaskList;
+      console.log('3');
     }
     else {
-      tasklist = MemoryTaskList;
+      this.tasklist = MemoryTaskList;
     }
 
-    return tasklist;
+    return this.tasklist;
   }
 }
 
