@@ -1,15 +1,12 @@
-const path = require('path');
+const path = require('path')
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
-    mode: "development",
-    entry: [
-        './src/index.js',
-        '@babel/polyfill'
-    ],
+    mode: 'development',
+    entry: ['./src/index.js', '@babel/polyfill'],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
@@ -18,7 +15,10 @@ module.exports = {
     module: {
         rules: [
             // css
-            { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
 
             // js
             {
@@ -29,7 +29,7 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env'],
                     },
-                }
+                },
             },
 
             // img
@@ -37,13 +37,13 @@ module.exports = {
                 test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
                 type: 'asset/resource',
             },
-        ]
+        ],
     },
     resolve: {
         extensions: ['.js'],
         fallback: {
-            fs: false
-        }
+            fs: false,
+        },
     },
     plugins: [
         new MiniCssExtractPlugin({
@@ -51,11 +51,11 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
-            favicon: "./src/img/favicon.svg"
+            favicon: './src/img/favicon.svg',
         }),
         new Dotenv({
-          path: './.env'
-        })
+            path: './.env',
+        }),
     ],
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
