@@ -21,15 +21,12 @@ class FactoryTaskList {
 
     if(type === 'api-tasklist') {
       this.tasklist = ApiTasklist;
-      console.log('1');
     }
     else if(type === 'local-tasklist') {
       this.tasklist = LocalTaskList;
-      console.log('2');
     }
     else if(type === 'firebase-tasklist') {
       this.tasklist = FirebaseTaskList;
-      console.log('3');
     }
     else {
       this.tasklist = MemoryTaskList;
