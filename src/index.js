@@ -1,4 +1,5 @@
-import '../src/assets/styles/style.css';
+import './index.html';
+import './styles/style.css';
 
 import { App } from './js/App';
 import { View } from './js/View';

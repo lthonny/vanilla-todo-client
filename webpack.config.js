@@ -1,23 +1,47 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
+
+const { plugins } = require('./webpack.config')
+
+const isDev = process.env.NODE_ENV === 'development';
+const isProd = !isDev;
+
+const filename = (ext) => isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 module.exports = {
     mode: 'development',
     entry: ['./src/index.js', '@babel/polyfill'],
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: `./js/${filename('js')}`,
+        path: path.resolve(__dirname, 'app'),
         assetModuleFilename: 'assets/[hash][ext]',
     },
     module: {
         rules: [
+            // html
+            {
+                test: /\.html$/,
+                loader: 'html-loader',
+            },
+
             // css
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: { // hmr: isDev
+                        },
+                    },
+                    'css-loader',
+                ],
             },
 
             // js
@@ -35,7 +59,10 @@ module.exports = {
             // img
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
-                type: 'asset/resource',
+                use: [{
+                    // loader: 'file-loader',
+                    // options: `./img/${filename(('[ext]'))}`,
+                }]
             },
         ],
     },
@@ -46,22 +73,41 @@ module.exports = {
         },
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].[contenthash].css',
-        }),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            favicon: './src/img/favicon.svg',
+            template: path.resolve(__dirname, 'src/index.html'),
+            // favicon: './src/img/favicon.svg',
+            filename: 'index.html',
+            minify: {
+                collapseWhitespace: isProd,
+            },
+        }),
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename: `./css/${filename('css')}`,
+        }),
+        new CopyPlugin({
+            patterns: [
+                {from: path.resolve(__dirname, 'src/img'), to: path.resolve(__dirname, 'app')}
+            ]
         }),
         new Dotenv({
             path: './.env',
         }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'disabled',
+            generateStatsFile: true,
+            statsOptions: { source: false }
+        }),
     ],
+    devtool: isProd ? false : 'source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        port: 5001, //default 8080
+        contentBase: path.resolve(__dirname, 'app'),
+        port: 5001,
         open: true,
         hot: true,
         watchContentBase: true,
+        historyApiFallback: true,
+        compress: true,
     },
-};
+}
+
