@@ -1,5 +1,5 @@
 .env
 .idea/
 .vscode/
-dist/
+app/
 node_modules/
