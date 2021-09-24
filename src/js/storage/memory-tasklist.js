@@ -11,12 +11,7 @@ MemoryTaskList.prototype.getTasks = function () {
 
     return new Promise(function (resolve, reject) {
         try {
-            const arrTasks = (tasks || []).map(function ({
-                id,
-                text,
-                status,
-                order,
-            }) {
+            const arrTasks = (tasks || []).map(function ({ id, text, status, order}) {
                 return new Task(id, text, status, order);
             });
 

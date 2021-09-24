@@ -1,4 +1,3 @@
-// eslint-disable-next-line require-jsdoc
 export function View(rootNode) {
     this.rootNode = rootNode;
     this.handlers = {};
