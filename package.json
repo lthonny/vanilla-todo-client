@@ -11,7 +11,7 @@
         "lint": "eslint --debug src/",
         "lint:write": "eslint --debug src/ --fix",
         "prettier": "npx prettier --write .",
-        "test": "mocha"
+        "test": "mochapack --webpack-config app-config.js \"src/**/*.test.js\""
     },
     "browserslist": "> 0.25%, not dead",
     "repository": {
@@ -55,6 +55,7 @@
         "html-webpack-plugin": "^5.3.2",
         "mini-css-extract-plugin": "^2.3.0",
         "mocha": "^9.1.1",
+        "mochapack": "^2.1.2",
         "pre-commit": "^1.2.2",
         "prettier": "^2.4.1",
         "style-loader": "^3.0.0",

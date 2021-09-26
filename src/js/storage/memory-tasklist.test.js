@@ -1,9 +1,8 @@
-// const assert = require('chai').assert;
+//const assert = require('chai').assert;
 // import assert from 'assert';
-// import { assect } from 'chai';
-// import { Task } from './../src/js/Task';
-
-// import { FactoryTaskList } from './../src/js/FactoryTaskList';
+import { assert } from 'chai';
+import { Task } from '../Task';
+import { FactoryTaskList } from '../FactoryTaskList';
 
 const tasks = [
     {id: "wsyzsa", text: "1", status: true, order: 1},
@@ -26,14 +25,16 @@ describe('Memory Task List', function () {
 
       afterEach(function() {
         // runs after each test in this block
-        tasklist = null;
+        //tasklist = null;
       });
 
     
     // Able to add item
-//     it('Item is added to the list', function () {
-//
-//     })
+    it('Item is added to the list', function () {
+
+
+    })
+
 
     // // able to edit Item
     // it('should', function () {
