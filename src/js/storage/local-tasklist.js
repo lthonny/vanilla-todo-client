@@ -70,6 +70,8 @@ LocalTaskList.prototype.editTask = function (id, data) {
                 return element.id === id;
             });
 
+            console.log(data);
+
             if (index !== -1) {
                 Object.entries(data).forEach(([key, value]) => {
                     if (value !== undefined && value !== null) {

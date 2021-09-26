@@ -11,5 +11,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const view = new View(rootNode);
     const tasklist = new FactoryTaskList();
     const app = new App(tasklist.create(process.env.TASKLIST), view);
+    // console.log('app', app.view.handlers.createTask());
     app.render();
 });
