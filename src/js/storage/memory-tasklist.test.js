@@ -1,5 +1,3 @@
-//const assert = require('chai').assert;
-// import assert from 'assert';
 import { assert, expect } from 'chai';
 import { Task } from '../Task';
 import { FactoryTaskList } from '../FactoryTaskList';
@@ -12,53 +10,43 @@ const tasks = [
 
 describe('Memory Task List', function () {
 
-  let taskList = null;
+  let taskList = new FactoryTaskList();
   let app = null;
 
-  beforeEach(function () {
-    taskList = new FactoryTaskList();
+  beforeEach(async function () {
     app = taskList.create('memory');
-    app.tasks = (tasks || []).map(({ id, text, status, order }) => new Task(id, text, status, order));
+    app.tasks = tasks.map(({ id, text, status, order }) => new Task(id, text, status, order));
   });
 
-  afterEach(function () {
-    // runs after each test in this block
-    taskList = null;
+  afterEach(async function () {
+    app = null;
   });
 
-
-  // Able to add item
-  it('Item is added to the list', function () {
+  it('Item is added to the list', async function () {
     const text = 'inspirit testing';
 
-    const newTask = app.createTask(text).then(()=>{});
+    await app.createTask(text);
+    const [addedTask] = app.tasks.filter((task) => task.text === text);
 
-    const qqz = app.tasks.filter((task) => task.text === text);
-
-    // assert.deepEqual(app.tasks, qqz);
+    expect(addedTask.text).to.equal(text);
   })
 
-
-  // // able to edit Item
-  it('should', function () {
+  it('able to edit Item', async function () {
     const id = 'xcvsyz';
-    const data = {text: 'gabella'};
+    const data = { text: 'learn dependency injection Angular' };
 
-    app.editTask(id, data).then(()=> {});
+    await app.editTask(id, data);
+    const [modifiedTask] = app.tasks.filter(task => task.id === id);
 
-
-    console.log('edit', app.tasks);
-
-    assert();
+    expect(modifiedTask.text).to.equal(data.text);
   })
 
-
-  // // able to delete Item
-  it('able to delete Item', function () {
+  it('able to delete Item', async function () {
     const id = 'xcvsyz';
-    app.deleteTask(id).then(()=>{});
+    await app.deleteTask(id);
 
-    const del = app.tasks.filter((task) => task.id === id);
-    assert(del.length < 1);
+    const isDeleted = !app.tasks.find((task) => task.id === id);
+
+    expect(isDeleted).to.be.true;
   })
 })

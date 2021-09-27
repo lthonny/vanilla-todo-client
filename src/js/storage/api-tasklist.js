@@ -44,6 +44,7 @@ ApiTasklist.prototype.editTask = function (id, taskData) {
 };
 
 ApiTasklist.prototype.deleteTask = function (id) {
+
     const endpoint = `${this.baseUrl}/tasks/${id}`;
     const response = fetch(endpoint, {
         method: 'DELETE',
