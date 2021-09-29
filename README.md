@@ -17,7 +17,7 @@ Rebuild the project every time you change the configuration of the .env file
 ```npm run unit-test```
 
 - e2e tests
-To run end-to-end testing, you must first configure all processes on the backend, then write:
+to run end-to-end testing, you must first configure all processes on the backend, then write:
 
 ```npm run e2e-test```
 
