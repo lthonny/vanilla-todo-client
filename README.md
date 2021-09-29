@@ -12,10 +12,14 @@ Rebuild the project every time you change the configuration of the .env file
 
 ### Testing:
 
-- unit test: ```npm run unit-test```
+- unit test: 
+
+```npm run unit-test```
 
 - e2e tests
-To run end-to-end testing, you must first configure all processes on the backend, then write: ```npm run e2e-test```
+To run end-to-end testing, you must first configure all processes on the backend, then write:
+
+```npm run e2e-test```
 
 ## 1) To download all project dependencies, write:
 
