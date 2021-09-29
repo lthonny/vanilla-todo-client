@@ -11,7 +11,8 @@
         "lint": "eslint --debug src/",
         "lint:write": "eslint --debug src/ --fix",
         "prettier": "npx prettier --write .",
-        "test": "mochapack --webpack-config app-config.js \"src/**/*.test.js\""
+        "unit-test": "mochapack --webpack-config app-config.js \"src/**/*.test.js\"",
+        "e2e-test": "jest src/tests/todo.test.js"
     },
     "browserslist": "> 0.25%, not dead",
     "repository": {
@@ -31,7 +32,8 @@
         "cross-env": "^7.0.3",
         "dotenv": "^10.0.0",
         "firebase": "^8.7.1",
-        "node-polyfill-webpack-plugin": "^1.1.4"
+        "node-polyfill-webpack-plugin": "^1.1.4",
+        "puppeteer": "^10.4.0"
     },
     "devDependencies": {
         "@babel/core": "^7.14.6",
@@ -55,6 +57,7 @@
         "file-loader": "^6.2.0",
         "html-loader": "^2.1.2",
         "html-webpack-plugin": "^5.3.2",
+        "jest": "^27.2.3",
         "mini-css-extract-plugin": "^2.3.0",
         "mocha": "^9.1.1",
         "mochapack": "^2.1.2",

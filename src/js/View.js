@@ -347,6 +347,7 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
     taskElements.append(btnDel);
 
     btnDel.addEventListener('click', function (event) {
+        console.log('del');
         modalWindow().then(function (btn) {
                 if (btn === 'YES') {
                     deleteTask(currentTask.id);
