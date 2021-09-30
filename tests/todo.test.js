@@ -17,6 +17,7 @@ describe('e2e testing', () => {
     })
 
     test('should fetch all tasks', async function(){
+        await page.waitForSelector('.tasks__item');
         expect(await page.$$('.tasks__item')).toHaveLength(5);
     })
 
@@ -27,7 +28,7 @@ describe('e2e testing', () => {
         await page.click('.texterea');
         await page.waitForTimeout(1000);
         await page.click('.message-add');
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000);
         const element = await page.evaluate(() => Array.from(document.querySelectorAll('.tasks__item'), element => element.textContent === 'new task'));
         expect(element).toBeTruthy();
     })

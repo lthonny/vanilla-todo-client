@@ -80,7 +80,7 @@ module.exports = {
                 collapseWhitespace: isProd,
             },
         }),
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: `./css/${filename('css')}`,
         }),
