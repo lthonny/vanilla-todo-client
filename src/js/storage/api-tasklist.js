@@ -13,6 +13,7 @@ ApiTasklist.prototype.getTasks = function () {
     });
 
     return response.then(function (response) {
+        console.log(response)
         return response.json();
     });
 };
