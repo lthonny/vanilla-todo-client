@@ -1,6 +1,7 @@
 import { Task } from '../Task';
 import { generateId } from '../utils';
 
+// eslint-disable-next-line require-jsdoc
 export function MemoryTaskList() {
     this.tasks = [];
     this.filter = 'All';
@@ -11,7 +12,7 @@ MemoryTaskList.prototype.getTasks = function () {
 
     return new Promise(function (resolve, reject) {
         try {
-            const arrTasks = (tasks || []).map(function ({ id, text, status, order}) {
+            const arrTasks = (tasks || []).map(function ({ id, text, status, order }) {
                 return new Task(id, text, status, order);
             });
 
@@ -89,11 +90,7 @@ MemoryTaskList.prototype.deleteTask = function (id) {
 };
 
 MemoryTaskList.prototype.setFilter = function (filter) {
-    if (
-        filter === 'All' ||
-        filter === 'Completed' ||
-        filter === 'InCompleted'
-    ) {
+    if (filter === 'All' || filter === 'Completed' || filter === 'InCompleted') {
         this.filter = filter;
     }
 };

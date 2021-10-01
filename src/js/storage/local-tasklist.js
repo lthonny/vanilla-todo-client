@@ -1,6 +1,7 @@
 import { Task } from '../Task';
 import { generateId } from '../utils';
 
+// eslint-disable-next-line require-jsdoc
 export function LocalTaskList() {
     this.filter = 'All';
     this.key = 'tasks';
@@ -20,12 +21,7 @@ LocalTaskList.prototype.getTasks = function () {
 
     return new Promise(function (resolve, reject) {
         try {
-            const tasks = (getItem || []).map(function ({
-                id,
-                text,
-                status,
-                order,
-            }) {
+            const tasks = (getItem || []).map(function ({ id, text, status, order }) {
                 return new Task(id, text, status, order);
             });
 
@@ -104,11 +100,7 @@ LocalTaskList.prototype.deleteTask = function (id) {
 };
 
 LocalTaskList.prototype.setFilter = function (filter) {
-    if (
-        filter === 'All' ||
-        filter === 'Completed' ||
-        filter === 'InCompleted'
-    ) {
+    if (filter === 'All' || filter === 'Completed' || filter === 'InCompleted') {
         this.filter = filter;
     }
 };

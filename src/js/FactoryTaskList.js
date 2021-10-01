@@ -14,14 +14,11 @@ FactoryTaskList.prototype.create = function (type) {
 
     if (type === 'api-tasklist') {
         this.tasklist = new ApiTasklist();
-    }
-    else if (type === 'local-tasklist') {
+    } else if (type === 'local-tasklist') {
         this.tasklist = new LocalTaskList();
-    }
-    else if (type === 'firebase-tasklist') {
+    } else if (type === 'firebase-tasklist') {
         this.tasklist = new FirebaseTaskList();
-    }
-    else {
+    } else {
         this.tasklist = new MemoryTaskList();
     }
 

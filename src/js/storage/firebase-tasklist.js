@@ -3,6 +3,7 @@ import 'firebase/firestore';
 
 import { Task } from '../Task';
 
+// eslint-disable-next-line require-jsdoc
 export function FirebaseTaskList() {
     const firebaseConfig = {
         apiKey: 'AIzaSyC72RD4e1VUXl4GGej74vEAVWiJdjAooFI',
@@ -29,12 +30,7 @@ FirebaseTaskList.prototype.getTasks = function () {
                     ...doc.data(),
                 }));
 
-                const tasks = data.map(function ({
-                    id,
-                    text,
-                    status,
-                    order,
-                }) {
+                const tasks = data.map(function ({ id, text, status, order }) {
                     return new Task(id, text, status, order);
                 });
 
@@ -108,11 +104,7 @@ FirebaseTaskList.prototype.deleteTask = function (id) {
 };
 
 FirebaseTaskList.prototype.setFilter = function (filter) {
-    if (
-        filter === 'All' ||
-        filter === 'Completed' ||
-        filter === 'InCompleted'
-    ) {
+    if (filter === 'All' || filter === 'Completed' || filter === 'InCompleted') {
         this.filter = filter;
     }
 };

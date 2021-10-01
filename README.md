@@ -12,19 +12,19 @@ Rebuild the project every time you change the configuration of the .env file
 
 ### Testing:
 
-- unit test: 
+- unit test:
 
-```npm run unit-test```
+`npm run unit-test`
 
 - e2e tests
-to run end-to-end testing, you must first configure all processes on the backend
-```https://github.com/lthonny/vanilla-todo-server.git```, start the project:
+  to run end-to-end testing, you must first configure all processes on the backend
+  `https://github.com/lthonny/vanilla-todo-server.git`, start the project:
 
-```npm run start```
+`npm run start`
 
 then open a new terminal and run tests:
 
-```npm run e2e-test```
+`npm run e2e-test`
 
 ## 1) To download all project dependencies, write:
 

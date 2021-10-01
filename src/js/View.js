@@ -1,3 +1,4 @@
+// eslint-disable-next-line require-jsdoc
 export function View(rootNode) {
     this.rootNode = rootNode;
     this.handlers = {};
@@ -66,7 +67,11 @@ View.prototype.edit = function (id, data) {
     const { text, status, order } = data;
     const render = this.render.bind(this);
     this.handlers
-        .editTask(id, { text, status, order })
+        .editTask(id, {
+            text,
+            status,
+            order,
+        })
         .then(function () {
             render();
         })
@@ -111,13 +116,7 @@ View.prototype.createTaskText = function (currentTask) {
     return containerTaskText;
 };
 
-// layout edit messages
-View.prototype.createEditText = function (
-    inputDiv,
-    currentTask,
-    editTask,
-    taskElements,
-) {
+View.prototype.createEditText = function (inputDiv, currentTask, editTask, taskElements) {
     taskElements.draggable = false;
 
     const childNode = inputDiv.firstChild;
@@ -134,16 +133,25 @@ View.prototype.createEditText = function (
 
     inputEdit.addEventListener('blur', function (event) {
         event.target.style.background = '';
-        editTask(currentTask.id, { text: this.value });
+        editTask(currentTask.id, {
+            // eslint-disable-next-line no-invalid-this
+            text: this.value,
+        });
     });
     inputEdit.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
-            editTask(currentTask.id, { text: this.value });
+            editTask(currentTask.id, {
+                // eslint-disable-next-line no-invalid-this
+                text: this.value,
+            });
         }
     });
     inputEdit.addEventListener('touchend', function (event) {
         event.target.style.background = '';
-        editTask(currentTask.id, { text: this.value });
+        editTask(currentTask.id, {
+            // eslint-disable-next-line no-invalid-this
+            text: this.value,
+        });
     });
 };
 
@@ -263,18 +271,13 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
     document.addEventListener('dragenter', function (event) {
         const dropzone = event.target;
-        event.target.classList.contains('tasks__item')
-            ? dropzone.classList.add('dropzone')
-            : null;
+        event.target.classList.contains('tasks__item') ? dropzone.classList.add('dropzone') : null;
     });
 
     document.addEventListener('dragleave', function (event) {
         const dropzone = event.target;
 
-        if (
-            dropzone.classList.contains('tasks__item') &&
-            dropzone.classList.contains('dropzone')
-        ) {
+        if (dropzone.classList.contains('tasks__item') && dropzone.classList.contains('dropzone')) {
             dropzone.classList.remove('dropzone');
         }
     });
@@ -303,22 +306,16 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
         if (tasks[index + 1] === undefined && tasks[index - 1] !== undefined) {
             order = tasks[index].order + 1;
         }
-        if (
-            yDrag < yDrop &&
-            tasks[index - 1] !== undefined &&
-            tasks[index + 1] !== undefined
-        ) {
+        if (yDrag < yDrop && tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
             order = (tasks[index + 1].order + tasks[index].order) / 2;
         }
-        if (
-            yDrag > yDrop &&
-            tasks[index - 1] !== undefined &&
-            tasks[index + 1] !== undefined
-        ) {
+        if (yDrag > yDrop && tasks[index - 1] !== undefined && tasks[index + 1] !== undefined) {
             order = (tasks[index - 1].order + tasks[index].order) / 2;
         }
 
-        edit(dragId, { order: order });
+        edit(dragId, {
+            order: order,
+        });
     });
 
     // handlers toggle
@@ -348,7 +345,8 @@ View.prototype.createTaskItem = function (currentTask, tasks) {
 
     btnDel.addEventListener('click', function (event) {
         console.log('del');
-        modalWindow().then(function (btn) {
+        modalWindow()
+            .then(function (btn) {
                 if (btn === 'YES') {
                     deleteTask(currentTask.id);
                 }

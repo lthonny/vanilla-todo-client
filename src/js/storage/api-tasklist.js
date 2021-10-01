@@ -1,3 +1,4 @@
+// eslint-disable-next-line require-jsdoc
 export function ApiTasklist() {
     this.baseUrl = `http://localhost:${process.env.SERVER_HOST}`;
     this.filter = 'All';
@@ -13,7 +14,7 @@ ApiTasklist.prototype.getTasks = function () {
     });
 
     return response.then(function (response) {
-        console.log(response)
+        console.log(response);
         return response.json();
     });
 };
@@ -22,7 +23,9 @@ ApiTasklist.prototype.createTask = function (text) {
     const endpoint = `${this.baseUrl}/tasks`;
     const response = fetch(endpoint, {
         method: 'POST',
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({
+            text,
+        }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
         },
@@ -56,11 +59,7 @@ ApiTasklist.prototype.deleteTask = function (id) {
 };
 
 ApiTasklist.prototype.setFilter = function (filter) {
-    if (
-        filter === 'All' ||
-        filter === 'Completed' ||
-        filter === 'InCompleted'
-    ) {
+    if (filter === 'All' || filter === 'Completed' || filter === 'InCompleted') {
         this.filter = filter;
     }
 };

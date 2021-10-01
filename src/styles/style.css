@@ -1,85 +1,85 @@
 @import 'normalize.css';
 
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 body {
-    font-family: 'Tahoma', sans-serif;
-    font-size: 18px;
-    line-height: 25px;
-    color: #164a44;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 18px;
+  line-height: 25px;
+  color: #164a44;
 
-    background-color: #d1ecf1;
+  background-color: #d1ecf1;
 }
 
 .task-text {
-    display: flex;
+  display: flex;
 }
 
 .tasks {
-    margin-top: 60px;
+  margin-top: 60px;
 }
 
 .tasks__title {
-    margin: 50px 0 20px 0;
+  margin: 50px 0 20px 0;
 
-    text-align: center;
-    text-transform: uppercase;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .tasks__list {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 
-    list-style: none;
+  list-style: none;
 }
 
 .tasks__item {
-    transition: background-color 0.5s;
-    margin-bottom: 10px;
-    padding: 5px;
+  transition: background-color 0.5s;
+  margin-bottom: 10px;
+  padding: 5px;
 
-    text-align: center;
-    border: 2px dashed #ffffff;
-    border-radius: 10px;
-    cursor: move;
-    background-color: #ffff;
+  text-align: center;
+  border: 2px dashed #ffffff;
+  border-radius: 10px;
+  cursor: move;
+  background-color: #ffff;
 
-    transition: background-color 0.5s;
+  transition: background-color 0.5s;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    margin: 20px 35px 0px 35px;
-    min-height: 40px;
+  margin: 20px 35px 0px 35px;
+  min-height: 40px;
 }
 
 .tasks__item:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .selected {
-    opacity: 0.6;
+  opacity: 0.6;
 }
 
 /* style my todo */
 
 /* button delete */
 .btn-delete {
-    width: 15%;
+  width: 15%;
 }
 
 .btn-delete button {
-    width: 100%;
-    height: 100%;
-    color: #ec4f43;
-    font-size: 25px;
-    background-color: transparent;
-    padding-left: 20px;
+  width: 100%;
+  height: 100%;
+  color: #ec4f43;
+  font-size: 25px;
+  background-color: transparent;
+  padding-left: 20px;
 }
 
 /* .btn-delete button:hover { */
@@ -88,224 +88,224 @@ body {
 
 /* toggle */
 .execute {
-    cursor: pointer;
-    width: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  cursor: pointer;
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .check-true,
 .check-false {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
 }
 
 .check-true {
-    border: 1px solid rgb(129, 201, 67);
-    background-color: rgb(129, 201, 67);
+  border: 1px solid rgb(129, 201, 67);
+  background-color: rgb(129, 201, 67);
 }
 
 .check-false {
-    border: 1px solid rgb(182, 194, 171);
+  border: 1px solid rgb(182, 194, 171);
 }
 
 .text-false {
-    color: green;
-    text-decoration: line-through;
+  color: green;
+  text-decoration: line-through;
 }
 
 /* add task */
 /* input task */
 .add-task {
-    display: flex;
-    align-items: center;
-    position: relative;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .max-characters {
-    /* display: none; */
-    margin-left: 35px;
-    color: rgb(156, 96, 96);
+  /* display: none; */
+  margin-left: 35px;
+  color: rgb(156, 96, 96);
 }
 
 .input-task {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 
-    margin: 0px 35px 0px 35px;
+  margin: 0px 35px 0px 35px;
 
-    width: 80%;
+  width: 80%;
 }
 
 .input-task .texterea {
-    width: 100%;
-    padding: 10px 10px;
-    border-radius: 5px;
-    resize: none;
-    overflow: hidden;
-    font-size: 16px;
-    outline: none;
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 5px;
+  resize: none;
+  overflow: hidden;
+  font-size: 16px;
+  outline: none;
 }
 
 /* button add task */
 .button-task {
-    width: 20%;
+  width: 20%;
 }
 .button-task button {
-    width: 100%;
-    font-size: 30px;
-    color: #fff;
-    background-color: transparent;
+  width: 100%;
+  font-size: 30px;
+  color: #fff;
+  background-color: transparent;
 }
 
 /* title */
 .quantityTasks {
-    text-align: center;
-    font-size: 25px;
-    font-weight: 800;
-    margin: 30px 0px 20px 0px;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 800;
+  margin: 30px 0px 20px 0px;
 }
 
 /* filter */
 .task-filter {
-    margin-top: 40px;
-    display: flex;
-    justify-content: space-around;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-around;
 }
 
 .btn {
-    color: #fff;
-    font-size: 17px;
-    font-weight: 800;
-    width: 130px;
-    min-height: 35px;
-    background-color: #1487b3;
-    border-radius: 5px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  width: 130px;
+  min-height: 35px;
+  background-color: #1487b3;
+  border-radius: 5px;
 }
 
 .btn button:hover {
-    background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .task-text {
-    width: 75%;
+  width: 75%;
 }
 .task-text .text {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    font-size: 18px;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-size: 18px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .inputEdit {
-    width: 95%;
-    outline: none;
-    font-size: 16px;
-    resize: none;
-    overflow: hidden;
-    padding: 10px;
+  width: 95%;
+  outline: none;
+  font-size: 16px;
+  resize: none;
+  overflow: hidden;
+  padding: 10px;
 }
 
 /* modal window */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 100px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Modal Content */
 .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    height: 15%;
-    max-width: 500px;
-    border-radius: 5px;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  height: 15%;
+  max-width: 500px;
+  border-radius: 5px;
 
-    position: relative;
+  position: relative;
 }
 
 .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: #79aca9;
-    text-decoration: none;
-    cursor: pointer;
+  color: #79aca9;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .selection-by-buttons {
-    width: 100%;
-    /* margin-top: 80px; */
-    display: flex;
-    justify-content: flex-end;
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
+  width: 100%;
+  /* margin-top: 80px; */
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 
 .removebtn {
-    color: #fff;
-    height: 35px;
-    border-radius: 5px;
+  color: #fff;
+  height: 35px;
+  border-radius: 5px;
 }
 
 .removebtn:hover {
-    transition: 0.2s;
-    background-color: #79aca9;
+  transition: 0.2s;
+  background-color: #79aca9;
 }
 
 .btn-delete-no {
-    width: 20%;
-    background-color: #5a6268;
-    margin-right: 20px;
+  width: 20%;
+  background-color: #5a6268;
+  margin-right: 20px;
 }
 
 .btn-delete-yes {
-    width: 30%;
-    background-color: #0269d9;
+  width: 30%;
+  background-color: #0269d9;
 }
 
 .tasks__item:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .active-filter {
-    background-color: rgb(182, 194, 171);
+  background-color: rgb(182, 194, 171);
 }
 
 /* drag and drop */
 
 #draggable {
-    text-align: center;
-    background: white;
+  text-align: center;
+  background: white;
 }
 
 .dropzone {
-    background: #eee;
-    opacity: 0.6;
+  background: #eee;
+  opacity: 0.6;
 }
